@@ -7,6 +7,6 @@ VeriTrust is a decentralized application (DApp) designed to revolutionize reputa
 ## Architecture & Flow
 
 Below is a high-level diagram illustrating how the Frontend, Backend, AI Models, Blockchain, and Off-chain Database interact within the VeriTrust system.
-![VeriTrust Architecture Diagram](docs/Architecture_diagram.png)
+![VeriTrust Architecture Diagram](docs/assets/architecture_diagram.png)
 
 
