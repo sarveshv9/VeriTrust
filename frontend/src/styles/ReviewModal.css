@@ -1,0 +1,139 @@
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.8);
+backdrop-filter: blur(8px);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+}
+
+.modal-content {
+background: rgba(10, 10, 10, 0.95);
+backdrop-filter: blur(25px);
+border: 1px solid rgba(59, 130, 246, 0.2);
+border-radius: 20px;
+padding: 40px;
+max-width: 520px;
+width: 90%;
+color: #ffffff;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+margin-bottom: 32px;
+text-align: center;
+color: #ffffff;
+font-size: 24px;
+font-weight: 700;
+}
+
+.rating-section {
+margin-bottom: 32px;
+}
+
+.rating-section label {
+display: block;
+margin-bottom: 12px;
+font-weight: 600;
+color: #ffffff;
+font-size: 15px;
+}
+
+.star-rating {
+display: flex;
+gap: 8px;
+color: rgba(255, 255, 255, 0.8);
+justify-content: center;
+}
+
+.review-section {
+margin-bottom: 32px;
+}
+
+.review-section label {
+display: block;
+margin-bottom: 12px;
+font-weight: 600;
+color: #ffffff;
+font-size: 15px;
+}
+
+.review-section textarea {
+width: 100%;
+background: rgba(10, 10, 10, 0.7);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 12px;
+padding: 16px;
+color: #ffffff;
+resize: vertical;
+min-height: 120px;
+font-family: inherit;
+font-size: 14px;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.review-section textarea::placeholder {
+color: rgba(255, 255, 255, 0.5);
+}
+
+.review-section textarea:focus {
+outline: none;
+border-color: rgba(59, 130, 246, 0.4);
+box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+}
+
+.modal-actions {
+display: flex;
+gap: 16px;
+justify-content: flex-end;
+}
+
+.cancel-btn {
+background: rgba(255, 255, 255, 0.06);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 10px;
+padding: 12px 24px;
+color: rgba(255, 255, 255, 0.8);
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-btn:hover {
+background: rgba(255, 255, 255, 0.12);
+color: #ffffff;
+transform: translateY(-1px);
+}
+
+.submit-btn {
+background: rgba(59, 130, 246, 0.15);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(59, 130, 246, 0.3);
+border-radius: 10px;
+padding: 12px 24px;
+color: #3b82f6;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+}
+
+.submit-btn:hover {
+background: rgba(59, 130, 246, 0.25);
+transform: translateY(-1px);
+box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+@media (max-width: 768px) {
+.modal-content {
+padding: 24px;
+margin: 16px;
+}
+}
