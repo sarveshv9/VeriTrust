@@ -1,5 +1,7 @@
 import React from 'react';
 import '../styles/HowItWorks.css';
+import '../styles/App.css'
+
 
 const HowItWorks = () => (
   <section className="how-it-works" id='how-it-works'>

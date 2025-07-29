@@ -3,6 +3,8 @@ import { Search } from 'lucide-react';
 import { useGSAP } from '../hooks/useGSAP';
 import { useSearch } from '../hooks/useSearch';
 import '../styles/Hero.css';
+import '../styles/App.css'
+
 
 const Hero = ({ onSearchGig }) => {
   const { elementRef } = useGSAP({

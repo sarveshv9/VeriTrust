@@ -1,5 +1,7 @@
 import React from 'react';
 import '../styles/CTASection.css';
+import '../styles/App.css'
+
 
 const CTASection = ({ onWriteReview, onBrowseGigs }) => (
     <section className="cta-section">

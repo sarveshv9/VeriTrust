@@ -37,11 +37,12 @@ width: 100%;
 }
 
 .hero-title {
-font-size: 64px;
-font-weight: 800;
+font-family: "GeneralSans-Semibold", system-ui, sans-serif;
+font-size: 4.5rem;
+font-weight: 1000;
+line-height: 1.1;
 color: #ffffff;
 margin-bottom: 24px;
-line-height: 1.1;
 letter-spacing: -2px;
 background: linear-gradient(135deg, #ffffff, #3b82f6, #8b5cf6);
 background-size: 200% 200%;
@@ -57,11 +58,13 @@ animation: titleGlow 6s ease-in-out infinite alternate;
 }
 
 .hero-subtitle {
-font-size: 22px;
-color: rgba(255, 255, 255, 0.8);
+font-family: "Ranade-Light", system-ui, sans-serif;
+font-size: 1.125rem;
+font-style: normal;
+line-height: 1.6;
+color: #6B7280;
 margin-bottom: 48px;
 font-weight: 400;
-line-height: 1.5;
 }
 
 .search-form {

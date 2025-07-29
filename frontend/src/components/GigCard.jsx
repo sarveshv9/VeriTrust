@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Star, Heart, ExternalLink, User, Shield, Award } from 'lucide-react';
 import '../styles/GigCard.css';
+import '../styles/App.css'
+
 
 const GigCard = ({ gig }) => {
   const [isFavorited, setIsFavorited] = useState(false);

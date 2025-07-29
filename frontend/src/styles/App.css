@@ -9,6 +9,8 @@ html, body, #root {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
 }
 
 body {
@@ -173,4 +175,46 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Global Font*/
+@font-face {
+  font-family: "GeneralSans-Semibold";
+  src: url("/assets/fonts/GeneralSans-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ranade-Light";
+  src: url("./assets/fonts/Ranade-Light.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ranade-Regular";
+  src: url("./assets/fonts/Ranade-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Global scrollbar hiding */
+body {
+  /* Hide scrollbar for webkit browsers */
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+body {
+  -ms-overflow-style: none;
 }

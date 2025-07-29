@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import GigCard from './GigCard';
 import { Search, Filter, Grid, List, TrendingUp } from 'lucide-react';
 import '../styles/GigsSection.css';
+import '../styles/App.css'
+
 
 const GigsSection = ({ searchTerm = '' }) => {
   const [viewMode, setViewMode] = useState('grid');

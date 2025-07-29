@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 import { useGSAP } from '../hooks/useGSAP';
 import '../styles/ReviewModal.css';
+import '../styles/App.css'
+
 
 const ReviewModal = ({ isOpen, onClose, onSubmit }) => {
   const [rating, setRating] = useState(0);
