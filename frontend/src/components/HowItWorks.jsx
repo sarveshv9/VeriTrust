@@ -1,45 +1,66 @@
-import React from 'react';
-import '../styles/HowItWorks.css';
-import '../styles/App.css'
+import React, { useEffect, useRef } from 'react';
+import '../styles/HowItWorks.css'
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { useGSAP } from "@gsap/react"
+import ScrollReveal from '../hooks/ScrollReveal';
 
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
-const HowItWorks = () => (
-  <section className="how-it-works" id='how-it-works'>
-    <div className="container">
-      <h2>How It Works</h2>
-      <div className="steps">      
-      <div className="steps">
-        {/* Step 1 */}
-        <div className="step">
-          <div className="step-icon">🔗</div>
-          <h3>Connect Web3 Wallet</h3>
-          <p>Link your decentralized identity (MetaMask) to own your reputation data forever.</p>
+const HowItWorks = () => {
+
+  const steps = [
+    {
+      icon: '🦊',
+      title: 'Connect Your Web3 Wallet',
+      description: 'Link your decentralized identity (MetaMask) securely to permanently own and control your freelancer reputation on Ethereum.'
+    },
+    {
+      icon: '🤖',
+      title: 'AI-Verified Freelancer Matching',
+      description: 'Our AI evaluates on-chain feedback, skill hashes, and sentiment scores to match you with the most trustworthy freelancers.'
+    },
+    {
+      icon: '⛓️',
+      title: 'Secure Ethereum Transactions',
+      description: 'Engage in transparent, immutable payment settlements using smart contracts that store hashed feedback and PoW proofs.'
+    },
+    {
+      icon: '⛏️',
+      title: 'Proof-of-Work Feedback Validation',
+      description: 'Submit tamper-proof freelancer reviews validated by computational PoW and AI analysis, recorded securely on blockchain forever.'
+    }
+  ];
+
+  return (
+      <section className="how-it-works" id='how-it-works' >
+
+        <div className="section-title">
+          <h2>How VeriTrust Works</h2>
         </div>
 
-        {/* Step 2 */}
-        <div className="step">
-          <div className="step-icon">🤖</div>
-          <h3>AI-Verified Matching</h3>
-          <p>Our AI analyzes skills, past work, and reputation to find the perfect freelancer match.</p>
+        <div className="steps-container">
+          {steps.map((step, index) => (
+            <div key={index} className="step-container">
+              <div className="step-content">
+                <div className="step-left">
+                  <div className="step-icon">{step.icon}</div>
+                  <h3 className="step-title">{step.title}</h3>
+                </div>
+                <div className="step-right">
+                <ScrollReveal
+                  baseOpacity={0}
+                  enableBlur={true}
+                  blurStrength={10}
+                  className='step-description'>{step.description}</ScrollReveal>
+                </div>
+              </div>
+              <div className="step-number">{String(index + 1).padStart(2, '0')}</div>
+            </div>
+          ))}
         </div>
-
-        {/* Step 3 */}
-        <div className="step">
-          <div className="step-icon">⛓️</div>
-          <h3>Blockchain Transactions</h3>
-          <p>Secure, transparent payments via smart contracts with immutable work records.</p>
-        </div>
-
-        {/* Step 4 */}
-        <div className="step">
-          <div className="step-icon">🛡️</div>
-          <h3>AI-Analyzed Reviews</h3>
-          <p>Submit Proof-of-Work reviews that are AI-validated for authenticity and stored permanently on blockchain.</p>
-        </div>
-       </div> 
-      </div>
-    </div>
-  </section>
-);
+      </section>
+  );
+};
 
 export default HowItWorks;

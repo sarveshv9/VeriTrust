@@ -1,16 +1,13 @@
-/* Header.css - Fixed Hover Effects */
+/* Header.css - Fixed for GSAP Animation */
 
 .header {
   background: rgba(10, 10, 10, 0.20);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(59, 130, 246, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
+  z-index: 50;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  align-items: center;
-  align-content: center;
-  height: 96px;
+  height: 108px;
 }
 
 .header::before {
@@ -40,10 +37,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px;
+  height: 100%;
   position: relative;
-  z-index: 2;
-  border-radius: 0 0 18px 18px;
-  margin: 0 1px 1px 1px;
+}
+
+.nav-placeholder {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .logo {
@@ -75,17 +76,10 @@
   100% { background-position: 100% 50%; }
 }
 
-/* Fixed nav container centering */
+/* FIXED: Back to fixed positioning since it's outside smooth wrapper now */
 .nav-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%); /* FIXED: Added proper centering */
-  z-index: 3;
-  
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.01);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(59, 130, 246, 0.12);
   border-radius: 50px;
   padding: 8px 12px;
@@ -95,26 +89,18 @@
     0 0 32px rgba(59, 130, 246, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(255, 255, 255, 0.03);
-  
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
 
-/* Fixed nav container glow effect */
-.nav-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba(59, 130, 246, 0.3) 30%,
-    rgba(139, 92, 246, 0.2) 70%,
-    transparent
-  );
-  animation: navGlow 6s ease-in-out infinite alternate;
+  /* Back to fixed positioning since it's outside smooth wrapper */
+  position: fixed;
+  top: 24px; 
+  left: 50%;
+  z-index: 1000;
+  width: fit-content;
+  will-change: transform;
+  transform: translateX(-50%) translateZ(0); /* Force hardware acceleration */
+  backface-visibility: hidden; /* Prevent flickering */
+  contain: layout style paint; /* Optimize rendering */
+  isolation: isolate;
 }
 
 @keyframes navGlow {
@@ -140,6 +126,7 @@
   cursor: pointer;
   font-family: "Ranade-Light", system-ui, sans-serif;
   border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-link::before {
@@ -149,14 +136,23 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(59, 130, 246, 0.08);
-  backdrop-filter: blur(10px);
+  background: rgba(4, 23, 53, 0.01);
+  backdrop-filter: blur(50px);
   border: 1px solid rgba(59, 130, 246, 0.15);
-  border-radius: 12px;
+  border-radius: 14px;
   opacity: 0;
   box-shadow:
     0 4px 16px rgba(59, 130, 246, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: opacity 0.3s ease;
+}
+
+.nav-link[data-section="hero"]::before {
+  border-radius: 25px 14px 14px 25px;
+}
+
+.nav-link[data-section="support"]::before {
+  border-radius: 14px 25px 25px 14px;
 }
 
 .nav-link:hover::before {
@@ -164,17 +160,23 @@
 }
 
 .nav-link:hover {
-  color: #3b82f6;
-  text-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
-  background: rgba(59, 130, 246, 0.03);
+  color: #1d74ff;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+  background: rgba(39, 119, 247, 0.02);
   border-color: rgba(59, 130, 246, 0.1);
 }
 
-/* Fixed nav container hover */
+.nav-link[data-section="hero"]:hover {
+  border-radius: 25px 14px 14px 25px;
+}
+
+.nav-link[data-section="support"]:hover {
+  border-radius: 14px 25px 25px 14px;
+}
+
 .nav-container:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(1, 10, 21, 0.04);
   border-color: rgba(59, 130, 246, 0.18);
-  transform: translateX(-50%) translateY(-50%) translateY(-1px); /* FIXED: Maintain centering + lift */
   box-shadow:
     0 6px 20px rgba(0, 0, 0, 0.12),
     0 0 40px rgba(59, 130, 246, 0.06),
@@ -202,13 +204,12 @@
   justify-content: center;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* FIXED: Better easing */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
 }
 
-/* FIXED: Enhanced icon button hover */
 .icon-btn::before {
   content: '';
   position: absolute;
@@ -228,7 +229,7 @@
 .icon-btn:hover {
   background: rgba(59, 130, 246, 0.12);
   color: #3b82f6;
-  transform: translateY(-3px); /* FIXED: Increased lift */
+  transform: translateY(-3px);
   border-color: rgba(59, 130, 246, 0.4);
   box-shadow: 
     0 8px 24px rgba(59, 130, 246, 0.2),
@@ -252,7 +253,6 @@
   overflow: hidden;
 }
 
-/* FIXED: Enhanced button hover effect */
 .submit-review-btn::before {
   content: '';
   position: absolute;
@@ -274,7 +274,7 @@
 
 .submit-review-btn:hover {
   background: rgba(59, 130, 246, 0.25);
-  transform: translateY(-3px); /* FIXED: Increased lift */
+  transform: translateY(-3px);
   border-color: rgba(59, 130, 246, 0.6);
   box-shadow: 
     0 8px 24px rgba(59, 130, 246, 0.3),
@@ -306,7 +306,6 @@
     0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Enhanced mobile responsive */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -315,7 +314,6 @@
   }
   
   .nav-container {
-    /* Reset positioning for mobile */
     position: static;
     transform: none;
     order: 2;
@@ -336,6 +334,6 @@
   }
   
   .nav {
-    display: none; /* FIXED: Properly hide on mobile */
+    display: none; 
   }
 }

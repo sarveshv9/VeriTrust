@@ -1,38 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { gsap } from 'gsap';
+import ScrollSmoother from 'gsap/ScrollSmoother';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import GigsSection from './components/GigsSection';
-import CTASection from './components/CTASection';
-import ReviewModal from './components/ReviewModal';
-import { useModal } from './hooks/useModal';
-import './styles/App.css';
 import HowItWorks from './components/HowItWorks';
+import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import './styles/App.css';
+
+// Register plugins
+gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 
 const App = () => {
-  const { 
-    isOpen: isReviewModalOpen, 
-    openModal: openReviewModal, 
-    closeModal: closeReviewModal 
-  } = useModal();
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchGig = (searchTerm) => {
-    console.log('Searching for gigs:', searchTerm);
+  useGSAP(() => {
+    // Create ScrollSmoother
+    const smoother = ScrollSmoother.create({
+      wrapper: '.smooth-wrapper',
+      content: '.smooth-content',
+      smooth: 1.5,
+      effects: true,
+      smoothTouch: 0.1,
+    });
+
+    // Refresh ScrollTrigger after ScrollSmoother is created
+    ScrollTrigger.refresh();
+
+    return () => {
+      // Cleanup
+      smoother?.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  const handleSearchGig = (term) => {
+    setSearchTerm(term);
+    const gigsSection = document.getElementById('gigs');
+    if (gigsSection) {
+      gigsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleWriteReview = () => {
+    console.log('Write review clicked');
+  };
+
+  const handleBrowseGigs = () => {
+    const gigsSection = document.getElementById('gigs');
+    if (gigsSection) {
+      gigsSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <div className="app">
-      <Header />
-      <Hero onSearch={handleSearchGig} />
-      <GigsSection />
-      <HowItWorks />
-      <CTASection onOpenReviewModal={openReviewModal} />
-      <Footer />
+    <>
+      {/* Nav container outside smooth wrapper for proper sticky positioning */}
+      <div id="nav-portal"></div>
       
-      {isReviewModalOpen && (
-        <ReviewModal onClose={closeReviewModal} />
-      )}
-    </div>
+      <div className="smooth-wrapper">
+        <div className="smooth-content">
+          <Header onSubmitReview={handleWriteReview} />
+          <Hero onSearchGig={handleSearchGig} />
+          <HowItWorks />
+          <CTASection onWriteReview={handleWriteReview} onBrowseGigs={handleBrowseGigs} />
+          <Footer />
+        </div>
+      </div>
+    </>
   );
 };
 
