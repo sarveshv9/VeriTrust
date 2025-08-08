@@ -3,7 +3,7 @@ import '../styles/HowItWorks.css'
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react"
-import ScrollReveal from '../hooks/ScrollReveal';
+import ScrollReveal from '../hooks/useScrollReveal';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 

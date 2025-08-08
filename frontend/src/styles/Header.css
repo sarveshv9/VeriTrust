@@ -1,12 +1,9 @@
 /* Header.css - Fixed for GSAP Animation */
 
 .header {
-  background: rgba(10, 10, 10, 0.20);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+  background: transparent;
   position: relative;
   z-index: 50;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   height: 108px;
 }
 
@@ -56,12 +53,8 @@
   font-family: "GeneralSans-Semibold", system-ui, sans-serif;
   font-weight: 900;
   line-height: 1.1;
-  background: linear-gradient(135deg, #ffffff, #3b82f6, #8b5cf6);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: titleGlow 6s ease-in-out infinite alternate;
+  color: #f1f5f9; /* Cool silver */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -72,8 +65,16 @@
 }
 
 @keyframes titleGlow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% {
+    text-shadow: 0 0 10px rgba(241, 245, 249, 0.4);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(241, 245, 249, 0.9);
+  }
+}
+
+.logo h1 {
+  animation: titleGlow 3s ease-in-out infinite alternate;
 }
 
 /* FIXED: Back to fixed positioning since it's outside smooth wrapper now */
@@ -160,7 +161,7 @@
 }
 
 .nav-link:hover {
-  color: #1d74ff;
+  color: #ffffff;
   text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
   background: rgba(39, 119, 247, 0.02);
   border-color: rgba(59, 130, 246, 0.1);

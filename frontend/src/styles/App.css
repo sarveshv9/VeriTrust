@@ -1,4 +1,5 @@
-/* Global Reset */
+/* === Global Reset & Base Styles === */
+
 * {
   margin: 0;
   padding: 0;
@@ -8,31 +9,25 @@
 html, body, #root {
   min-height: 100%;
   width: 100%;
-}
-
-/* Base Body Styles */
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0a0a0a;
-  color: #ffffff;
-  min-height: 100vh;
-  line-height: 1.6;
-}
-
-/* Base Container for Layout */
-.container {
-  margin: 0 auto;
-  padding: 0 24px;
-  width: 100%;
-  max-width: 1400px;
-}
-
-/* Smooth Scrolling */
-html {
   scroll-behavior: smooth;
 }
 
-/* Hide Scrollbars */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+  
+  background-image: url('../assets/BG_IMG.JPG');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
@@ -42,7 +37,29 @@ body {
   -ms-overflow-style: none;
 }
 
-/* Custom Fonts */
+/* === Responsive Layout === */
+
+.container {
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 1400px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+}
+
+/* === Custom Fonts === */
+
 @font-face {
   font-family: "GeneralSans-Semibold";
   src: url("/assets/fonts/GeneralSans-Semibold.otf") format("opentype");
@@ -69,17 +86,4 @@ body {
   src: url("/assets/fonts/GeneralSans-Extralight.otf") format("opentype");
   font-weight: 200;
   font-style: normal;
-}
-
-/* Responsive Container */
-@media (max-width: 768px) {
-  .container {
-    padding: 0 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 12px;
-  }
 }

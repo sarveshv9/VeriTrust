@@ -5,7 +5,6 @@ const Footer = () => (
   <footer className="footer" id='footer'>
     <div className="footer-container">
       <div className="footer-content">
-        {/* Company Info Section */}
         <div className="footer-section company-info">
           <h3 className="footer-logo">VeriTrust</h3>
           <p className="footer-description">
@@ -24,7 +23,6 @@ const Footer = () => (
           </div>
         </div>
 
-        {/* Quick Links */}
         <div className="footer-section">
           <h4>Quick Links</h4>
           <ul className="footer-links">
@@ -35,7 +33,6 @@ const Footer = () => (
           </ul>
         </div>
 
-        {/* Support */}
         <div className="footer-section">
           <h4>Support</h4>
           <ul className="footer-links">
@@ -46,7 +43,6 @@ const Footer = () => (
           </ul>
         </div>
 
-        {/* Contact Info */}
         <div className="footer-section contact-section">
           <h4>Get in Touch</h4>
           <div className="contact-info">
@@ -66,7 +62,6 @@ const Footer = () => (
         </div>
       </div>
 
-      {/* Footer Bottom */}
       <div className="footer-bottom">
         <div className="footer-bottom-content">
           <p>&copy; 2025 VeriTrust. All rights reserved.</p>

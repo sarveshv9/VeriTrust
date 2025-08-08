@@ -1,8 +1,5 @@
 .footer {
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(25px);
-  border-top: 1px solid rgba(59, 130, 246, 0.15);
-  margin-top: auto;
+  background: transparent;
   position: relative;
   z-index: 10;
   width: 100%;
@@ -16,14 +13,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(59, 130, 246, 0.4) 25%,
-    rgba(139, 92, 246, 0.3) 50%,
-    rgba(16, 185, 129, 0.3) 75%,
-    transparent
-  );
+  background: transparent;
   animation: headerGlow 4s ease-in-out infinite alternate;
 }
 

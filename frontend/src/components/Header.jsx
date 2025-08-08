@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import '../styles/Header.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react'
-import TextPressure from '../hooks/TextPressure';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -57,7 +56,6 @@ const Header = ({ onSubmitReview }) => {
       );
     });
 
-    // Add hover functionality with proper state management
     const handleMouseEnter = () => {
       gsap.to('.nav-container', {
         scale: 1,
@@ -68,7 +66,6 @@ const Header = ({ onSubmitReview }) => {
     };
 
     const handleMouseLeave = () => {
-      // Only scale down if we're in the scrolled state
       if (currentScrollProgress > 0) {
         gsap.to('.nav-container', {
           scale: 0.8,
@@ -79,20 +76,18 @@ const Header = ({ onSubmitReview }) => {
       }
     };
 
-    // Use ref instead of querySelector for better performance
     const navContainer = navContainerRef.current;
     if (navContainer) {
       navContainer.addEventListener('mouseenter', handleMouseEnter);
       navContainer.addEventListener('mouseleave', handleMouseLeave);
     }
 
-    // Cleanup function
     return () => {
       if (navContainer) {
         navContainer.removeEventListener('mouseenter', handleMouseEnter);
         navContainer.removeEventListener('mouseleave', handleMouseLeave);
       }
-      // Kill the ScrollTrigger instance
+
       ScrollTrigger.getAll().forEach(trigger => {
         if (trigger.trigger === '.header') {
           trigger.kill();
@@ -111,7 +106,6 @@ const Header = ({ onSubmitReview }) => {
     }
   };
 
-  // Navigation component to be portaled
   const NavigationComponent = () => (
     <div className="nav-container" ref={navContainerRef}>
       <nav className="nav">
@@ -167,8 +161,6 @@ const Header = ({ onSubmitReview }) => {
           </div>
         </div>
       </header>
-      
-      {/* Portal the navigation outside smooth wrapper */}
       {navPortal && createPortal(<NavigationComponent />, navPortal)}
     </>
   );
