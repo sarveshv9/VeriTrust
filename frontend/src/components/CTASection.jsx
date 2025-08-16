@@ -1,18 +1,7 @@
 import React from 'react';
 import '../styles/CTASection.css';
-import ScrollSmoother from 'gsap/ScrollSmoother';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 
 const CTASection = ({ onWriteReview, onBrowseGigs }) => {
-  useGSAP(() => {
-    let smoother = ScrollSmoother.create({
-      wrapper: '.smooth-wrapper',
-      content: '.smooth-content',
-      smooth: 1,
-      effects: true,
-    });
-  }, []);
 
   return (
     <div className="smooth-wrapper">

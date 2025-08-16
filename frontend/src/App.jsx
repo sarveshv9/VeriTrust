@@ -20,7 +20,7 @@ const App = () => {
           <Header />
           <Hero />
           <HowItWorks />
-          <CTASection  />
+          <CTASection />
           <Footer />
         </div>
       </div>

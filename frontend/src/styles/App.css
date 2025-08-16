@@ -87,3 +87,380 @@ body {
   font-weight: 200;
   font-style: normal;
 }
+
+/* === GSAP Animation Components === */
+
+/* Magnetic Button */
+.magnetic-wrapper {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+
+.magnetic-button {
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+/* Animated Cursor */
+.animated-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.cursor-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* Text Splitter */
+.text-splitter .char,
+.text-splitter .word,
+.text-splitter .line {
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* Scroll Section */
+.scroll-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Parallax Image */
+.parallax-image-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Horizontal Scroller */
+.horizontal-scroller {
+  overflow: hidden;
+  position: relative;
+}
+
+.horizontal-content {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+/* Page Transition */
+.page-transition {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Preview */
+.hover-preview-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-preview {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  opacity: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+.preview-media {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Floating Elements */
+.hero-floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-element {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+}
+
+.floating-1 {
+  top: 20%;
+  left: 10%;
+  width: 60px;
+  height: 60px;
+}
+
+.floating-2 {
+  top: 60%;
+  right: 15%;
+  width: 80px;
+  height: 80px;
+}
+
+.floating-3 {
+  bottom: 20%;
+  left: 20%;
+  width: 40px;
+  height: 40px;
+}
+
+/* Background Elements */
+.how-it-works-bg,
+.cta-bg-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.bg-element {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+}
+
+.how-it-works-bg .bg-element-1 {
+  top: 10%;
+  right: 10%;
+  width: 200px;
+  height: 200px;
+}
+
+.how-it-works-bg .bg-element-2 {
+  bottom: 20%;
+  left: 5%;
+  width: 150px;
+  height: 150px;
+}
+
+.how-it-works-bg .bg-element-3 {
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.cta-bg-elements .bg-element-1 {
+  top: 15%;
+  left: 10%;
+  width: 180px;
+  height: 180px;
+}
+
+.cta-bg-elements .bg-element-2 {
+  bottom: 15%;
+  right: 15%;
+  width: 120px;
+  height: 120px;
+}
+
+.cta-bg-elements .bg-element-3 {
+  top: 60%;
+  left: 60%;
+  width: 80px;
+  height: 80px;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.mobile-menu-content a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-content a:hover {
+  color: #007bff;
+  transform: scale(1.1);
+}
+
+.mobile-cta-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mobile-cta-btn:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.hamburger {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  transition: all 0.3s ease;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
+
+.hamburger.open {
+  background: transparent;
+}
+
+.hamburger.open::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.hamburger.open::after {
+  bottom: 0;
+  transform: rotate(-45deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .animated-cursor,
+  .cursor-dot {
+    display: none;
+  }
+  
+  .floating-element {
+    display: none;
+  }
+  
+  .bg-element {
+    display: none;
+  }
+}
+
+/* === Responsive Layout === */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}

@@ -2,11 +2,23 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import '../styles/Hero.css';
 
-
 const Hero = ({ onSearchGig }) => {
+  const handleTagClick = (tag) => {
+    if (onSearchGig) {
+      onSearchGig(tag);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const searchInput = e.target.querySelector('.search-input');
+    if (searchInput.value.trim() && onSearchGig) {
+      onSearchGig(searchInput.value.trim());
+    }
+  };
 
   return (
-    <section className="hero"  id='home'>
+    <section className="hero" id="home">
       <div className="hero-bg" />
       <div className="hero-content">
         <h1 className="hero-title">
@@ -15,16 +27,17 @@ const Hero = ({ onSearchGig }) => {
         <p className="hero-subtitle">
           Millions of people use VeriTrust to turn their ideas into reality.
         </p>
-        <form className="search-form">
+        <form className="search-form" onSubmit={handleSearchSubmit}>
           <div className="search-container">
             <Search className="search-icon" />
             <input
               className="search-input"
               type="text"
               placeholder="What service are you looking for?"
+              name="search"
             />
             <button className="search-btn" type="submit">
-
+              Search
             </button>
           </div>
         </form>
@@ -34,10 +47,7 @@ const Hero = ({ onSearchGig }) => {
             <button
               key={tag}
               className="tag"
-              onClick={() => {
-                setSearchTerm(tag);
-                onSearchGig(tag);
-              }}
+              onClick={() => handleTagClick(tag)}
             >
               {tag}
             </button>

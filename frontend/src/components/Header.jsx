@@ -4,6 +4,7 @@ import '../styles/Header.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import logo from '../assets/VT_logo.png'; 
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -151,6 +152,7 @@ const Header = ({ onSubmitReview }) => {
       <header className="header" id='header'>
         <div className="container header-content">
           <div className="logo">
+            <img src={logo} alt="VeriTrust logo" className="logo-img" />
             <h1>VeriTrust</h1>
           </div>
           <div className="nav-placeholder"></div>
