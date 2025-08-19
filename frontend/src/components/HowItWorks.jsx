@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import '../styles/HowItWorks.css';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useGSAP } from "@gsap/react";
 import ScrollReveal from '../hooks/useScrollReveal';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+// Register plugins outside component
+gsap.registerPlugin(ScrollTrigger);
 
 const HowItWorks = () => {
-  const sectionRef = useRef(null);
-  const stepsRef = useRef(null);
+  const containerRef = useRef(null);
+  const h2Ref = useRef(null);
 
   const steps = [
     {
@@ -34,119 +34,169 @@ const HowItWorks = () => {
     }
   ];
 
-  useGSAP(() => {
-    const section = sectionRef.current;
-    const steps = stepsRef.current;
-    
-    if (!section || !steps) return;
+  useEffect(() => {
+    if (!containerRef.current || !h2Ref.current) return;
 
-    // Section title animation with 3D effect
-    gsap.fromTo('.section-title', 
-      { 
-        opacity: 0, 
-        y: 50, 
-        rotationX: -15,
-        transformPerspective: 1000
-      },
-      { 
-        opacity: 1, 
-        y: 0, 
-        rotationX: 0,
-        duration: 1.2, 
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: '.section-title',
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    // Clear any existing ScrollTriggers
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-    // Steps stagger animation with 3D transforms
-    gsap.fromTo('.step-container', 
-      { 
-        opacity: 0, 
-        x: -100, 
-        scale: 0.8,
-        rotationY: -20,
-        transformPerspective: 1000
-      },
-      { 
-        opacity: 1, 
-        x: 0, 
-        scale: 1,
-        rotationY: 0,
-        duration: 1.2, 
-        stagger: 0.3, 
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: '.steps-container',
-          start: "top 70%",
-          end: "bottom 30%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    // Get the smooth scroller reference
+    const scroller = document.querySelector('.smooth-wrapper') || window;
 
-    // Floating icons animation with 3D rotation
-    gsap.to('.step-icon', {
-      y: -10,
-      rotationY: 360,
-      duration: 3,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: -1,
-      stagger: 0.2
+    // Set initial states
+    gsap.set(".pinned-text", {
+      scale: 0.5,
+      opacity: 1
     });
 
-    // Step numbers reveal animation
-    gsap.fromTo('.step-number', 
-      { opacity: 0, scale: 0, rotation: -180 },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        rotation: 0, 
-        duration: 0.8, 
-        ease: "back.out(1.7)",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: '.steps-container',
-          start: "top 70%",
-          end: "bottom 30%",
-          toggleActions: "play none none reverse"
-        }
+    // Hide all steps initially and set starting position
+    gsap.set(".step-container", {
+      autoAlpha: 0,
+      y: 50,
+      scale: 0.9
+    });
+
+    // ANIMATION 1: Scale up title as it approaches the middle
+    gsap.to(".pinned-text", {
+      scale: 1.2,
+      scrollTrigger: {
+        trigger: ".pin-container",
+        scroller: scroller,
+        start: "top 80%",
+        end: "center center",
+        scrub: 1,
       }
-    );
+    });
+
+    // ANIMATION 2: Pin title, hold, then fade out
+    const pinnedTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".pin-container",
+        scroller: scroller,
+        start: "center center",
+        end: "center+=70 center",
+        scrub: 1,
+        pin: ".pin-container",
+        pinSpacing: false,
+        anticipatePin: 1,
+      }
+    });
+
+    pinnedTimeline
+      .to(".pinned-text", {
+        opacity: 0,
+        duration: 0.5,
+      });
+
+    // ANIMATION 3: Smooth sequential step animations
+    const stepContainers = containerRef.current?.querySelectorAll('.step-container') || [];
+
+    stepContainers.forEach((step, index) => {
+      const isLast = index === stepContainers.length - 1;
+      
+      // Each step gets its own scroll section with smoother transitions
+      const stepTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: step,
+          scroller: scroller,
+          start: "center center",
+          end: isLast ? "center+=600 center" : "center+=400 center", // Longer duration for smoother animation
+          scrub: 0.5, // Add slight smoothing to scrub
+          pin: true,
+          pinSpacing: false,
+          id: `step-${index + 1}`,
+          // Use relative positioning and rely on CSS flex centering instead of fixed positioning
+          onStart: () => {
+            gsap.set(step, {
+              position: "relative",
+              top: "auto",
+              left: "auto",
+              transform: "none",
+              width: "100%",
+              height: "auto",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            });
+          }
+        }
+      });
+
+      // Smoother animation sequence
+      stepTimeline
+        // Fade in phase - using autoAlpha for flicker-free fade and smoother easing
+        .fromTo(step, 
+          { 
+            autoAlpha: 0, 
+            y: 60, 
+            scale: 0.95,
+            rotationX: 10 // Subtle 3D effect
+          }, 
+          { 
+            autoAlpha: 1, 
+            y: 0, 
+            scale: 1,
+            rotationX: 0,
+            duration: 0.4, // Longer fade in
+            ease: "power2.out"
+          }
+        )
+        // Hold phase - smooth and stable
+        .to(step, {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          rotationX: 0,
+          duration: 0.3, // Always 0.3 duration for hold
+          ease: "none"
+        });
+
+      // Smooth fade out for all steps with longer duration and smoother easing
+      stepTimeline.to(step, {
+        autoAlpha: 0,
+        y: -30, // Less dramatic movement
+        scale: 0.98, // Subtle scale change
+        rotationX: -5, // Subtle 3D exit
+        duration: 0.8,
+        ease: "power2.inOut"
+      });
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   return (
-    <section className="how-it-works" id='how-it-works' >
+    <section className="how-it-works" id="how-it-works" ref={containerRef}>
 
-      <div className="section-title">
-        <h2>How VeriTrust Works</h2>
+      {/* Pin container */}
+      <div className="pin-container">
+        <div className="pinned-text" ref={h2Ref}>How VeriTrust Works</div>
       </div>
 
+      {/* Steps container - increased height for sequential animations */}
       <div className="steps-container">
         {steps.map((step, index) => (
-          <div key={index} className="step-container">
+          <div key={index} className="step-container" data-step={index + 1}>
             <div className="step-content">
               <div className="step-left">
                 <div className="step-icon">{step.icon}</div>
                 <h3 className="step-title">{step.title}</h3>
               </div>
               <div className="step-right">
-                <ScrollReveal
-                  baseOpacity={0}
-                  enableBlur={true}
-                  blurStrength={10}
-                  className='step-description'>{step.description}</ScrollReveal>
+                <div className="step-description">
+                  {step.description}
+                </div>
               </div>
             </div>
             <div className="step-number">{String(index + 1).padStart(2, '0')}</div>
           </div>
         ))}
       </div>
+
+      {/* Spacer to prevent next section overlap */}
+      <div className="section-spacer"></div>
     </section>
   );
 };

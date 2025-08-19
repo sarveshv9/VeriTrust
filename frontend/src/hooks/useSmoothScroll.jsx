@@ -41,8 +41,8 @@ const useSmoothScroll = () => {
 
     const settings = getOptimalSettings();
 
-    // Kill any existing ScrollTriggers and ScrollSmoother instances
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    // Don't kill existing ScrollTriggers - let components manage their own
+    // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     ScrollSmoother.get()?.kill();
 
     // Create optimized ScrollSmoother instance
@@ -92,13 +92,17 @@ const useSmoothScroll = () => {
 
     window.addEventListener('resize', handleResize, { passive: true });
 
-    ScrollTrigger.refresh();
+    // Wait a bit for components to initialize their ScrollTriggers
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
 
     return () => {
       clearTimeout(resizeTimeout);
       window.removeEventListener('resize', handleResize);
       smoother?.kill();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Don't kill all ScrollTriggers here - let components clean up their own
+      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 };

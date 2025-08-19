@@ -13,42 +13,59 @@
   pointer-events: none;
 }
 
-.section-title {
-  position: sticky;
-  top: 0;
-  height: 80vh;
+/* Pin container */
+.pin-container {
+  height: 60vh;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
-  background: transparent;
-
 }
 
-.section-title h2 {
-  font-family: "GeneralSans-Semibold", system-ui, sans-serif;
+.pinned-text {
   font-size: 7.5rem;
   font-weight: 1000;
   line-height: 1.1;
-  color: #f1f5f9 ;
-  margin-bottom: 24px;
+  color: #f1f5f9;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 10;
+  font-family: "GeneralSans-Semibold", system-ui, sans-serif;
   letter-spacing: -2px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  will-change: transform, opacity;
+  transform-origin: center center;
 }
 
+/* Steps container - simplified approach */
 .steps-container {
   position: relative;
   z-index: 3;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .step-container {
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   padding: 0 5%;
-  height: 740px;
+  height: auto;
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  will-change: transform, opacity, rotateX;
+  /* Ensure proper centering when pinned */
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Add perspective for 3D effects */
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 .step-content {
@@ -58,16 +75,9 @@
   align-items: center;
   max-width: 1200px;
   width: 100%;
-  height: 100%;
   padding: 0 2rem;
-  height: 400px;
-}
-
-/* Ensure first step is always visible by default */
-.step-container:first-child .step-left,
-.step-container:first-child .step-right {
-  opacity: 1 !important;
-  transform: translateY(0) translateX(0) !important;
+  /* Add smooth transitions for any hover effects */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .step-left {
@@ -75,23 +85,28 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  will-change: transform, opacity;
-  opacity: 1; /* Default visible */
+  will-change: transform, opacity, rotateX;
+  /* Add subtle animation readiness */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .step-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  will-change: transform, opacity;
-  opacity: 1; /* Default visible */
+  will-change: transform, opacity, rotateX;
+  /* Add subtle animation readiness */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .step-icon {
   font-size: 6rem;
   margin-bottom: 2rem;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-  animation: iconFloat 6s ease-in-out infinite;
+  animation: iconFloat 8s ease-in-out infinite; /* Slower, smoother float */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .step-title {
@@ -104,19 +119,21 @@
   background-clip: text;
   color: transparent;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .step-description {
- font-style: normal;
- line-height: 1.6;
- font-size: clamp(1.2rem, 2vw, 1.8rem);
- color: rgba(255, 255, 255, 0.9);
- margin: 0;
- text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
- max-width: 500px;
- text-align: left;
- padding-top: 160px;
- font-family: "GeneralSans-Extralight", system-ui, sans-serif;
+  font-style: normal;
+  line-height: 1.6;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  text-align: left;
+  font-family: "GeneralSans-Extralight", system-ui, sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .step-number {
@@ -130,7 +147,16 @@
   user-select: none;
 }
 
+/* Section spacer to prevent next section overlap */
+.section-spacer {
+  height: 50vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
 
+/* Smoother keyframe animations */
 @keyframes titleGlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -138,42 +164,38 @@
 }
 
 @keyframes iconFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% { 
+    transform: translateY(-8px) rotate(1deg);
+  }
+  50% { 
+    transform: translateY(-12px) rotate(2deg);
+  }
+  75% { 
+    transform: translateY(-8px) rotate(1deg);
+  }
 }
 
-/* Debug helper - shows component is loaded */
-.debug-visibility {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  background: rgba(0, 255, 0, 0.9);
-  color: black;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  z-index: 1000;
-  border-radius: 4px;
-  border: 2px solid #00ff00;
+/* Font faces */
+@font-face {
+  font-family: "GeneralSans-Extralight";
+  src: url("../assets/fonts/GeneralSans-Extralight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Ensure all text is visible */
-.step-left,
-.step-right {
-  color: white;
-  z-index: 10;
-  position: relative;
+@font-face {
+  font-family: "GeneralSans-Semibold";
+  src: url("/assets/fonts/GeneralSans-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-.step-title {
-  color: white !important;
-  -webkit-text-fill-color: transparent;
-}
-
-.step-description {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
+/* Mobile responsiveness */
 @media (max-width: 768px) {
   .step-content {
     grid-template-columns: 1fr;
@@ -201,8 +223,16 @@
     right: 10%;
   }
 
-  .progress-indicator {
-    right: 1rem;
+  .pinned-text {
+    font-size: 4rem;
+  }
+
+  .step-container {
+    height: 90vh;
+  }
+
+  .section-spacer {
+    height: 80vh;
   }
 }
 
@@ -214,41 +244,16 @@
   .step-icon {
     font-size: 3rem;
   }
-}
 
-@font-face {
-  font-family: "GeneralSans-Extralight";
-  src: url("../assets/fonts/GeneralSans-Extralight.otf") format("opentype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
+  .pinned-text {
+    font-size: 3rem;
+  }
 
-@font-face {
-  font-family: "GeneralSans-Semibold";
-  src: url("/assets/fonts/GeneralSans-Semibold.otf") format("opentype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
+  .step-container {
+    height: 80vh;
+  }
 
-.scroll-reveal {
-  margin: 20px 0;
-}
-
-.scroll-reveal-text {
- font-style: normal;
- line-height: 1.6;
- font-size: clamp(1.2rem, 2vw, 1.8rem);
- color: rgba(255, 255, 255, 0.9);
- margin: 0;
- text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
- max-width: 500px;
- text-align: left;
- padding-top: 160px;
- font-family: "GeneralSans-Extralight", system-ui, sans-serif
-}
-
-.word {
-  display: inline-block;
+  .section-spacer {
+    height: 60vh;
+  }
 }

@@ -1,57 +1,51 @@
-import React from 'react';
-import { Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
+import SparkleButton from '../assets/SparkleButton.jsx'
 
 const Hero = ({ onSearchGig }) => {
-  const handleTagClick = (tag) => {
-    if (onSearchGig) {
-      onSearchGig(tag);
-    }
-  };
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const searchInput = e.target.querySelector('.search-input');
-    if (searchInput.value.trim() && onSearchGig) {
-      onSearchGig(searchInput.value.trim());
+  useEffect(() => {
+    setIsLoaded(true);
+    
+    const handleMouseMove = (e) => {
+      const rect = e.currentTarget?.getBoundingClientRect();
+      if (rect) {
+        setMousePosition({
+          x: (e.clientX - rect.left) / rect.width,
+          y: (e.clientY - rect.top) / rect.height
+        });
+      }
+    };
+
+    const heroSection = document.getElementById('hero-section');
+    if (heroSection) {
+      heroSection.addEventListener('mousemove', handleMouseMove);
+      return () => heroSection.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, []);
+
+  const handleSubmit = () => {
+    if (onSearchGig) {
+      onSearchGig('get-started');
     }
   };
 
   return (
-    <section className="hero" id="home">
-      <div className="hero-bg" />
+    <section id="hero-section" className="hero">
+      <div className="hero-bg"></div>
       <div className="hero-content">
-        <h1 className="hero-title">
-          Find the perfect freelance services for your business
+        <h1 className={`hero-title ${isLoaded ? 'loaded' : ''}`}>
+          Reputation You Own. Trust You Earn.
         </h1>
+
         <p className="hero-subtitle">
-          Millions of people use VeriTrust to turn their ideas into reality.
+          Empowering trust in the future of work.
         </p>
-        <form className="search-form" onSubmit={handleSearchSubmit}>
-          <div className="search-container">
-            <Search className="search-icon" />
-            <input
-              className="search-input"
-              type="text"
-              placeholder="What service are you looking for?"
-              name="search"
-            />
-            <button className="search-btn" type="submit">
-              Search
-            </button>
-          </div>
-        </form>
-        <div className="popular-tags">
-          <span>Popular:</span>
-          {['Website Design', 'WordPress', 'Logo Design', 'AI Services'].map((tag) => (
-            <button
-              key={tag}
-              className="tag"
-              onClick={() => handleTagClick(tag)}
-            >
-              {tag}
-            </button>
-          ))}
+
+        <div className="submit-form">
+          <SparkleButton text="Submit Now" onClick={handleSubmit} />
         </div>
       </div>
     </section>
