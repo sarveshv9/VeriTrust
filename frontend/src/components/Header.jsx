@@ -157,9 +157,6 @@ const Header = ({ onSubmitReview }) => {
           </div>
           <div className="nav-placeholder"></div>
           <div className="header-actions">
-            <button className="submit-review-btn" onClick={onSubmitReview}>
-              Write a Review
-            </button>
           </div>
         </div>
       </header>

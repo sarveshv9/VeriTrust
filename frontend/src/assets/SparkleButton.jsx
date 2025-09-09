@@ -49,11 +49,13 @@ const SparkleButton = ({ text, onClick, type = "button" }) => (
         width: 100%;
         height: 100%;
         background-color: var(--black-700);
+        background: rgba(255, 255, 255, 0.08); /* translucent */
+        backdrop-filter: blur(12px) saturate(150%);
         border-radius: var(--border_radius);
-        box-shadow: inset 0 0.5px hsl(0, 0%, 100%),
-                    inset 0 -1px 2px 0 hsl(0, 0%, 0%),
-                    0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
-                    0 0 0 calc(var(--active, 0) * 0.375rem) rgba(255, 81, 0, 0.29);
+        box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.4);
         transition: all var(--transtion);
         z-index: 0;
       }
@@ -65,13 +67,10 @@ const SparkleButton = ({ text, onClick, type = "button" }) => (
         transform: translate(-50%, -50%);
         width: 100%;
         height: 100%;
-        background-image: 
-          radial-gradient(at 40% 20%, rgba(249, 115, 22, 0.35) 0px, transparent 60%),
-          radial-gradient(at 75% 80%, rgba(249, 115, 22, 0.25) 0px, transparent 70%),
-          radial-gradient(at 30% 60%, rgba(0, 0, 0, 0.35) 0px, transparent 65%),
-          radial-gradient(at 80% 40%, rgba(0, 0, 0, 0.25) 0px, transparent 70%);
-        background-position: top;
-        opacity: var(--active, 0);
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), transparent 70%),
+                    radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.3), transparent 80%);
+        backdrop-filter: blur(8px);
+        opacity: var(--active, 0.7);
         border-radius: var(--border_radius);
         transition: opacity var(--transtion);
         z-index: 2;
@@ -81,33 +80,6 @@ const SparkleButton = ({ text, onClick, type = "button" }) => (
       }
       .sparkle-btn:active {
         transform: scale(1);
-      }
-      .sparkle-btn .dots_border {
-        --size_border: calc(100% + 2px);
-        overflow: hidden;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: var(--size_border);
-        height: var(--size_border);
-        background-color: transparent;
-        border-radius: var(--border_radius);
-        z-index: -10;
-      }
-      .sparkle-btn .dots_border::before {
-        content: "";
-        position: absolute;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        transform-origin: left;
-        transform: rotate(0deg);
-        width: 100%;
-        height: 2rem;
-        background-color: white;
-        mask: linear-gradient(transparent 0%, white 120%);
-        animation: rotate 2s linear infinite;
       }
       @keyframes rotate { to { transform: rotate(360deg); } }
       .sparkle-btn .sparkle {
@@ -119,7 +91,7 @@ const SparkleButton = ({ text, onClick, type = "button" }) => (
         fill: currentColor;
         stroke: currentColor;
         transform-origin: center;
-        color: hsl(0, 0%, 100%);
+        color: hsl(25, 95%, 53%);
       }
       .sparkle-btn:is(:hover, :focus) .sparkle .path {
         animation: path 1.5s linear 0.5s infinite;

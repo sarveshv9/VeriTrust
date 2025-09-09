@@ -1,5 +1,6 @@
 import React from 'react';
 import useSmoothScroll from './hooks/useSmoothScroll';
+import useBackgroundScroll from './hooks/useBackgroundScroll';
 import { useGSAPScrollZoom } from './hooks/useGSAPScrollZoom';
 
 import Header from './components/Header';
@@ -12,6 +13,8 @@ import './styles/App.css';
 
 const App = () => {
   useSmoothScroll();
+  useBackgroundScroll(0.5);
+  
   const zoomRef = useGSAPScrollZoom({
     maxScale: 1.25,
     minScale: 1,

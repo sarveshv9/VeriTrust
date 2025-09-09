@@ -4,8 +4,6 @@ import '../styles/CTASection.css';
 const CTASection = ({ onWriteReview, onBrowseGigs }) => {
 
   return (
-    <div className="smooth-wrapper">
-      <div className="smooth-content">
         <section className="cta-section">
           <div className="cta-container">
             <div className="cta-content">
@@ -39,8 +37,6 @@ const CTASection = ({ onWriteReview, onBrowseGigs }) => {
             </div>
           </div>
         </section>
-      </div>
-    </div>
   );
 };
 
