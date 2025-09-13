@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+
 .header {
   background: transparent;
   position: relative;
@@ -49,14 +51,20 @@
 }
 
 .logo h1 {
-  font-family: "GeneralSans-Semibold", system-ui, sans-serif;
-  font-weight: 900;
+  font-family: "Honk", system-ui, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Honk doesn’t use 900, 400 works fine */
+  font-style: normal;
+  font-variation-settings:
+    "MORF" 25,
+    "SHLN" 60;
+
   line-height: 1.1;
   color: #f1f5f9;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 40px;
+  font-size: 52px;
   animation: titleGlow 3s ease-in-out infinite alternate;
 }
 
@@ -201,10 +209,15 @@
   height: auto;
   background-color: transparent;
   border-radius: 0;
-  
-  /* Add text logo styles */
-  font-family: "GeneralSans-Semibold", system-ui, sans-serif;
-  font-weight: 900;
+
+  font-family: "Honk", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "MORF" 20,
+    "SHLN" 70;
+
   font-size: 44px;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -306,3 +319,13 @@
     display: none;
   }
 }
+
+@font-face {
+  font-family: 'Oughter'; /* you can give it any name */
+  src: url("../assets/fonts/Oughter.otf") format('opentype'); 
+  font-weight: normal;   /* optional */
+  font-style: normal;    /* optional */
+}
+
+
+

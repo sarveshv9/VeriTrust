@@ -114,6 +114,13 @@ body {
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Oughter'; 
+  src: url("/assets/fonts/Oughter.otf") format('opentype'); 
+  font-weight: normal;   
+  font-style: normal;   
+}
+
 /* === Responsive Design === */
 @media (max-width: 1200px) {
   .container {
