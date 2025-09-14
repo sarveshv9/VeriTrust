@@ -25,60 +25,68 @@ const Header = ({ onSubmitReview }) => {
     setNavPortal(portalContainer);
   }, []);
 
-  // Matrix effect characters - combination of numbers and letters
-  const matrixChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;:,.<>?';
+  // Matrix effect characters - numbers only
+  const matrixChars = '0123456789';
 
-  // Matrix hover effect function
+  // Matrix hover effect function with fade in/out and left-to-right animation
   const applyMatrixEffect = (element) => {
     const originalText = element.textContent;
     const letters = originalText.split('');
     
     // Clear existing spans if any
     element.innerHTML = letters.map((char, index) => 
-      char === ' ' ? ' ' : `<span data-original="${char}" class="matrix-letter" style="display: inline-block; transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1);">${char}</span>`
+      char === ' ' ? ' ' : `<span data-original="${char}" class="matrix-letter" style="display: inline-block; transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1); color: #f1f5f9; opacity: 1;">${char}</span>`
     ).join('');
 
     const letterSpans = element.querySelectorAll('.matrix-letter');
 
     const handleMouseEnter = () => {
-      // First, create a wave effect
-      letterSpans.forEach((span, index) => {
-        setTimeout(() => {
-          span.style.transform = 'scale(1.2) translateY(-2px)';
-          span.style.textShadow = '0 0 8px rgba(0, 0, 0, 0.8)';
-        }, index * 50);
+      // First, fade out all letters instantly
+      letterSpans.forEach((span) => {
+        span.style.transition = 'none';
+        span.style.opacity = '0';
+        span.style.transform = 'scale(0.8) translateY(5px)';
       });
 
-      // Then start the matrix glitch effect
+      // Then create a wave effect from left to right with fade in
+      letterSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.style.transition = 'all 0.4s ease-out';
+          span.style.opacity = '1';
+          span.style.transform = 'scale(1.2) translateY(-2px)';
+          span.style.textShadow = '0 0 8px rgba(241, 245, 249, 0.8)';
+        }, index * 40); // Left-to-right wave progression
+      });
+
+      // Then start the matrix glitch effect from left to right
       letterSpans.forEach((span, index) => {
         const originalChar = span.getAttribute('data-original');
         if (originalChar !== ' ') {
           let glitchCount = 0;
-          const maxGlitches = Math.random() * 6 + 4; // More glitches for better effect
+          const maxGlitches = Math.random() * 6 + 4;
           let currentInterval;
           
-          // Staggered start for each letter
+          // Staggered start for each letter (left to right)
           setTimeout(() => {
             currentInterval = setInterval(() => {
               if (glitchCount < maxGlitches) {
-                // Multi-stage color transition during glitch
+                // Use only numbers during glitch
                 const randomChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
                 span.textContent = randomChar;
                 
-                // Color progression: black -> dark gray -> light gray -> black
-                const colorStage = glitchCount % 4;
-                const colors = ['#000000', '#333333', '#666666', '#999999'];
+                // Keep color consistent throughout animation
                 const scales = [0.8, 1.3, 0.9, 1.1];
                 const shadows = [
-                  '0 0 5px rgba(0, 0, 0, 0.9)',
-                  '0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.3)',
-                  '0 0 15px rgba(0, 0, 0, 0.5)',
-                  '0 0 8px rgba(0, 0, 0, 0.8)'
+                  '0 0 5px rgba(241, 245, 249, 0.9)',
+                  '0 0 10px rgba(241, 245, 249, 0.7), 0 0 20px rgba(241, 245, 249, 0.3)',
+                  '0 0 15px rgba(241, 245, 249, 0.5)',
+                  '0 0 8px rgba(241, 245, 249, 0.8)'
                 ];
                 
-                span.style.color = colors[colorStage];
-                span.style.transform = `scale(${scales[colorStage]}) translateY(-${Math.random() * 3}px) rotate(${(Math.random() - 0.5) * 10}deg)`;
-                span.style.textShadow = shadows[colorStage];
+                const scaleIndex = glitchCount % 4;
+                span.style.color = '#f1f5f9'; // Keep consistent color
+                span.style.transform = `scale(${scales[scaleIndex]}) translateY(-${Math.random() * 3}px) rotate(${(Math.random() - 0.5) * 10}deg)`;
+                span.style.textShadow = shadows[scaleIndex];
                 span.style.filter = `blur(${Math.random() * 0.5}px) brightness(${0.8 + Math.random() * 0.4})`;
                 
                 glitchCount++;
@@ -86,10 +94,11 @@ const Header = ({ onSubmitReview }) => {
                 // Smooth return to original
                 span.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 span.textContent = originalChar;
-                span.style.color = '#000000'; // Black color
+                span.style.color = '#f1f5f9'; // Consistent color
                 span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
-                span.style.textShadow = '0 0 3px rgba(0, 0, 0, 0.4)';
+                span.style.textShadow = '0 0 3px rgba(241, 245, 249, 0.4)';
                 span.style.filter = 'none';
+                span.style.opacity = '1';
                 
                 clearInterval(currentInterval);
                 
@@ -98,23 +107,35 @@ const Header = ({ onSubmitReview }) => {
                   span.style.transition = 'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 }, 300);
               }
-            }, 40 + Math.random() * 40); // Faster intervals for smoother effect
-          }, index * 80); // Staggered start
+            }, 40 + Math.random() * 40);
+          }, index * 40); // Left-to-right progression
         }
       });
     };
 
     const handleMouseLeave = () => {
-      // Smooth return animation on mouse leave
+      // Smooth fade out and return animation (left to right)
       letterSpans.forEach((span, index) => {
         setTimeout(() => {
-          span.style.transition = 'all 0.2s ease-out';
-          span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
-          span.style.textShadow = 'none';
-          span.style.filter = 'none';
-          span.style.color = ''; // Reset to CSS default
+          span.style.transition = 'all 0.3s ease-out';
+          span.style.opacity = '0';
+          span.style.transform = 'scale(0.8) translateY(5px)';
         }, index * 20);
       });
+
+      // Then fade back in to normal state
+      setTimeout(() => {
+        letterSpans.forEach((span, index) => {
+          setTimeout(() => {
+            span.style.transition = 'all 0.2s ease-out';
+            span.style.opacity = '1';
+            span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
+            span.style.textShadow = 'none';
+            span.style.filter = 'none';
+            span.style.color = '#f1f5f9';
+          }, index * 15);
+        });
+      }, letterSpans.length * 20 + 100);
     };
 
     element.addEventListener('mouseenter', handleMouseEnter);
@@ -200,7 +221,7 @@ const Header = ({ onSubmitReview }) => {
           currentScrollProgress = self.progress;
           
           if (!isHovered && self.progress > 0) {
-            const scaleValue = gsap.utils.interpolate(1, 0.7, self.progress); // Reduced scale for better appearance
+            const scaleValue = gsap.utils.interpolate(1, 0.7, self.progress);
             
             const scaleTl = gsap.timeline();
             
@@ -266,7 +287,6 @@ const Header = ({ onSubmitReview }) => {
               
               gsap.set(dots, { pointerEvents: 'auto' });
             } else {
-              // Explicitly set dots to be hidden when progress is below 0.6
               scaleTl.to(dots, {
                 opacity: 0,
                 y: 10,
@@ -331,7 +351,7 @@ const Header = ({ onSubmitReview }) => {
       const handleMouseLeave = () => {
         isHovered = false;
         if (currentScrollProgress > 0) {
-          const scaleValue = gsap.utils.interpolate(1, 0.7, currentScrollProgress); // Reduced scale for better appearance
+          const scaleValue = gsap.utils.interpolate(1, 0.7, currentScrollProgress);
           
           const compactTl = gsap.timeline();
           
@@ -385,7 +405,6 @@ const Header = ({ onSubmitReview }) => {
               duration: 0.3 
             }, 0.1);
           } else {
-            // Explicitly set dots to be hidden when progress is below 0.6
             compactTl.to(dots, { 
               opacity: 0, 
               y: 10, 
@@ -400,7 +419,6 @@ const Header = ({ onSubmitReview }) => {
       navContainer.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
-        // Clean up matrix effect listeners
         navLinkElements.forEach(link => {
           if (link._matrixCleanup) {
             link._matrixCleanup();

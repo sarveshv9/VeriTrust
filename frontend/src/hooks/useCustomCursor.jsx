@@ -13,8 +13,8 @@ const useCustomCursor = () => {
     
     if (cursorRef.current) {
       gsap.to(cursorRef.current, {
-        x: e.clientX,
-        y: e.clientY,
+        x: e.clientX - 10, // Consistent -10px offset for 20px cursor
+        y: e.clientY - 10, // Consistent -10px offset for 20px cursor
         duration: 0.1,
         ease: "power2.out"
       });
@@ -46,8 +46,9 @@ const useCustomCursor = () => {
   const onCursorEnter = useCallback(() => {
     setIsHovering(true);
     if (cursorRef.current) {
+      // Only scale, don't change position
       gsap.to(cursorRef.current, {
-        scale: 2,
+        scale: 1.2,
         duration: 0.3,
         ease: "back.out(1.7)"
       });
@@ -57,6 +58,7 @@ const useCustomCursor = () => {
   const onCursorLeave = useCallback(() => {
     setIsHovering(false);
     if (cursorRef.current) {
+      // Only scale back, don't change position
       gsap.to(cursorRef.current, {
         scale: 1,
         duration: 0.3,
@@ -71,8 +73,11 @@ const useCustomCursor = () => {
     
     // Set initial position and visibility
     if (cursorRef.current) {
-      cursorRef.current.style.transform = `translate(${mousePos.current.x}px, ${mousePos.current.y}px) translate(-50%, -50%)`;
-      cursorRef.current.style.opacity = '1';
+      gsap.set(cursorRef.current, {
+        x: mousePos.current.x - 10, // Consistent offset
+        y: mousePos.current.y - 10, // Consistent offset
+        opacity: 1
+      });
     }
     
     // Add event listeners
@@ -82,7 +87,7 @@ const useCustomCursor = () => {
 
     // Add hover listeners to interactive elements
     const addHoverListeners = () => {
-      const interactiveElements = document.querySelectorAll('button, a, [data-cursor-hover]');
+      const interactiveElements = document.querySelectorAll('button, a, [data-cursor-hover], input[type="submit"], [role="button"], .clickable');
       interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', onCursorEnter);
         el.addEventListener('mouseleave', onCursorLeave);
@@ -102,7 +107,7 @@ const useCustomCursor = () => {
       
       observer.disconnect();
 
-      const interactiveElements = document.querySelectorAll('button, a, [data-cursor-hover]');
+      const interactiveElements = document.querySelectorAll('button, a, [data-cursor-hover], input[type="submit"], [role="button"], .clickable');
       interactiveElements.forEach(el => {
         el.removeEventListener('mouseenter', onCursorEnter);
         el.removeEventListener('mouseleave', onCursorLeave);
