@@ -25,6 +25,108 @@ const Header = ({ onSubmitReview }) => {
     setNavPortal(portalContainer);
   }, []);
 
+  // Matrix effect characters - combination of numbers and letters
+  const matrixChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+  // Matrix hover effect function
+  const applyMatrixEffect = (element) => {
+    const originalText = element.textContent;
+    const letters = originalText.split('');
+    
+    // Clear existing spans if any
+    element.innerHTML = letters.map((char, index) => 
+      char === ' ' ? ' ' : `<span data-original="${char}" class="matrix-letter" style="display: inline-block; transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1);">${char}</span>`
+    ).join('');
+
+    const letterSpans = element.querySelectorAll('.matrix-letter');
+
+    const handleMouseEnter = () => {
+      // First, create a wave effect
+      letterSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.style.transform = 'scale(1.2) translateY(-2px)';
+          span.style.textShadow = '0 0 8px rgba(0, 0, 0, 0.8)';
+        }, index * 50);
+      });
+
+      // Then start the matrix glitch effect
+      letterSpans.forEach((span, index) => {
+        const originalChar = span.getAttribute('data-original');
+        if (originalChar !== ' ') {
+          let glitchCount = 0;
+          const maxGlitches = Math.random() * 6 + 4; // More glitches for better effect
+          let currentInterval;
+          
+          // Staggered start for each letter
+          setTimeout(() => {
+            currentInterval = setInterval(() => {
+              if (glitchCount < maxGlitches) {
+                // Multi-stage color transition during glitch
+                const randomChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                span.textContent = randomChar;
+                
+                // Color progression: black -> dark gray -> light gray -> black
+                const colorStage = glitchCount % 4;
+                const colors = ['#000000', '#333333', '#666666', '#999999'];
+                const scales = [0.8, 1.3, 0.9, 1.1];
+                const shadows = [
+                  '0 0 5px rgba(0, 0, 0, 0.9)',
+                  '0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.3)',
+                  '0 0 15px rgba(0, 0, 0, 0.5)',
+                  '0 0 8px rgba(0, 0, 0, 0.8)'
+                ];
+                
+                span.style.color = colors[colorStage];
+                span.style.transform = `scale(${scales[colorStage]}) translateY(-${Math.random() * 3}px) rotate(${(Math.random() - 0.5) * 10}deg)`;
+                span.style.textShadow = shadows[colorStage];
+                span.style.filter = `blur(${Math.random() * 0.5}px) brightness(${0.8 + Math.random() * 0.4})`;
+                
+                glitchCount++;
+              } else {
+                // Smooth return to original
+                span.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                span.textContent = originalChar;
+                span.style.color = '#000000'; // Black color
+                span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
+                span.style.textShadow = '0 0 3px rgba(0, 0, 0, 0.4)';
+                span.style.filter = 'none';
+                
+                clearInterval(currentInterval);
+                
+                // Reset transition after animation
+                setTimeout(() => {
+                  span.style.transition = 'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                }, 300);
+              }
+            }, 40 + Math.random() * 40); // Faster intervals for smoother effect
+          }, index * 80); // Staggered start
+        }
+      });
+    };
+
+    const handleMouseLeave = () => {
+      // Smooth return animation on mouse leave
+      letterSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.style.transition = 'all 0.2s ease-out';
+          span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
+          span.style.textShadow = 'none';
+          span.style.filter = 'none';
+          span.style.color = ''; // Reset to CSS default
+        }, index * 20);
+      });
+    };
+
+    element.addEventListener('mouseenter', handleMouseEnter);
+    element.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Store the cleanup function
+    element._matrixCleanup = () => {
+      element.removeEventListener('mouseenter', handleMouseEnter);
+      element.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  };
+
   useGSAP(() => {
     if (!navPortal || !navContainerRef.current) {
       console.log('Missing portal or nav container');
@@ -77,6 +179,11 @@ const Header = ({ onSubmitReview }) => {
       scale: 1,
       transformOrigin: "center center",
       force3D: true
+    });
+
+    // Apply matrix effect to each nav link
+    navLinkElements.forEach(link => {
+      applyMatrixEffect(link);
     });
     
     gsap.delayedCall(0.1, () => {
@@ -293,6 +400,13 @@ const Header = ({ onSubmitReview }) => {
       navContainer.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
+        // Clean up matrix effect listeners
+        navLinkElements.forEach(link => {
+          if (link._matrixCleanup) {
+            link._matrixCleanup();
+          }
+        });
+        
         navContainer.removeEventListener('mouseenter', handleMouseEnter);
         navContainer.removeEventListener('mouseleave', handleMouseLeave);
         scrollTriggerInstance.kill();
