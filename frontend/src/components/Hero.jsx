@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import '../styles/Hero.css';
-import SparkleButton from '../assets/SparkleButton';
+import SparkleButton from './elements/SparkleButton';
 
 const Hero = React.memo(({ onSearchGig }) => {
   const heroRef = useRef(null);

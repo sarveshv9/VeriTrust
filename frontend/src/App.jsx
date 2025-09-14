@@ -8,6 +8,7 @@ import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import CustomCursor from './components/elements/CustomCursor';
 
 import './styles/App.css';
 
@@ -35,6 +36,7 @@ const App = () => {
           <Footer />
         </div>
       </div>
+      <CustomCursor />
     </>
   );
 };
