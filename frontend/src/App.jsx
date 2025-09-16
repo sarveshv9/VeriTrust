@@ -1,6 +1,6 @@
 import React from 'react';
 import useSmoothScroll from './hooks/useSmoothScroll';
-import useBackgroundScroll from './hooks/useBackgroundScroll';
+// import useBackgroundScroll from './hooks/useBackgroundScroll'; // Removed this line
 import { useGSAPScrollZoom } from './hooks/useGSAPScrollZoom';
 
 import Header from './components/Header';
@@ -14,7 +14,7 @@ import './styles/App.css';
 
 const App = () => {
   useSmoothScroll();
-  useBackgroundScroll(0.5);
+  // useBackgroundScroll(0.2); // Removed this line to disable parallax
   
   const zoomRef = useGSAPScrollZoom({
     maxScale: 1.25,
@@ -29,8 +29,11 @@ const App = () => {
       <div id="nav-portal"></div>     
       <div className="smooth-wrapper">
         <div className="smooth-content">
-          <Header />
-          <Hero />
+          {/* New container for Header and Hero */}
+          <div className="hero-background-container">
+            <Header />
+            <Hero />
+          </div>
           <HowItWorks />
           <CTASection />
           <Footer />

@@ -1,7 +1,7 @@
 // hooks/useBackgroundScroll.js
 import { useEffect } from 'react';
 
-const useBackgroundScroll = (speed = 0.5) => {
+const useBackgroundScroll = (speed = 0.2) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.pageYOffset;

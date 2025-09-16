@@ -116,7 +116,9 @@ const Hero = React.memo(({ onSearchGig }) => {
       <div className="hero-bg" aria-hidden="true"></div>
       <div className="hero-content">
         <h1 ref={titleRef} className="hero-title">
-          Reputation You Own. Trust You Earn.
+          Reputation You Own.
+          <br />
+          Trust You Earn.
         </h1>
 
         <p ref={subtitleRef} className="hero-subtitle">
