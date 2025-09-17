@@ -4,9 +4,10 @@ import '../styles/Header.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'; // 1. Import ScrollToPlugin
 import logo from '../assets/VT_logo.png';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin); // 2. Register the plugin
 
 const Header = ({ onSubmitReview }) => {
   const navContainerRef = useRef(null);
@@ -432,14 +433,13 @@ const Header = ({ onSubmitReview }) => {
     });
   }, [navPortal]);
 
+  // 3. Update the scrollToSection function
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+    gsap.to(window, {
+      duration: 1, // Control the speed of the scroll
+      scrollTo: `#${sectionId}`,
+      ease: 'power2.inOut',
+    });
   };
 
   const NavigationComponent = () => (
