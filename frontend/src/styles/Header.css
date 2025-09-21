@@ -95,20 +95,20 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Navigation container - GSAP will handle scaling */
+/* Navigation container - Corrected */
 .nav-container {
   position: fixed;
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  width: fit-content;
-  max-width: 340px;
+  width: fit-content; /* Let container size to its children */
+  /* max-width removed to allow container to expand */
   background: rgba(255, 255, 255, 0.01);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(59, 130, 246, 0.12);
   border-radius: 50px;
-  padding: 8px 6px; /* NEW - Reduced padding for smaller condensed state */
+  padding: 8px; /* Simplified padding for a uniform look */
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.08),
     0 0 32px rgba(59, 130, 246, 0.04),
@@ -117,7 +117,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: none !important;
   opacity: 1 !important;
   /* Removed CSS transition to prevent conflicts with GSAP */
 }
@@ -130,7 +129,6 @@
   justify-content: center;
   width: 100%;
   min-height: 44px;
-  animation: none !important;
   opacity: 1 !important;
   transform: none !important;
 }
@@ -146,20 +144,22 @@
   width: 100%;
 }
 
-/* Navigation links */
+/* Navigation links - Corrected */
 .nav-link {
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
   position: relative;
-  padding: 12px 20px;
-  border-radius: 16px;
+  /* width removed to allow links to size to content */
+  padding: 10px 20px;
+  border-radius: 50px; /* Fully rounded to match the container */
   cursor: pointer;
   font-family: "Ranade-Light", system-ui, sans-serif;
   border: 1px solid transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  text-align: center;
 }
 
 .nav-link::before {
@@ -169,7 +169,7 @@
   background: rgba(4, 23, 53, 0.01);
   backdrop-filter: blur(50px);
   border: 1px solid rgba(59, 130, 246, 0.15);
-  border-radius: 14px;
+  border-radius: 50px; /* Matched the link's border-radius */
   opacity: 0;
   box-shadow:
     0 4px 16px rgba(59, 130, 246, 0.1),
@@ -196,10 +196,9 @@
   transform: translate(-50%, -50%);
   align-items: center;
   justify-content: center;
-  padding: 0 2px; /* NEW - Reduced padding for smaller condensed state */
+  padding: 0 2px;
   opacity: 0;
   pointer-events: none;
-  /* Removed CSS transition to prevent conflicts with GSAP */
 }
 
 /* Changed from dot to Veritrust text logo */
@@ -249,7 +248,7 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* Keep your existing header-actions styles */
+/* Header actions */
 .header-actions {
   display: flex;
   align-items: center;
@@ -276,7 +275,7 @@
 .nav-link:focus {
   outline: 2px solid rgba(59, 130, 246, 0.8);
   outline-offset: 2px;
-  border-radius: 16px;
+  border-radius: 50px; /* Matched the link's border-radius */
 }
 
 /* Responsive design */
@@ -292,7 +291,6 @@
     transform: none;
     order: 2;
     opacity: 1 !important;
-    animation: none !important;
     top: auto;
     left: auto;
   }
@@ -326,6 +324,3 @@
   font-weight: normal;   /* optional */
   font-style: normal;    /* optional */
 }
-
-
-

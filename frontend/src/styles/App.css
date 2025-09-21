@@ -79,10 +79,15 @@ body {
 */
 
 /* === Section Backgrounds === */
-.how-it-works,
+.how-it-works {
+ background-color: #000000;
+ position: relative;
+ z-index: 1;
+}
+
 .cta-section,
 .footer {
- background-color: #000000;
+ background: transparent;
  position: relative;
  z-index: 1;
 }
@@ -101,6 +106,12 @@ body {
  padding: 0 24px;
  width: 100%;
  max-width: 1400px;
+}
+
+.shared-background-container {
+  position: relative;
+  min-height: 100vh; 
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
