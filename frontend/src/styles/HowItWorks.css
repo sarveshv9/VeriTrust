@@ -39,7 +39,6 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   will-change: transform, opacity;
   transform-origin: center center;
-  margin-bottom: 20vh;
 }
 
 /* Steps container - simplified approach */
@@ -49,6 +48,8 @@
   height: auto;
   display: flex;
   flex-direction: column;
+  padding-top: 30vh; 
+
 }
 
 .step-container {
@@ -69,7 +70,7 @@
 }
 
 .step-container:last-child {
-  margin-bottom: 0;
+  margin-bottom: 30vh;
 }
 
 .step-content {

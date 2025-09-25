@@ -42,7 +42,7 @@ const HowItWorks = () => {
         style={{ 
           display: 'inline-block', 
           marginRight: '0.25em',
-          willChange: 'transform, opacity' // GPU acceleration hint
+          willChange: 'transform, opacity'
         }}
       >
         {word}
@@ -53,7 +53,6 @@ const HowItWorks = () => {
   useEffect(() => {
     if (!containerRef.current || !h2Ref.current) return;
 
-    // CRITICAL: Kill only HowItWorks-related ScrollTriggers
     ScrollTrigger.getAll().forEach(trigger => {
       if (trigger.vars?.id?.includes('step-') || 
           trigger.vars?.id === 'title-scale' || 
@@ -62,12 +61,9 @@ const HowItWorks = () => {
       }
     });
     
-    // Small delay to ensure cleanup is complete
     const timeoutId = setTimeout(() => {
-      // Get the smooth scroller reference
       const scroller = document.querySelector('.smooth-wrapper') || window;
 
-      // Pre-cache all elements to avoid repeated queries
       const pinnedText = document.querySelector('.pinned-text');
       const titleWords = document.querySelectorAll('.title-word');
       const stepContainers = containerRef.current?.querySelectorAll('.step-container') || [];
@@ -75,7 +71,6 @@ const HowItWorks = () => {
       const stepNumbers = document.querySelectorAll('.step-number');
       const descriptionWords = document.querySelectorAll('.step-description .word-span');
 
-      // OPTIMIZATION: Use scoped GPU-accelerated properties
       const setGPUOptimizedStyles = (elements, scope = '.how-it-works') => {
         elements.forEach(el => {
           if (el && el.closest(scope)) {
@@ -86,17 +81,15 @@ const HowItWorks = () => {
         });
       };
 
-      // Apply GPU optimizations only to HowItWorks elements
       setGPUOptimizedStyles([pinnedText, ...titleWords, ...stepContainers, ...stepIcons, ...stepNumbers, ...descriptionWords], '.how-it-works');
 
-      // Set initial states using transform3d for GPU acceleration
+      // Note: The 'marker' property is for ScrollTrigger, not gsap.set(), so it was removed from here.
       gsap.set(pinnedText, {
         scale: 0.5,
         opacity: 0,
         force3D: true
       });
 
-      // Split the main title into words and animate them in - OPTIMIZED
       const mainTitle = h2Ref.current;
       if (mainTitle) {
         const titleText = mainTitle.textContent;
@@ -105,10 +98,8 @@ const HowItWorks = () => {
         ).join('');
         mainTitle.innerHTML = titleWords;
 
-        // Re-cache title words after DOM update
         const newTitleWords = mainTitle.querySelectorAll('.title-word');
 
-        // Set initial state for title words with GPU acceleration
         gsap.set(newTitleWords, {
           y: 30,
           opacity: 0,
@@ -116,7 +107,6 @@ const HowItWorks = () => {
           force3D: true
         });
 
-        // Animate title words in on page load - OPTIMIZED
         gsap.to(newTitleWords, {
           y: 0,
           opacity: 1,
@@ -125,47 +115,22 @@ const HowItWorks = () => {
           ease: "power2.out",
           delay: 0.3,
           stagger: 0.1,
-          force3D: true
+          force3D: true,
         });
       }
 
-      // Removed initial hidden state for stepContainers as per instructions
-
-      // Set initial states for step elements with GPU acceleration
-      gsap.set(descriptionWords, {
-        y: 20,
-        opacity: 0,
-        force3D: true
-      });
-
-      // Set initial state for step titles - simple approach
+      gsap.set(descriptionWords, { y: 20, opacity: 0, force3D: true });
       const stepTitleWords = document.querySelectorAll('.step-title .word-span');
-      gsap.set(stepTitleWords, {
-        opacity: 0,
-        force3D: true
-      });
+      gsap.set(stepTitleWords, { opacity: 0, force3D: true });
+      gsap.set(stepIcons, { scale: 0, rotation: -180, opacity: 0, force3D: true });
+      gsap.set(stepNumbers, { scale: 0, opacity: 0, rotation: 90, force3D: true });
 
-      gsap.set(stepIcons, {
-        scale: 0,
-        rotation: -180,
-        opacity: 0,
-        force3D: true
-      });
-
-      gsap.set(stepNumbers, {
-        scale: 0,
-        opacity: 0,
-        rotation: 90,
-        force3D: true
-      });
-
-      // ANIMATION 1: Scale up title - OPTIMIZED with reduced scrub sensitivity
       ScrollTrigger.create({
         trigger: ".pin-container",
         scroller: scroller,
         start: "top 80%",
         end: "center center",
-        scrub: 0.5, // Reduced from 1 for smoother performance
+        scrub: 0.5,
         animation: gsap.to(pinnedText, {
           scale: 1.2,
           opacity: 1,
@@ -173,144 +138,74 @@ const HowItWorks = () => {
           force3D: true
         }),
         id: "title-scale",
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        markers: false // <-- Added marker here
       });
 
-      // ANIMATION 2: Pin title and fade out - OPTIMIZED
       ScrollTrigger.create({
         trigger: ".pin-container",
         scroller: scroller,
-        start: "center-=70 center",
+        start: "center center",
         end: "center center",
-        scrub: 0.3, // Reduced scrub for smoother performance
+        scrub: 0.3,
         pin: ".pin-container",
         pinSpacing: false,
         anticipatePin: 1,
         id: "pinned-text",
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        markers: false // <-- Added marker here
       });
 
-      // ANIMATION 4: Step content animations - simplified
       stepContainers.forEach((step, index) => {
         const isLast = index === stepContainers.length - 1;
         
-        // Get text elements for this specific step (more efficient)
         const stepDescriptionWords = step.querySelectorAll('.step-description .word-span');
-        const stepTitleWordsForStep = step.querySelectorAll('.step-title .word-span');
+        const stepTitle = step.querySelector('.step-title');
         const stepIcon = step.querySelector('.step-icon');
         const stepNumber = step.querySelector('.step-number');
-        const stepTitle = step.querySelector('.step-title');
 
-        // Set initial state for stepTitle as hidden with y:20 and opacity:0
-        gsap.set(stepTitle, {
-          y: 20,
-          opacity: 0,
-          force3D: true
-        });
+        gsap.set(stepTitle, { y: 20, opacity: 0, force3D: true });
         
-        // Create optimized timeline with reduced complexity
         const stepTimeline = gsap.timeline();
         
-        // Removed .fromTo block that animates main container fade in as per instructions
-        
-        // Icon animation - simplified
         stepTimeline
-          .to(stepIcon, {
-            scale: 1,
-            rotation: 0,
-            opacity: 1,
-            duration: 0.3, // Faster
-            ease: "back.out(1.4)", // Less aggressive easing
-            force3D: true
-          }, "-=0.2")
-          .to(stepTitle, {
-            y: 0,
-            opacity: 1,
-            duration: 0.4,
-            ease: "power2.out",
-            force3D: true
-          }, "-=0.1")
-          .to(stepDescriptionWords, {
-            y: 0,
-            opacity: 1,
-            duration: 0.4, // Faster
-            stagger: 0.02, // Reduced stagger
-            ease: "power2.out",
-            force3D: true
-          }, "-=0.1")
-          // Hold phase - shorter
+          .to(stepIcon, { scale: 1, rotation: 0, opacity: 1, duration: 0.3, ease: "back.out(1.4)", force3D: true }, "-=0.2")
+          .to(stepTitle, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", force3D: true }, "-=0.1")
+          .to(stepDescriptionWords, { y: 0, opacity: 1, duration: 0.4, stagger: 0.02, ease: "power2.out", force3D: true }, "-=0.1")
           .to({}, { duration: 0.2 })
-          // Fade out phase - simplified and faster
-          .to(stepTitle, {
-            y: -10,
-            opacity: 0,
-            duration: 0.25,
-            ease: "power2.inOut",
-            force3D: true
-          })
-          .to(stepDescriptionWords, {
-            y: -10, // Less movement
-            opacity: 0,
-            duration: 0.3, // Faster
-            stagger: 0.015, // Reduced stagger
-            ease: "power2.inOut",
-            force3D: true
-          })
-          .to([stepIcon, stepNumber], {
-            scale: 0,
-            opacity: 0,
-            rotation: 30, // Less rotation
-            duration: 0.25, // Faster
-            ease: "power2.inOut",
-            force3D: true
-          }, "-=0.25")
-          .to(step, {
-            autoAlpha: 0,
-            y: -20, // Less movement
-            scale: 0.99, // Less scaling
-            duration: 0.3, // Faster
-            ease: "power2.inOut",
-            force3D: true
-          }, "-=0.15");
+          .to(stepTitle, { y: -10, opacity: 0, duration: 0.25, ease: "power2.inOut", force3D: true })
+          .to(stepDescriptionWords, { y: -10, opacity: 0, duration: 0.3, stagger: 0.015, ease: "power2.inOut", force3D: true })
+          .to([stepIcon, stepNumber], { scale: 0, opacity: 0, rotation: 30, duration: 0.25, ease: "power2.inOut", force3D: true }, "-=0.25")
+          .to(step, { autoAlpha: 0, y: -20, scale: 0.99, duration: 0.3, ease: "power2.inOut", force3D: true }, "-=0.15");
 
-        // Optimized ScrollTrigger with better performance settings
         ScrollTrigger.create({
           trigger: step,
           scroller: scroller,
           start: "center center",
-          end: isLast ? "center+=900 center" : "center+=800 center", // Updated distances for longer pin duration
-          scrub: 0.3, // Much lower scrub value for smoother performance
+          end: isLast ? "center+=900 center" : "center+=800 center",
+          scrub: 0.3,
           pin: true,
           pinSpacing: false,
           animation: stepTimeline,
           id: `step-${index + 1}`,
           invalidateOnRefresh: true,
-          fastScrollEnd: true, // GSAP optimization
+          fastScrollEnd: true,
+          markers: false, // <-- Added marker here
           onStart: () => {
-            // Minimal DOM manipulation - set styles once
-            gsap.set(step, {
-              position: "relative",
-              display: "flex",
-              force3D: true
-            });
+            gsap.set(step, { position: "relative", display: "flex", force3D: true });
           },
           onRefresh: () => {
-            // Reset force3D on refresh to prevent issues
-            gsap.set([step, stepIcon, stepNumber, ...stepDescriptionWords], {
-              force3D: true
-            });
+            gsap.set([step, stepIcon, stepNumber, ...stepDescriptionWords], { force3D: true });
           }
         });
       });
 
-      // CRITICAL: Refresh only this component's ScrollTriggers
       ScrollTrigger.refresh();
       
-    }, 100); // Slightly longer delay for better cleanup
+    }, 100);
 
     return () => {
       clearTimeout(timeoutId);
-      // Cleanup only HowItWorks-related triggers
       ScrollTrigger.getAll().forEach(trigger => {
         if (trigger.vars?.id?.includes('step-') || 
             trigger.vars?.id === 'title-scale' || 
@@ -323,7 +218,6 @@ const HowItWorks = () => {
 
   return (
     <section className="how-it-works" id="how-it-works" ref={containerRef}>
-      {/* Pin container with GPU optimization hint */}
       <div className="pin-container" style={{ willChange: 'transform' }}>
         <div 
           className="pinned-text" 
@@ -336,8 +230,6 @@ const HowItWorks = () => {
           How VeriTrust Works
         </div>
       </div>
-
-      {/* Steps container with performance hints */}
       <div className="steps-container" style={{ willChange: 'transform' }}>
         {steps.map((step, index) => (
           <div 
@@ -382,8 +274,6 @@ const HowItWorks = () => {
           </div>
         ))}
       </div>
-
-      {/* Spacer to prevent next section overlap */}
       <div className="section-spacer"></div>
     </section>
   );
