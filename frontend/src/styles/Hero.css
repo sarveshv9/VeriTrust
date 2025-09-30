@@ -24,6 +24,7 @@
   z-index: 3;
   width: 100%;
   padding: 0 2rem;
+  height: 60vh;
 }
 
 .hero-title {
@@ -56,10 +57,10 @@
 
 .hero-subtitle {
   font-family: "Söhne", system-ui, sans-serif;
-  font-size: 1.4rem;
-  font-weight: 400;
+  font-size: 1.1rem;
+  font-weight: 500;
   line-height: 1.625;
-  letter-spacing: 0em;
+  letter-spacing: 0.05em;
   color: #f97316;
   margin-bottom: 3rem;
   max-width: 600px;
@@ -225,6 +226,35 @@
   color: #f97316;
   font-weight: 500;
   transition: all 0.3s ease-in-out;
+}
+
+/* --- Scroll Down Indicator --- */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #f97316; /* Use the same orange as the subtitle */
+  opacity: 0; /* Initial state for GSAP fade-in */
+  cursor: default;
+  user-select: none;
+}
+
+.scroll-indicator svg {
+  width: 20px;
+  height: 20px;
+}
+
+.scroll-indicator span {
+  font-family: "Söhne", system-ui, sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
 }
 
 /* Responsive Design */

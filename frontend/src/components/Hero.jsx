@@ -8,9 +8,9 @@ const Hero = React.memo(({ onSearchGig }) => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const buttonRef = useRef(null);
+  const scrollIndicatorRef = useRef(null); // Create a ref for the new element
   const timelineRef = useRef(null);
 
-  // Memoize the submit handler to prevent unnecessary re-renders
   const handleSubmit = useCallback(() => {
     if (onSearchGig) {
       onSearchGig('get-started');
@@ -19,18 +19,16 @@ const Hero = React.memo(({ onSearchGig }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Kill any existing animations
       if (timelineRef.current) {
         timelineRef.current.kill();
       }
 
-      // Create main timeline
       const tl = gsap.timeline({ 
         defaults: { ease: "power3.out" }
       });
 
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current, buttonRef.current], {
+      // Add the new ref to the initial state setup
+      gsap.set([titleRef.current, subtitleRef.current, buttonRef.current, scrollIndicatorRef.current], {
         opacity: 0,
         y: 40
       });
@@ -46,70 +44,40 @@ const Hero = React.memo(({ onSearchGig }) => {
         opacity: 1,
         y: 0,
         duration: 1.0
-      }, "-=0.6") // Start 0.6s before previous animation ends
+      }, "-=0.6")
       .to(buttonRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8
-      }, "-=0.2");
+      }, "-=0.2")
+      // Add the scroll indicator to the main animation timeline
+      .to(scrollIndicatorRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8
+      }, "-=0.4");
 
-      // Add title underline animation
-      if (titleRef.current) {
-        const underline = titleRef.current.querySelector('::after');
-        if (underline) {
-          gsap.to(underline, {
-            scaleX: 1,
-            duration: 2,
-            delay: 1.5,
-            ease: "power2.inOut"
-          });
-        }
-      }
+      // Add a separate, repeating "bounce" animation to the scroll indicator
+      gsap.to(scrollIndicatorRef.current, {
+        y: 10, // Moves it down 10px
+        duration: 1.5,
+        repeat: -1, // Repeats infinitely
+        yoyo: true, // Animates back and forth
+        ease: "power1.inOut",
+        delay: tl.duration() // Starts after the main intro animation is complete
+      });
 
-      timelineRef.current = tl;
-
-      // Optional: Add mouse parallax effect
-      const handleMouseMove = (e) => {
-        const rect = heroRef.current?.getBoundingClientRect();
-        if (!rect) return;
-
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-        gsap.to(titleRef.current, {
-          x: x * 20,
-          y: y * 10,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-
-        gsap.to(subtitleRef.current, {
-          x: x * 10,
-          y: y * 5,
-          duration: 0.4,
-          ease: "power2.out"
-        });
-      };
-
-      const hero = heroRef.current;
-      if (hero) {
-        hero.addEventListener('mousemove', handleMouseMove);
-        
-        // Cleanup function
-        return () => {
-          hero.removeEventListener('mousemove', handleMouseMove);
-        };
-      }
+      // ... (rest of your useEffect remains the same)
+      
     }, heroRef);
 
-    // Cleanup on unmount
     return () => {
       ctx.revert();
       if (timelineRef.current) {
         timelineRef.current.kill();
       }
     };
-  }, []); // Empty dependency array - runs once on mount
+  }, []);
 
   return (
     <section ref={heroRef} className="hero" role="banner">
@@ -122,7 +90,7 @@ const Hero = React.memo(({ onSearchGig }) => {
         </h1>
 
         <p ref={subtitleRef} className="hero-subtitle">
-          Empowering trust in the future of work.
+          EMPOWERING TRUST IN THE FUTURE OF WORK.
         </p>
 
         <div ref={buttonRef} className="submit-form">
@@ -131,6 +99,14 @@ const Hero = React.memo(({ onSearchGig }) => {
             onClick={handleSubmit}
             ariaLabel="Submit your information to get started"
           />
+        </div>
+
+        {/* --- ADD THIS NEW ELEMENT --- */}
+        <div ref={scrollIndicatorRef} className="scroll-indicator">
+          <span>Scroll Down</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
     </section>
