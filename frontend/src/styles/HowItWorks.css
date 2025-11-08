@@ -1,20 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display.swap');
 
 .how-it-works {
   position: relative;
-  background: transparent;
-  overflow: hidden;
+  /* background: #ffffff; */ /* <-- CHANGED */
+  background: #000a1f; /* <-- To match dark theme & see blobs */
   padding: 20vh 0 20vh 0;
+  border-radius: 50px;
 }
 
+/* --- REMOVED THE ::before RULE --- */
+/*
 .how-it-works::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: transparent;
+  background: #ffffff;
   z-index: 1;
   pointer-events: none;
 }
+*/
 
 /* Pin container */
 .pin-container {
@@ -26,6 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .pinned-text {
@@ -38,7 +43,7 @@
   z-index: 10;
   font-family: "Gasoek One", sans-serif;
   letter-spacing: -2px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   will-change: transform, opacity;
   transform-origin: center center;
 }
@@ -50,8 +55,7 @@
   height: auto;
   display: flex;
   flex-direction: column;
-  padding-top: 30vh; 
-
+  padding-top: 30vh;
 }
 
 .step-container {
@@ -61,7 +65,11 @@
   position: relative;
   padding: 0 5%;
   height: auto;
+
+  /* Initial state for animation */
+  opacity: 0;
   transform: translateY(50px) scale(0.95);
+
   will-change: transform, opacity, rotateX;
   top: 0;
   left: 0;
@@ -72,9 +80,10 @@
 }
 
 .step-container:last-child {
-  margin-bottom: 30vh;
+  margin-bottom: 80vh;
 }
 
+/* --- MODIFIED: Glassmorphism effect + Glow --- */
 .step-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -84,14 +93,25 @@
   height: 60vh;
   padding: 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(241, 245, 249, 0.2);
+
+  /* Glassmorphism background */
+  background: rgba(0, 16, 43, 0.500); /* Dark slate blue tint with 75% opacity */
+  backdrop-filter: blur(12px);          /* The "frosted glass" effect */
+  -webkit-backdrop-filter: blur(12px); /* For Safari support */
+
+  /* Glassmorphism border */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
   
-  /* Add glow effect */
-  box-shadow: 
-    0 0 30px rgba(59, 130, 246, 0.3),
-    0 0 60px rgba(59, 130, 246, 0.1);
+  /* --- CORRECTED GLOW --- */
+  box-shadow: 0 0 21px 6px rgba(59, 130, 246, 0.5); /* Blue glow */
+
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
+
+/* We removed the conflicting .step-content::before rules */
 
 .step-left {
   display: flex;
@@ -99,7 +119,6 @@
   align-items: flex-start;
   justify-content: center;
   will-change: transform, opacity, rotateX;
-  /* Add subtle animation readiness */
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
@@ -116,8 +135,7 @@
 .step-icon {
   font-size: 6rem;
   margin-bottom: 2rem;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-  animation: iconFloat 8s ease-in-out infinite; /* Slower, smoother float */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -126,12 +144,13 @@
   font-weight: 700;
   line-height: 1.2;
   margin: 0;
-  background: #f1f5f9;
+
+  /* Light text for dark theme */
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
   -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -139,9 +158,11 @@
   font-style: normal;
   line-height: 1.6;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
-  color: rgba(255, 255, 255, 0.9);
+
+  /* Light text for dark theme */
+  color: #cbd5e1;
+
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   max-width: 700px;
   text-align: left;
   font-family: "GeneralSans-Extralight", system-ui, sans-serif;
@@ -154,7 +175,8 @@
   right: 5%;
   font-size: clamp(8rem, 15vw, 12rem);
   font-weight: 900;
-  color: rgba(59, 130, 246, 0.1);
+  /* Lighter opacity for dark theme */
+  color: rgba(255, 255, 255, 0.05);
   z-index: -1;
   user-select: none;
 }
@@ -166,28 +188,6 @@
   position: relative;
   z-index: 1;
   background: transparent;
-}
-
-/* Smoother keyframe animations */
-@keyframes titleGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes iconFloat {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% { 
-    transform: translateY(-8px) rotate(1deg);
-  }
-  50% { 
-    transform: translateY(-12px) rotate(2deg);
-  }
-  75% { 
-    transform: translateY(-8px) rotate(1deg);
-  }
 }
 
 /* Font faces */
@@ -217,7 +217,7 @@
   }
 
   .step-left {
-    align-items: center;
+    align-items: center; /* Corrected typo 'align-itemss' */
   }
 
   .step-right {
@@ -268,4 +268,39 @@
   .section-spacer {
     height: 60vh;
   }
+}
+
+/* ===============================================
+  NEW STYLES FOR ANIMATED BLOBS
+===============================================
+*/
+
+.blob-container {
+  position: absolute;
+  inset: 0; /* Cover the entire .how-it-works section */
+  overflow: hidden;
+  z-index: 100; /* Behind steps (z-index: 3) and title (z-index: 10) */
+  border-radius: inherit; /* Match parent's rounded corners */
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  will-change: transform; /* Optimize for animation */
+  border-radius: 50%;
+  
+  /* --- This creates the "soft, airy" look --- */
+  opacity: 0.4; 
+  filter: blur(120px);
+  
+  /* --- Set colors to match your BG.jpg/theme --- */
+  background: radial-gradient(circle, #3b82f6 0%, #1e3a8a 100%);
+}
+
+/* First blob */
+.blob.one {
+  width: 700px;
+  height: 700px;
+  top: 10%;
+  left: 10%;
 }

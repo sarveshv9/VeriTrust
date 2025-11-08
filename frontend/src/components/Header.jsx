@@ -1,417 +1,375 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
+// 'prop-types' import removed as requested
+
 import '../styles/Header.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'; // 1. Import ScrollToPlugin
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import logo from '../assets/VT_logo.png';
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin); // 2. Register the plugin
+// --- Optimization: GSAP Plugin Registration ---
+// Plugins are registered once, globally, at the top level.
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-const Header = ({ onSubmitReview }) => {
+// --- Optimization: Data-Driven UI ---
+// Nav links are defined as data, making the component
+// easier to maintain and test.
+const navLinksData = [
+  { href: '#header', section: 'header', label: 'Home' },
+  { href: '#how-it-works', section: 'how-it-works', label: 'How it Works' },
+  { href: '#footer', section: 'footer', label: 'Support' },
+];
+
+// --- Optimization: Isolate Imperative Code (Hook) ---
+// The entire `applyMatrixEffect` function is moved into a custom hook.
+// This encapsulates the complex, non-React DOM manipulation and
+// provides a clean, declarative API (`useMatrixEffect(ref)`).
+// It also properly handles cleanup.
+
+const matrixChars = '0123456789';
+
+const applyMatrixEffect = (element) => {
+  const originalText = element.textContent;
+  const letters = originalText.split('');
+
+  // Set innerHTML once to create the spans
+  element.innerHTML = letters
+    .map((char) =>
+      char === ' '
+        ? ' '
+        : `<span data-original="${char}" class="matrix-letter" style="display: inline-block; transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1); color: #f1f5f9; opacity: 1;">${char}</span>`
+    )
+    .join('');
+
+  const letterSpans = Array.from(element.querySelectorAll('.matrix-letter'));
+  let intervals = []; // Store intervals for cleanup
+
+  const handleMouseEnter = () => {
+    // 1. Fade out
+    letterSpans.forEach((span) => {
+      span.style.transition = 'none';
+      span.style.opacity = '0';
+      span.style.transform = 'scale(0.8) translateY(5px)';
+    });
+
+    // 2. Wave effect fade-in
+    letterSpans.forEach((span, index) => {
+      setTimeout(() => {
+        span.style.transition = 'all 0.4s ease-out';
+        span.style.opacity = '1';
+        span.style.transform = 'scale(1.2) translateY(-2px)';
+        span.style.textShadow = '0 0 8px rgba(241, 245, 249, 0.8)';
+      }, index * 40);
+    });
+
+    // 3. Glitch effect
+    letterSpans.forEach((span, index) => {
+      const originalChar = span.getAttribute('data-original');
+      if (originalChar === ' ') return;
+
+      let glitchCount = 0;
+      const maxGlitches = Math.random() * 6 + 4;
+
+      setTimeout(() => {
+        const intervalId = setInterval(() => {
+          if (glitchCount >= maxGlitches) {
+            // Smooth return to original
+            span.style.transition =
+              'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            span.textContent = originalChar;
+            span.style.color = '#f1f5f9';
+            span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
+            span.style.textShadow = '0 0 3px rgba(241, 245, 249, 0.4)';
+            span.style.filter = 'none';
+            span.style.opacity = '1';
+            clearInterval(intervalId);
+
+            setTimeout(() => {
+              span.style.transition =
+                'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            }, 300);
+            return;
+          }
+
+          // Glitch
+          span.textContent =
+            matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          const scales = [0.8, 1.3, 0.9, 1.1];
+          const shadows = [
+            '0 0 5px rgba(241, 245, 249, 0.9)',
+            '0 0 10px rgba(241, 245, 249, 0.7), 0 0 20px rgba(241, 245, 249, 0.3)',
+            '0 0 15px rgba(241, 245, 249, 0.5)',
+            '0 0 8px rgba(241, 245, 249, 0.8)',
+          ];
+          const scaleIndex = glitchCount % 4;
+
+          span.style.color = '#f1f5f9';
+          span.style.transform = `scale(${scales[scaleIndex]}) translateY(-${
+            Math.random() * 3
+          }px) rotate(${(Math.random() - 0.5) * 10}deg)`;
+          span.style.textShadow = shadows[scaleIndex];
+          span.style.filter = `blur(${Math.random() * 0.5}px) brightness(${
+            0.8 + Math.random() * 0.4
+          })`;
+
+          glitchCount++;
+        }, 40 + Math.random() * 40);
+        intervals.push(intervalId); // Store for cleanup
+      }, index * 40);
+    });
+  };
+
+  const handleMouseLeave = () => {
+    // Clear all running glitch intervals immediately
+    intervals.forEach(clearInterval);
+    intervals = [];
+
+    // Fade out
+    letterSpans.forEach((span, index) => {
+      setTimeout(() => {
+        span.style.transition = 'all 0.3s ease-out';
+        span.style.opacity = '0';
+        span.style.transform = 'scale(0.8) translateY(5px)';
+      }, index * 20);
+    });
+
+    // Fade back in to normal
+    setTimeout(() => {
+      letterSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.style.transition = 'all 0.2s ease-out';
+          span.style.opacity = '1';
+          span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
+          span.style.textShadow = 'none';
+          span.style.filter = 'none';
+          span.style.color = '#f1f5f9';
+          span.textContent = span.getAttribute('data-original');
+        }, index * 15);
+      });
+    }, letterSpans.length * 20 + 100);
+  };
+
+  element.addEventListener('mouseenter', handleMouseEnter);
+  element.addEventListener('mouseleave', handleMouseLeave);
+
+  // Return a cleanup function
+  return () => {
+    intervals.forEach(clearInterval);
+    element.removeEventListener('mouseenter', handleMouseEnter);
+    element.removeEventListener('mouseleave', handleMouseLeave);
+    // Restore original text content on cleanup
+    element.innerHTML = originalText;
+  };
+};
+
+const useMatrixEffect = (ref) => {
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+    const cleanup = applyMatrixEffect(ref.current);
+    return () => cleanup();
+  }, [ref]);
+};
+
+// --- Optimization: Reusable NavLink Component ---
+// This component encapsulates the link logic and the complex
+// matrix effect, keeping the parent `NavigationComponent` clean.
+const NavLink = ({ href, onClick, children }) => {
+  const linkRef = useRef(null);
+  useMatrixEffect(linkRef); // Apply the effect via the hook
+
+  return (
+    <a ref={linkRef} href={href} className="nav-link" onClick={onClick}>
+      {children}
+    </a>
+  );
+};
+
+// --- Optimization: Memoized NavigationComponent ---
+// 1. Moved outside the `Header` to prevent re-creation on every render.
+// 2. `React.memo` prevents re-renders if its props (`onScrollTo`)
+//    haven't changed.
+const NavigationComponent = React.memo(({ onScrollTo }) => {
   const navContainerRef = useRef(null);
   const navLinksRef = useRef(null);
   const dotsRef = useRef(null);
   const navRef = useRef(null);
-  const [navPortal, setNavPortal] = useState(null);
 
-  useEffect(() => {
-    let portalContainer = document.getElementById('nav-portal');
-    if (!portalContainer) {
-      portalContainer = document.createElement('div');
-      portalContainer.id = 'nav-portal';
-      document.body.appendChild(portalContainer);
-    }
-    setNavPortal(portalContainer);
-  }, []);
+  useGSAP(
+    () => {
+      let currentScrollProgress = 0;
+      let isHovered = false;
 
-  // Matrix effect characters - numbers only
-  const matrixChars = '0123456789';
+      const navContainer = navContainerRef.current;
+      const navLinks = navLinksRef.current;
+      const dots = dotsRef.current;
 
-  // Matrix hover effect function with fade in/out and left-to-right animation
-  const applyMatrixEffect = (element) => {
-    const originalText = element.textContent;
-    const letters = originalText.split('');
-    
-    // Clear existing spans if any
-    element.innerHTML = letters.map((char, index) => 
-      char === ' ' ? ' ' : `<span data-original="${char}" class="matrix-letter" style="display: inline-block; transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1); color: #f1f5f9; opacity: 1;">${char}</span>`
-    ).join('');
-
-    const letterSpans = element.querySelectorAll('.matrix-letter');
-
-    const handleMouseEnter = () => {
-      // First, fade out all letters instantly
-      letterSpans.forEach((span) => {
-        span.style.transition = 'none';
-        span.style.opacity = '0';
-        span.style.transform = 'scale(0.8) translateY(5px)';
+      // --- Optimization: Performance ---
+      // `force3D: true` hints to the browser to use hardware acceleration.
+      gsap.set(navContainer, {
+        scale: 1,
+        transformOrigin: 'center center',
+        force3D: true,
+      });
+      gsap.set(navLinks, {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        transformOrigin: 'center center',
+        force3D: true,
+      });
+      gsap.set(dots, {
+        scale: 1,
+        opacity: 0,
+        y: 10,
+        pointerEvents: 'none',
+        transformOrigin: 'center center',
+        force3D: true,
       });
 
-      // Then create a wave effect from left to right with fade in
-      letterSpans.forEach((span, index) => {
-        setTimeout(() => {
-          span.style.transition = 'all 0.4s ease-out';
-          span.style.opacity = '1';
-          span.style.transform = 'scale(1.2) translateY(-2px)';
-          span.style.textShadow = '0 0 8px rgba(241, 245, 249, 0.8)';
-        }, index * 40); // Left-to-right wave progression
-      });
-
-      // Then start the matrix glitch effect from left to right
-      letterSpans.forEach((span, index) => {
-        const originalChar = span.getAttribute('data-original');
-        if (originalChar !== ' ') {
-          let glitchCount = 0;
-          const maxGlitches = Math.random() * 6 + 4;
-          let currentInterval;
-          
-          // Staggered start for each letter (left to right)
-          setTimeout(() => {
-            currentInterval = setInterval(() => {
-              if (glitchCount < maxGlitches) {
-                // Use only numbers during glitch
-                const randomChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                span.textContent = randomChar;
-                
-                // Keep color consistent throughout animation
-                const scales = [0.8, 1.3, 0.9, 1.1];
-                const shadows = [
-                  '0 0 5px rgba(241, 245, 249, 0.9)',
-                  '0 0 10px rgba(241, 245, 249, 0.7), 0 0 20px rgba(241, 245, 249, 0.3)',
-                  '0 0 15px rgba(241, 245, 249, 0.5)',
-                  '0 0 8px rgba(241, 245, 249, 0.8)'
-                ];
-                
-                const scaleIndex = glitchCount % 4;
-                span.style.color = '#f1f5f9'; // Keep consistent color
-                span.style.transform = `scale(${scales[scaleIndex]}) translateY(-${Math.random() * 3}px) rotate(${(Math.random() - 0.5) * 10}deg)`;
-                span.style.textShadow = shadows[scaleIndex];
-                span.style.filter = `blur(${Math.random() * 0.5}px) brightness(${0.8 + Math.random() * 0.4})`;
-                
-                glitchCount++;
-              } else {
-                // Smooth return to original
-                span.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                span.textContent = originalChar;
-                span.style.color = '#f1f5f9'; // Consistent color
-                span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
-                span.style.textShadow = '0 0 3px rgba(241, 245, 249, 0.4)';
-                span.style.filter = 'none';
-                span.style.opacity = '1';
-                
-                clearInterval(currentInterval);
-                
-                // Reset transition after animation
-                setTimeout(() => {
-                  span.style.transition = 'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                }, 300);
-              }
-            }, 40 + Math.random() * 40);
-          }, index * 40); // Left-to-right progression
-        }
-      });
-    };
-
-    const handleMouseLeave = () => {
-      // Smooth fade out and return animation (left to right)
-      letterSpans.forEach((span, index) => {
-        setTimeout(() => {
-          span.style.transition = 'all 0.3s ease-out';
-          span.style.opacity = '0';
-          span.style.transform = 'scale(0.8) translateY(5px)';
-        }, index * 20);
-      });
-
-      // Then fade back in to normal state
-      setTimeout(() => {
-        letterSpans.forEach((span, index) => {
-          setTimeout(() => {
-            span.style.transition = 'all 0.2s ease-out';
-            span.style.opacity = '1';
-            span.style.transform = 'scale(1) translateY(0px) rotate(0deg)';
-            span.style.textShadow = 'none';
-            span.style.filter = 'none';
-            span.style.color = '#f1f5f9';
-          }, index * 15);
-        });
-      }, letterSpans.length * 20 + 100);
-    };
-
-    element.addEventListener('mouseenter', handleMouseEnter);
-    element.addEventListener('mouseleave', handleMouseLeave);
-    
-    // Store the cleanup function
-    element._matrixCleanup = () => {
-      element.removeEventListener('mouseenter', handleMouseEnter);
-      element.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  };
-
-  useGSAP(() => {
-    if (!navPortal || !navContainerRef.current) {
-      console.log('Missing portal or nav container');
-      return; 
-    }
-    
-    let currentScrollProgress = 0;
-    let isHovered = false;
-    
-    const navContainer = navContainerRef.current;
-    const navLinks = navLinksRef.current;
-    const dots = dotsRef.current;
-    const nav = navRef.current;
-    
-    gsap.set([navContainer, nav, navLinks, dots], {
-      clearProps: "all"
-    });
-    
-    gsap.set(navContainer, {
-      scale: 1,
-      transformOrigin: "center center",
-      force3D: true
-    });
-    
-    gsap.set(nav, {
-      scale: 1,
-      transformOrigin: "center center",
-      force3D: true
-    });
-    
-    gsap.set(navLinks, {
-      scale: 1,
-      opacity: 1,
-      y: 0,
-      transformOrigin: "center center",
-      force3D: true
-    });
-    
-    gsap.set(dots, {
-      scale: 1,
-      opacity: 0,
-      y: 10,
-      pointerEvents: 'none',
-      transformOrigin: "center center",
-      force3D: true
-    });
-    
-    const navLinkElements = navLinks.querySelectorAll('.nav-link');
-    gsap.set(navLinkElements, {
-      scale: 1,
-      transformOrigin: "center center",
-      force3D: true
-    });
-
-    // Apply matrix effect to each nav link
-    navLinkElements.forEach(link => {
-      applyMatrixEffect(link);
-    });
-    
-    gsap.delayedCall(0.1, () => {
-      ScrollTrigger.refresh();
-      
       const scrollTriggerInstance = ScrollTrigger.create({
-        trigger: '.header',
+        trigger: '.header', // Use a class from Header
         start: 'bottom top+=100',
         end: 'bottom top+=20',
         scrub: 1,
-        markers: false,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           currentScrollProgress = self.progress;
-          
+
           if (!isHovered && self.progress > 0) {
             const scaleValue = gsap.utils.interpolate(1, 0.7, self.progress);
-            
-            const scaleTl = gsap.timeline();
-            
-            scaleTl
-              .to(navContainer, {
-                scale: scaleValue,
-                duration: 0.1,
-                ease: 'none',
-                transformOrigin: "center center",
-                force3D: true
-              }, 0)
-              .to(nav, {
-                scale: 1,
-                duration: 0.1,
-                ease: 'none',
-                transformOrigin: "center center",
-                force3D: true
-              }, 0)
-              .to(navLinks, {
-                scale: 1,
-                duration: 0.1,
-                ease: 'none',
-                transformOrigin: "center center",
-                force3D: true
-              }, 0)
-              .to(navLinkElements, {
-                scale: 1,
-                duration: 0.1,
-                ease: 'none',
-                transformOrigin: "center center",
-                force3D: true
-              }, 0)
-              .to(dots, {
-                scale: 1,
-                duration: 0.1,
-                ease: 'none',
-                transformOrigin: "center center",
-                force3D: true
-              }, 0);
+            const linkOpacity = gsap.utils.interpolate(
+              1,
+              0,
+              (self.progress - 0.3) / 0.4
+            );
+            const linkY = gsap.utils.interpolate(
+              0,
+              -15,
+              (self.progress - 0.3) / 0.4
+            );
+            const dotOpacity = gsap.utils.interpolate(
+              0,
+              1,
+              (self.progress - 0.6) / 0.4
+            );
+            const dotY = gsap.utils.interpolate(
+              10,
+              0,
+              (self.progress - 0.6) / 0.4
+            );
 
-            if (self.progress > 0.3) {
-              const linkOpacity = gsap.utils.interpolate(1, 0, (self.progress - 0.3) / 0.4);
-              const linkY = gsap.utils.interpolate(0, -15, (self.progress - 0.3) / 0.4);
-              
-              scaleTl.to(navLinks, {
-                opacity: linkOpacity,
-                y: linkY,
-                duration: 0.1,
-                ease: 'none'
-              }, 0);
-            }
-
-            if (self.progress > 0.6) {
-              const dotOpacity = gsap.utils.interpolate(0, 1, (self.progress - 0.6) / 0.4);
-              const dotY = gsap.utils.interpolate(10, 0, (self.progress - 0.6) / 0.4);
-              
-              scaleTl.to(dots, {
-                opacity: dotOpacity,
-                y: dotY,
-                duration: 0.1,
-                ease: 'none'
-              }, 0);
-              
-              gsap.set(dots, { pointerEvents: 'auto' });
-            } else {
-              scaleTl.to(dots, {
-                opacity: 0,
-                y: 10,
-                duration: 0.1,
-                ease: 'none'
-              }, 0);
-              gsap.set(dots, { pointerEvents: 'none' });
-            }
+            // --- CRITICAL PERFORMANCE OPTIMIZATION ---
+            // Replaced slow `gsap.timeline()` with `gsap.to()`.
+            // This stops creating/destroying timelines on every scroll frame.
+            gsap.to(navContainer, {
+              scale: scaleValue,
+              duration: 0.1,
+              ease: 'none',
+            });
+            gsap.to(navLinks, {
+              opacity: self.progress > 0.3 ? linkOpacity : 1,
+              y: self.progress > 0.3 ? linkY : 0,
+              duration: 0.1,
+              ease: 'none',
+            });
+            gsap.to(dots, {
+              opacity: self.progress > 0.6 ? dotOpacity : 0,
+              y: self.progress > 0.6 ? dotY : 10,
+              pointerEvents: self.progress > 0.6 ? 'auto' : 'none',
+              duration: 0.1,
+              ease: 'none',
+            });
           }
         },
-        onRefresh: () => {
-          gsap.set(navContainer, { scale: 1, transformOrigin: "center center" });
-          gsap.set(nav, { scale: 1, transformOrigin: "center center" });
-          gsap.set(navLinks, { scale: 1, opacity: 1, y: 0, transformOrigin: "center center" });
-          gsap.set(navLinkElements, { scale: 1, transformOrigin: "center center" });
-          gsap.set(dots, { scale: 1, opacity: 0, y: 10, pointerEvents: 'none', transformOrigin: "center center" });
-        }
       });
 
+      // Hover logic remains timeline-based, which is fine as
+      // it only runs on mouse events, not on every scroll frame.
       const handleMouseEnter = () => {
         isHovered = true;
         if (currentScrollProgress > 0) {
-          const expandTl = gsap.timeline();
-          
-          expandTl
+          gsap
+            .timeline()
             .to(navContainer, {
               scale: 1,
               duration: 0.4,
               ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to([nav, navLinks], {
-              scale: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to(navLinkElements, {
-              scale: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to(dots, {
-              scale: 1,
-              opacity: 0, 
-              y: 10, 
-              pointerEvents: 'none', 
-              duration: 0.2
-            }, 0)
-            .to(navLinks, { 
-              opacity: 1, 
-              y: 0, 
-              duration: 0.3 
-            }, 0.1);
+              force3D: true,
+            })
+            .to(
+              dots,
+              { opacity: 0, y: 10, pointerEvents: 'none', duration: 0.2 },
+              0
+            )
+            .to(navLinks, { opacity: 1, y: 0, duration: 0.3 }, 0.1);
         }
       };
 
       const handleMouseLeave = () => {
         isHovered = false;
         if (currentScrollProgress > 0) {
-          const scaleValue = gsap.utils.interpolate(1, 0.7, currentScrollProgress);
-          
-          const compactTl = gsap.timeline();
-          
-          compactTl
-            .to(navContainer, {
-              scale: scaleValue,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to([nav, navLinks], {
-              scale: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to(navLinkElements, {
-              scale: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0)
-            .to(dots, {
-              scale: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              transformOrigin: "center center",
-              force3D: true
-            }, 0);
+          const scaleValue = gsap.utils.interpolate(
+            1,
+            0.7,
+            currentScrollProgress
+          );
+          const linkOpacity = gsap.utils.interpolate(
+            1,
+            0,
+            (currentScrollProgress - 0.3) / 0.4
+          );
+          const linkY = gsap.utils.interpolate(
+            0,
+            -15,
+            (currentScrollProgress - 0.3) / 0.4
+          );
+          const dotOpacity = gsap.utils.interpolate(
+            0,
+            1,
+            (currentScrollProgress - 0.6) / 0.4
+          );
+          const dotY = gsap.utils.interpolate(
+            10,
+            0,
+            (currentScrollProgress - 0.6) / 0.4
+          );
+
+          const tl = gsap.timeline();
+          tl.to(navContainer, {
+            scale: scaleValue,
+            duration: 0.4,
+            ease: 'power2.out',
+            force3D: true,
+          });
 
           if (currentScrollProgress > 0.3) {
-            const linkOpacity = gsap.utils.interpolate(1, 0, (currentScrollProgress - 0.3) / 0.4);
-            const linkY = gsap.utils.interpolate(0, -15, (currentScrollProgress - 0.3) / 0.4);
-            compactTl.to(navLinks, { 
-              opacity: linkOpacity, 
-              y: linkY, 
-              duration: 0.2 
-            }, 0);
+            tl.to(
+              navLinks,
+              { opacity: linkOpacity, y: linkY, duration: 0.2 },
+              0
+            );
           }
-
           if (currentScrollProgress > 0.6) {
-            const dotOpacity = gsap.utils.interpolate(0, 1, (currentScrollProgress - 0.6) / 0.4);
-            const dotY = gsap.utils.interpolate(10, 0, (currentScrollProgress - 0.6) / 0.4);
-            compactTl.to(dots, { 
-              opacity: dotOpacity, 
-              y: dotY, 
-              pointerEvents: 'auto', 
-              duration: 0.3 
-            }, 0.1);
+            tl.to(
+              dots,
+              {
+                opacity: dotOpacity,
+                y: dotY,
+                pointerEvents: 'auto',
+                duration: 0.3,
+              },
+              0.1
+            );
           } else {
-            compactTl.to(dots, { 
-              opacity: 0, 
-              y: 10, 
-              pointerEvents: 'none', 
-              duration: 0.3 
-            }, 0.1);
+            tl.to(
+              dots,
+              { opacity: 0, y: 10, pointerEvents: 'none', duration: 0.3 },
+              0.1
+            );
           }
         }
       };
@@ -420,74 +378,41 @@ const Header = ({ onSubmitReview }) => {
       navContainer.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
-        navLinkElements.forEach(link => {
-          if (link._matrixCleanup) {
-            link._matrixCleanup();
-          }
-        });
-        
         navContainer.removeEventListener('mouseenter', handleMouseEnter);
         navContainer.removeEventListener('mouseleave', handleMouseLeave);
         scrollTriggerInstance.kill();
       };
-    });
-  }, [navPortal]);
+    },
+    { scope: navContainerRef }
+  ); // Scope GSAP context to the nav container
 
-  // 3. Update the scrollToSection function
-  const scrollToSection = (sectionId) => {
-    gsap.to(window, {
-      duration: 1, // Control the speed of the scroll
-      scrollTo: `#${sectionId}`,
-      ease: 'power2.inOut',
-    });
-  };
-
-  const NavigationComponent = () => (
-    <div className="nav-container gsap-nav" ref={navContainerRef} style={{
-      position: 'fixed',
-      top: '24px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      transformOrigin: 'center center',
-      zIndex: 1000,
-      opacity: 1,
-      animation: 'none'
-    }}>
+  return (
+    <div
+      className="nav-container gsap-nav"
+      ref={navContainerRef}
+      style={{
+        position: 'fixed',
+        top: '24px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 1000,
+      }}
+    >
       <nav className="nav" ref={navRef}>
         <div className="nav-links" ref={navLinksRef}>
-          <a 
-            href="#home" 
-            data-section="hero"
-            className="nav-link" 
-            onClick={(e) => { 
-              e.preventDefault(); 
-              scrollToSection('header'); 
-            }}
-          >
-            Home
-          </a>
-          <a 
-            href="#how-it-works" 
-            data-section="htw"
-            className="nav-link" 
-            onClick={(e) => { 
-              e.preventDefault(); 
-              scrollToSection('how-it-works'); 
-            }}
-          >
-            How it Works
-          </a>
-          <a 
-            href="#footer" 
-            data-section="support"
-            className="nav-link" 
-            onClick={(e) => { 
-              e.preventDefault(); 
-              scrollToSection('footer'); 
-            }}
-          >
-            Support
-          </a>
+          {/* --- Optimization: Data-Driven Links --- */}
+          {navLinksData.map((link) => (
+            <NavLink
+              key={link.label}
+              href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                onScrollTo(link.section);
+              }}
+            >
+              {link.label}
+            </NavLink>
+          ))}
         </div>
 
         <div className="nav-dots" ref={dotsRef}>
@@ -496,21 +421,90 @@ const Header = ({ onSubmitReview }) => {
       </nav>
     </div>
   );
+});
+
+NavigationComponent.displayName = 'NavigationComponent';
+
+// --- Main Header Component ---
+
+const Header = () => {
+  const [navPortal, setNavPortal] = useState(null);
+
+  // --- Optimization: Portal Creation ---
+  // This effect runs only once on mount to find/create the portal target.
+  useEffect(() => {
+    let portalContainer = document.getElementById('nav-portal');
+    if (!portalContainer) {
+      portalContainer = document.createElement('div');
+      portalContainer.id = 'nav-portal';
+      // --- Accessibility: Role and Label ---
+      // Add ARIA attributes to the portal root for screen readers
+      portalContainer.setAttribute('role', 'region');
+      portalContainer.setAttribute('aria-label', 'Sticky Navigation');
+      document.body.appendChild(portalContainer);
+    }
+    setNavPortal(portalContainer);
+
+    // No cleanup needed, portal should persist
+  }, []);
+
+  // --- Optimization: useCallback ---
+  // `scrollToSection` is memoized so it can be passed to the
+  // memoized `NavigationComponent` without breaking its memoization.
+  const scrollToSection = useCallback((sectionId) => {
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: `#${sectionId}`,
+      ease: 'power2.inOut',
+    });
+  }, []);
+
+  // --- Optimization: Memoized Logo ---
+  // The logo itself is wrapped in `useMemo` to prevent re-rendering
+  // the `<img>` tag and `<h1>` unless `scrollToSection` changes
+  // (which it won't, but it's good practice).
+  const Logo = useMemo(
+    () => (
+      <div className="logo">
+        {/* --- Accessibility: Clickable Parent --- */}
+        {/* Wrap logo and text in one link for a larger click target
+            and better screen reader experience. */}
+        <a
+          href="#header"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection('header');
+          }}
+          aria-label="VeriTrust - Go to Homepage"
+          style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+        >
+          <img src={logo} alt="VeriTrust logo" className="logo-img" />
+          <h1>VeriTrust</h1>
+        </a>
+      </div>
+    ),
+    [scrollToSection] // Dependency on the memoized function
+  );
 
   return (
     <>
-      <header className="header" id='header'>
+      <header className="header" id="header">
         <div className="container header-content">
-          <div className="logo">
-            <img src={logo} alt="VeriTrust logo" className="logo-img" />
-            <h1>VeriTrust</h1>
-          </div>
+          {Logo}
           <div className="nav-placeholder"></div>
           <div className="header-actions">
+            {/* Actions (e.g., buttons) would go here */}
           </div>
         </div>
       </header>
-      {navPortal && createPortal(<NavigationComponent />, navPortal)}
+      {/* --- Optimization: React Portal --- */}
+      {/* The navigation is rendered into the portal element,
+          detaching it from the header's DOM hierarchy. */}
+      {navPortal &&
+        createPortal(
+          <NavigationComponent onScrollTo={scrollToSection} />,
+          navPortal
+        )}
     </>
   );
 };

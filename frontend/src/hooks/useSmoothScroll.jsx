@@ -5,61 +5,63 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 
+/**
+ * A hook to initialize and manage a GSAP ScrollSmoother instance
+ * with performance-optimized settings.
+ */
 const useSmoothScroll = () => {
   useGSAP(() => {
-    // Device detection for performance optimization
+    // --- Best Practice: Device Detection ---
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const isLowEndDevice = navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Performance-optimized settings
     const getOptimalSettings = () => {
       if (prefersReducedMotion) {
         return {
           smooth: 0,
           effects: false,
-          smoothTouch: false
+          smoothTouch: false,
+          normalizeScroll: false, // Don't normalize if not smoothing
         };
       }
-      
       if (isMobile || isLowEndDevice) {
         return {
           smooth: 1.0,
           effects: true,
           smoothTouch: 0.05,
-          normalizeScroll: true
+          normalizeScroll: true,
         };
       }
-      
       return {
         smooth: 1.2,
         effects: true,
         smoothTouch: 0.08,
-        normalizeScroll: true
+        normalizeScroll: true,
       };
     };
 
     const settings = getOptimalSettings();
 
-    // Don't kill existing ScrollTriggers - let components manage their own
-    // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    // Kill any existing instance before creating a new one
     ScrollSmoother.get()?.kill();
 
-    // Create optimized ScrollSmoother instance
     const smoother = ScrollSmoother.create({
       wrapper: '.smooth-wrapper',
       content: '.smooth-content',
-      smooth: settings.smooth,
-      effects: settings.effects,
-      smoothTouch: settings.smoothTouch,
-      normalizeScroll: settings.normalizeScroll,
+      ...settings,
       ignoreMobileResize: true,
-      ease: 'power2.out'
+      ease: 'power2.out',
     });
 
-    // Enhanced background animation with better performance
-    gsap.to(document.body, {
-      backgroundSize: '180% 180%',
+    // --- Background animation ---
+    // Note: This animates `document.body`. Ensure your CSS
+    // is set up for this (e.g., `body { background-size: 100% 100%; }`).
+    const startSize = 100;
+    const endSize = 180;
+
+    const bgTween = gsap.to(document.body, {
+      backgroundSize: `${endSize}% ${endSize}%`, // Animate to this value
       ease: 'none',
       scrollTrigger: {
         trigger: '.smooth-content',
@@ -67,20 +69,17 @@ const useSmoothScroll = () => {
         end: 'bottom bottom',
         scrub: 0.3,
         invalidateOnRefresh: true,
-        
+        // --- Optimization: Simplified onUpdate ---
+        // `self.progress` is already a 0-1 value.
+        // We can use it directly for interpolation.
         onUpdate: (self) => {
-          const progress = self.progress;
-          const startSize = 100;
-          const endSize = 180;
-          const easedProgress = gsap.utils.interpolate(0, 1, progress, 'power2.out');
-          const currentSize = startSize + (endSize - startSize) * easedProgress;
-          
+          const currentSize = startSize + (endSize - startSize) * self.progress;
           document.body.style.backgroundSize = `${currentSize}% ${currentSize}%`;
         },
       },
     });
 
-    // Debounced resize handler for better performance
+    // --- Best Practice: Debounced Resize ---
     let resizeTimeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
@@ -89,20 +88,22 @@ const useSmoothScroll = () => {
         ScrollTrigger.refresh();
       }, 150);
     };
-
     window.addEventListener('resize', handleResize, { passive: true });
 
-    // Wait a bit for components to initialize their ScrollTriggers
-    setTimeout(() => {
+    // The 200ms delay is a pragmatic way to ensure other
+    // components have time to mount and create their triggers.
+    const refreshTimeout = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
 
+    // --- Best Practice: useGSAP Cleanup ---
+    // The return function from useGSAP handles all cleanup.
+    // It will kill the smoother, the `gsap.to` tween (bgTween),
+    // and its ScrollTrigger.
     return () => {
       clearTimeout(resizeTimeout);
+      clearTimeout(refreshTimeout);
       window.removeEventListener('resize', handleResize);
-      smoother?.kill();
-      // Don't kill all ScrollTriggers here - let components clean up their own
-      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 };

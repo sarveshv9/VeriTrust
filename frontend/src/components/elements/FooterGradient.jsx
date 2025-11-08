@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { memo } from "react";
 
-// Style objects - simplified for better performance
-const styles = {
+// --- Optimization: Static Constants Outside Component ---
+// All static values are defined once when the module loads,
+// preventing them from being re-created on every render.
+const STYLES = {
   container: {
     position: 'relative',
-    isolation: 'isolate',
+    isolation: 'isolate', // Creates a new stacking context
     minHeight: '100vh',
     backgroundColor: '#0A0A0A',
   },
@@ -14,54 +16,67 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    zIndex: -1,
-  },
-  gradientElement: {
-    position: 'absolute',
-    inset: 0,
+    zIndex: -1, // Sits behind content, but inside the 'isolate' container
   },
   contentOnTop: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: 1, // Ensures content is above the background
   },
 };
 
-const FooterGradient = ({ children }) => {
-  // Style constants - static gradient, no animation
-  const gradientColors = ["#273a5f", "#562a4a", "#000000"];
-  const gradientStops = [0, 35, 70];
+// --- Optimization: Pre-calculate Static Style Values ---
+// The gradient string is static, so we calculate it here, once.
+// This avoids any computation inside the component.
+const GRADIENT_COLORS = ["#273a5f", "#562a4a", "#000000"];
+const GRADIENT_STOPS = [0, 35, 70];
+const GRADIENT_STOPS_STRING = GRADIENT_STOPS
+  .map((stop, index) => `${GRADIENT_COLORS[index]} ${stop}%`)
+  .join(", ");
 
-  const containerRef = useRef(null);
+const GRADIENT_VALUE = `radial-gradient(120% 100% at 50% 100%, ${GRADIENT_STOPS_STRING})`;
 
-  useEffect(() => {
-    // Set static gradient once on mount
-    const gradientStopsString = gradientStops
-      .map((stop, index) => `${gradientColors[index]} ${stop}%`)
-      .join(", ");
-
-    const gradient = `radial-gradient(120% 100% at 50% 100%, ${gradientStopsString})`;
-
-    if (containerRef.current) {
-      containerRef.current.style.background = gradient;
-      // Debug: also set a fallback background
-      console.log("Gradient applied:", gradient);
-    }
-  }, []); // Empty dependency array - runs once on mount
+// --- Optimization: React.memo ---
+// Wraps the component to prevent unnecessary re-renders
+// if its props (children) have not changed.
+const FooterGradient = memo(({ children }) => {
+  // --- Optimization: No Hooks Needed ---
+  // By applying the gradient directly via `style`, we
+  // eliminate the need for `useRef` and `useEffect`.
+  // This removes the "flash" of unstyled content on mount
+  // and simplifies the component's lifecycle.
 
   return (
-    <div style={styles.container}>
-      <div style={styles.background}>
-        <div
-          ref={containerRef}
-          style={styles.gradientElement}
-        />
-        {/* Removed grain overlay - can cause performance issues */}
-      </div>
-      <div style={styles.contentOnTop}>
+    // --- Optimization: Semantic HTML ---
+    // Changed the root `div` to a `<footer>` for better
+    // accessibility and SEO, as implied by the component's name.
+    <footer style={STYLES.container}>
+      {/*
+        --- Optimization: Simplified DOM & Direct Styling ---
+        The gradient is now applied directly to this `div`.
+        The unnecessary nested `gradientElement` `div` has been removed.
+        We merge the static background styles with the pre-calculated
+        gradient value.
+      */}
+      <div
+        style={{
+          ...STYLES.background,
+          background: GRADIENT_VALUE,
+        }}
+        // --- Accessibility ---
+        // This is a purely decorative element, hide it from screen readers.
+        aria-hidden="true"
+      />
+
+      {/* Content is rendered on top */}
+      <div style={STYLES.contentOnTop}>
         {children}
       </div>
-    </div>
+    </footer>
   );
-};
+});
+
+// --- Best Practice: Debugging ---
+// Add a displayName for easier debugging in React DevTools.
+FooterGradient.displayName = 'FooterGradient';
 
 export default FooterGradient;

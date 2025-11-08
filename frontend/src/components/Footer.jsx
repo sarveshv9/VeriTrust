@@ -1,63 +1,142 @@
 import React from 'react';
+// --- Optimization: Added Icon Pack Imports ---
+// To fulfill the request for an icon pack, we import
+// named components from a library like `lucide-react`.
+import {
+  Twitter,
+  Linkedin,
+  Github,
+  Mail,
+  MessageCircle,
+  HelpCircle,
+} from 'lucide-react';
 import '../styles/Footer.css';
 
-const Footer = () => (
-  <footer className="footer" id='footer'>
+// --- Optimization: Data-Driven UI ---
+// The `icon` property now holds the imported React component.
+// We pass a `size` prop for consistent styling, which is
+// more robust and explicit than relying on CSS font-size.
+const socialLinks = [
+  {
+    href: '#',
+    label: 'Visit our Twitter',
+    // --- Change: Using icon component ---
+    icon: <Twitter size={18} />,
+  },
+  {
+    href: '#',
+    label: 'Visit our LinkedIn',
+    // --- Change: Using icon component ---
+    icon: <Linkedin size={18} />,
+  },
+  {
+    href: '#',
+    label: 'Visit our GitHub',
+    // --- Change: Using icon component ---
+    icon: <Github size={18} />,
+  },
+];
+
+const quickLinks = [
+  { href: '#services', label: 'Browse Services' },
+  { href: '#categories', label: 'Categories' },
+  { href: '#how-it-works', label: 'How It Works' },
+  { href: '#pricing', label: 'Pricing' },
+];
+
+const supportLinks = [
+  { href: '#help', label: 'Help Center' },
+  { href: '#contact', label: 'Contact Us' },
+  { href: '#faq', label: 'FAQ' },
+  { href: '#live-chat', label: 'Live Chat' },
+];
+
+const contactItems = [
+  // --- Change: Using icon component ---
+  { icon: <Mail size={16} />, text: 'support@veritrust.com' },
+  {
+    icon: <MessageCircle size={16} />,
+    text: 'Live Chat Available 24/7',
+  },
+  {
+    icon: <HelpCircle size={16} />,
+    text: 'Visit our Help Center',
+  },
+];
+
+const bottomLinks = [
+  { href: '#privacy', label: 'Privacy Policy' },
+  { href: '#terms', label: 'Terms of Service' },
+  { href: '#cookies', label: 'Cookie Policy' },
+];
+
+// --- Optimization: Performance (Memoization) ---
+// Still memoized as the content is static.
+const Footer = React.memo(() => (
+  <footer className="footer" id="footer">
     <div className="footer-container">
       <div className="footer-content">
         <div className="footer-section company-info">
           <h3 className="footer-logo">VeriTrust</h3>
           <p className="footer-description">
-            Connect with top freelancers worldwide. Quality services, secure payments, and exceptional results.
+            Connect with top freelancers worldwide. Quality services, secure
+            payments, and exceptional results.
           </p>
           <div className="social-links">
-            <a href="#" className="social-link">
-              <span>📧</span>
-            </a>
-            <a href="#" className="social-link">
-              <span>💬</span>
-            </a>
-            <a href="#" className="social-link">
-              <span>📱</span>
-            </a>
+            {socialLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="social-link"
+                // --- Optimization: Accessibility ---
+                // This `aria-label` is CRITICAL. It provides the
+                // accessible name for the icon-only link.
+                aria-label={link.label}
+              >
+                {/* --- Change: Render the icon component --- */}
+                {/* The icon component itself is automatically
+                    marked as decorative (aria-hidden="true")
+                    by the `lucide-react` library. */}
+                {link.icon}
+              </a>
+            ))}
           </div>
         </div>
 
         <div className="footer-section">
           <h4>Quick Links</h4>
           <ul className="footer-links">
-            <li><a href="#services">Browse Services</a></li>
-            <li><a href="#categories">Categories</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#pricing">Pricing</a></li>
+            {quickLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div className="footer-section">
           <h4>Support</h4>
           <ul className="footer-links">
-            <li><a href="#help">Help Center</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#live-chat">Live Chat</a></li>
+            {supportLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div className="footer-section contact-section">
           <h4>Get in Touch</h4>
           <div className="contact-info">
-            <div className="contact-item">
-              <span className="contact-icon">📧</span>
-              <span>support@veritrust.com</span>
-            </div>
-            <div className="contact-item">
-              <span className="contact-icon">💬</span>
-              <span>Live Chat Available 24/7</span>
-            </div>
-            <div className="contact-item">
-              <span className="contact-icon">📚</span>
-              <span>Visit our Help Center</span>
-            </div>
+            {contactItems.map((item) => (
+              <div className="contact-item" key={item.text}>
+                {/* --- Change: Render the icon component --- */}
+                {/* We keep the `contact-icon` span as a
+                    wrapper to respect the original CSS layout. */}
+                <span className="contact-icon">{item.icon}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -66,14 +145,18 @@ const Footer = () => (
         <div className="footer-bottom-content">
           <p>&copy; 2025 VeriTrust. All rights reserved.</p>
           <div className="footer-bottom-links">
-            <a href="#privacy">Privacy Policy</a>
-            <a href="#terms">Terms of Service</a>
-            <a href="#cookies">Cookie Policy</a>
+            {bottomLinks.map((link) => (
+              <a key={link.href} href={link.href}>
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
     </div>
   </footer>
-);
+));
+
+Footer.displayName = 'Footer';
 
 export default Footer;

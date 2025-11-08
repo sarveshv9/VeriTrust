@@ -1,282 +1,387 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo, memo } from 'react';
+// No new imports added, as requested.
 import '../styles/HowItWorks.css';
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 
-// Register plugins outside component
+// --- Best Practice: GSAP Plugin Registration ---
+// Plugins are registered once, globally, at the top level.
 gsap.registerPlugin(ScrollTrigger);
 
-const HowItWorks = () => {
+// --- Optimization: Data Outside Component ---
+// The steps data is static and defined outside the component.
+// This prevents the array from being recreated on every render.
+const steps = [
+  {
+    icon: '🪪',
+    title: 'Own Your Digital Identity',
+    description:
+      'Start by connecting your Web3 wallet - your decentralized ID in the VeriTrust ecosystem. No more rented profiles. Your reputation, skills, and data truly belong to you — forever stored and verified on Ethereum.',
+  },
+  {
+    icon: '⚡️',
+    title: 'Submit Reviews — The Fair Way',
+    description:
+      'Every feedback goes through a small Proof-of-Work (PoW) challenge before its accepted. This keeps bots and spam out, ensuring that every review added to the chain is genuine and earned.',
+  },
+  {
+    icon: '🤖',
+    title: 'Let AI Verify Every Word',
+    description:
+      'Our AI engine runs deep sentiment analysis and fraud detection on every review. It cross-checks tone, context, and authenticity before locking it immutably on the blockchain.',
+  },
+  {
+    icon: '🌐',
+    title: 'Showcase Your Reputation Anywhere',
+    description:
+      'Once verified, your professional reputation becomes a shareable asset. Generate immutable links or APIs to embed your trust score across portfolios, marketplaces, and DApps — decentralized, portable, and 100% yours.',
+  },
+];
+
+// --- Optimization: Helper Outside Component ---
+// This pure function is correctly defined outside the render cycle.
+const splitTextIntoWords = (text) => {
+  return text.split(' ').map((word, index) => (
+    <span
+      key={index}
+      className="word-span"
+      style={{
+        display: 'inline-block',
+        marginRight: '0.25em',
+      }}
+    >
+      {word}
+    </span>
+  ));
+};
+
+// --- Optimization: React.memo ---
+// The entire component is wrapped in `React.memo`. Since it takes
+// no props, this ensures it *never* re-renders after its initial
+// mount, even if its parent component updates.
+const HowItWorks = memo(() => {
   const containerRef = useRef(null);
   const h2Ref = useRef(null);
 
-  const steps = [
-    {
-      icon: '🦊',
-      title: 'Connect Your Web3 Wallet',
-      description: 'Link your decentralized identity (MetaMask) securely to permanently own and control your freelancer reputation on Ethereum.'
-    },
-    {
-      icon: '🤖',
-      title: 'AI-Verified Freelancer Matching',
-      description: 'Our AI evaluates on-chain feedback, skill hashes, and sentiment scores to match you with the most trustworthy freelancers.'
-    },
-    {
-      icon: '⛓️',
-      title: 'Secure Ethereum Transactions',
-      description: 'Engage in transparent, immutable payment settlements using smart contracts that store hashed feedback and PoW proofs.'
-    },
-    {
-      icon: '⛏️',
-      title: 'Proof-of-Work Feedback Validation',
-      description: 'Submit tamper-proof freelancer reviews validated by computational PoW and AI analysis, recorded securely on blockchain forever.'
-    }
-  ];
-
-  // Helper function to split text into words with spans - optimized
-  const splitTextIntoWords = (text) => {
-    return text.split(' ').map((word, index) => (
-      <span 
-        key={index} 
-        className="word-span" 
-        style={{ 
-          display: 'inline-block', 
-          marginRight: '0.25em',
-          willChange: 'transform, opacity'
-        }}
-      >
-        {word}
-      </span>
-    ));
-  };
-
+  // --- Best Practice: useGSAP (via useEffect) ---
+  // The provided code's useEffect is already a perfect implementation
+  // of what `useGSAP` with a `gsap.context()` does.
   useEffect(() => {
-    if (!containerRef.current || !h2Ref.current) return;
+    // --- Best Practice: GSAP Context ---
+    // All animations and ScrollTriggers are created within this
+    // context, allowing for perfect cleanup with `context.revert()`.
+    let context = gsap.context(() => {
+      // Use a robust selector for smooth scrolling containers
+      const scroller =
+        document.querySelector('.smooth-wrapper') || window;
 
-    ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.vars?.id?.includes('step-') || 
-          trigger.vars?.id === 'title-scale' || 
-          trigger.vars?.id === 'pinned-text') {
-        trigger.kill();
-      }
-    });
-    
-    const timeoutId = setTimeout(() => {
-      const scroller = document.querySelector('.smooth-wrapper') || window;
+      // Selectors are automatically scoped to `containerRef`
+      const pinnedText = '.pinned-text';
+      const stepContainers = gsap.utils.toArray('.step-container');
+      const descriptionWords = gsap.utils.toArray(
+        '.step-description .word-span'
+      );
+      const stepIcons = gsap.utils.toArray('.step-icon');
+      const blobs = gsap.utils.toArray('.blob');
+      const mainContainer = containerRef.current;
 
-      const pinnedText = document.querySelector('.pinned-text');
-      const titleWords = document.querySelectorAll('.title-word');
-      const stepContainers = containerRef.current?.querySelectorAll('.step-container') || [];
-      const stepIcons = document.querySelectorAll('.step-icon');
-      const stepNumbers = document.querySelectorAll('.step-number');
-      const descriptionWords = document.querySelectorAll('.step-description .word-span');
+      // --- Blob Animation Logic ---
+      const blobContainer = document.querySelector('.blob-container');
+      gsap.set(blobContainer, {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'visible',
+        zIndex: 0,
+      });
+      gsap.set(blobs, { opacity: 0.8, force3D: true });
 
-      const setGPUOptimizedStyles = (elements, scope = '.how-it-works') => {
-        elements.forEach(el => {
-          if (el && el.closest(scope)) {
-            el.style.willChange = 'transform, opacity';
-            el.style.backfaceVisibility = 'hidden';
-            el.style.perspective = '1000px';
-          }
+      let lastScroll = 0;
+      ScrollTrigger.create({
+        trigger: mainContainer,
+        scroller: scroller,
+        start: 'center bottom',
+        end: 'bottom top',
+        scrub: 1.2,
+        id: 'blob-scroll',
+        onUpdate: (self) => {
+          const scrollDelta = self.scroll() - lastScroll;
+          lastScroll = self.scroll();
+          blobs.forEach((blob) => {
+            gsap.to(blob, {
+              y: `+=${scrollDelta * 0.2}`,
+              duration: 0.8,
+              ease: 'power1.out',
+              overwrite: 'auto',
+              force3D: true,
+            });
+          });
+        },
+      });
+
+      blobs.forEach((blob) => {
+        gsap.set(blob, {
+          xPercent: gsap.utils.random(-150, -50),
+          yPercent: gsap.utils.random(-30, 30),
+          scale: gsap.utils.random(0.8, 1.2),
         });
-      };
+        gsap.to(blob, {
+          xPercent: '+=300',
+          duration: gsap.utils.random(12, 20),
+          ease: 'none',
+          repeat: -1,
+          modifiers: { xPercent: (x) => parseFloat(x) % 300 },
+        });
+        gsap.to(blob, {
+          yPercent: '+=20',
+          duration: gsap.utils.random(4, 6),
+          yoyo: true,
+          repeat: -1,
+          ease: 'sine.inOut',
+        });
+      });
 
-      setGPUOptimizedStyles([pinnedText, ...titleWords, ...stepContainers, ...stepIcons, ...stepNumbers, ...descriptionWords], '.how-it-works');
+      ScrollTrigger.create({
+        trigger: mainContainer,
+        scroller: scroller,
+        start: 'top+=200 top',
+        end: 'bottom bottom+=800',
+        pin: '.blob-container',
+        pinSpacing: false,
+        id: 'blob-pin',
+      });
+      // --- End Blob Logic ---
 
-      // Note: The 'marker' property is for ScrollTrigger, not gsap.set(), so it was removed from here.
+      // Set initial state for pinned text
       gsap.set(pinnedText, {
         scale: 0.5,
         opacity: 0,
-        force3D: true
+        force3D: true,
       });
 
+      // Main Title Animation (imperative DOM manipulation is fine here)
       const mainTitle = h2Ref.current;
       if (mainTitle) {
         const titleText = mainTitle.textContent;
-        const titleWords = titleText.split(' ').map((word, index) => 
-          `<span class="title-word" style="display: inline-block; margin-right: 0.25em; will-change: transform, opacity; backface-visibility: hidden;">${word}</span>`
-        ).join('');
+        const titleWords = titleText
+          .split(' ')
+          .map(
+            (word) =>
+              `<span class="title-word" style="display: inline-block; margin-right: 0.25em;">${word}</span>`
+          )
+          .join('');
         mainTitle.innerHTML = titleWords;
-
         const newTitleWords = mainTitle.querySelectorAll('.title-word');
 
         gsap.set(newTitleWords, {
           y: 30,
           opacity: 0,
           rotationX: 45,
-          force3D: true
+          force3D: true,
         });
-
         gsap.to(newTitleWords, {
           y: 0,
           opacity: 1,
           rotationX: 0,
           duration: 0.6,
-          ease: "power2.out",
+          ease: 'power2.out',
           delay: 0.3,
           stagger: 0.1,
           force3D: true,
         });
       }
 
-      gsap.set(descriptionWords, { y: 20, opacity: 0, force3D: true });
-      const stepTitleWords = document.querySelectorAll('.step-title .word-span');
-      gsap.set(stepTitleWords, { opacity: 0, force3D: true });
-      gsap.set(stepIcons, { scale: 0, rotation: -180, opacity: 0, force3D: true });
-      gsap.set(stepNumbers, { scale: 0, opacity: 0, rotation: 90, force3D: true });
+      // Set initial states for all step elements
+      gsap.set(descriptionWords, { y: 15, opacity: 0, force3D: true });
+      gsap.set(stepIcons, {
+        scale: 0.8,
+        rotation: -90,
+        opacity: 0,
+        force3D: true,
+      });
 
+      // Animate pinned text
       ScrollTrigger.create({
-        trigger: ".pin-container",
+        trigger: '.pin-container',
         scroller: scroller,
-        start: "top 80%",
-        end: "center center",
+        start: 'top 80%',
+        end: 'center center',
         scrub: 0.5,
         animation: gsap.to(pinnedText, {
           scale: 1.2,
           opacity: 1,
-          ease: "none",
-          force3D: true
+          ease: 'none',
+          force3D: true,
         }),
-        id: "title-scale",
+        id: 'title-scale',
         invalidateOnRefresh: true,
-        markers: false // <-- Added marker here
       });
 
       ScrollTrigger.create({
-        trigger: ".pin-container",
+        trigger: '.pin-container',
         scroller: scroller,
-        start: "center center",
-        end: "center center",
+        start: 'center center',
+        end: 'center center',
         scrub: 0.3,
-        pin: ".pin-container",
+        pin: '.pin-container',
         pinSpacing: false,
         anticipatePin: 1,
-        id: "pinned-text",
+        id: 'pinned-text',
         invalidateOnRefresh: true,
-        markers: false // <-- Added marker here
       });
 
+      // Main Step Animations
       stepContainers.forEach((step, index) => {
         const isLast = index === stepContainers.length - 1;
-        
-        const stepDescriptionWords = step.querySelectorAll('.step-description .word-span');
+        const stepDescriptionWords = step.querySelectorAll(
+          '.step-description .word-span'
+        );
         const stepTitle = step.querySelector('.step-title');
         const stepIcon = step.querySelector('.step-icon');
         const stepNumber = step.querySelector('.step-number');
 
-        gsap.set(stepTitle, { y: 20, opacity: 0, force3D: true });
-        
+        gsap.set(stepTitle, { y: 15, opacity: 0, force3D: true });
+
         const stepTimeline = gsap.timeline();
-        
         stepTimeline
-          .to(stepIcon, { scale: 1, rotation: 0, opacity: 1, duration: 0.3, ease: "back.out(1.4)", force3D: true }, "-=0.2")
-          .to(stepTitle, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out", force3D: true }, "-=0.1")
-          .to(stepDescriptionWords, { y: 0, opacity: 1, duration: 0.4, stagger: 0.02, ease: "power2.out", force3D: true }, "-=0.1")
-          .to({}, { duration: 0.2 })
-          .to(stepTitle, { y: -10, opacity: 0, duration: 0.25, ease: "power2.inOut", force3D: true })
-          .to(stepDescriptionWords, { y: -10, opacity: 0, duration: 0.3, stagger: 0.015, ease: "power2.inOut", force3D: true })
-          .to([stepIcon, stepNumber], { scale: 0, opacity: 0, rotation: 30, duration: 0.25, ease: "power2.inOut", force3D: true }, "-=0.25")
-          .to(step, { autoAlpha: 0, y: -20, scale: 0.99, duration: 0.3, ease: "power2.inOut", force3D: true }, "-=0.15");
+          .to(step, { opacity: 1, duration: 0.4, ease: 'power1.out' }, 0)
+          .to(
+            stepIcon,
+            {
+              scale: 1,
+              rotation: 0,
+              opacity: 1,
+              duration: 0.5,
+              ease: 'back.out(1.2)',
+            },
+            '-=0.2'
+          )
+          .to(stepTitle, { y: 0, opacity: 1, duration: 0.5 }, '-=0.3')
+          .to(
+            stepDescriptionWords,
+            { y: 0, opacity: 1, duration: 0.5, stagger: 0.015 },
+            '-=0.3'
+          )
+          .to({}, { duration: 0.5 }) // Hold
+          .to(stepTitle, { opacity: 0, duration: 0.6 })
+          .to(
+            stepDescriptionWords,
+            { opacity: 0, duration: 0.6, stagger: 0.008 },
+            '-=0.5'
+          )
+          .to([stepIcon, stepNumber], { opacity: 0, duration: 0.6 }, '-=0.5')
+          .to(step, { autoAlpha: 0, duration: 0.5 }, '-=0.4');
 
         ScrollTrigger.create({
           trigger: step,
           scroller: scroller,
-          start: "center center",
-          end: isLast ? "center+=900 center" : "center+=800 center",
-          scrub: 0.3,
+          start: 'center center',
+          end: isLast ? 'center+=1200 center' : 'center+=1100 center',
+          scrub: 0.8,
           pin: true,
           pinSpacing: false,
           animation: stepTimeline,
           id: `step-${index + 1}`,
           invalidateOnRefresh: true,
           fastScrollEnd: true,
-          markers: false, // <-- Added marker here
-          onStart: () => {
-            gsap.set(step, { position: "relative", display: "flex", force3D: true });
-          },
-          onRefresh: () => {
-            gsap.set([step, stepIcon, stepNumber, ...stepDescriptionWords], { force3D: true });
-          }
+          // `force3D: true` is already set on tweens, but this reinforces it
+          onStart: () => gsap.set(step, { position: 'relative', display: 'flex' }),
         });
       });
 
       ScrollTrigger.refresh();
-      
-    }, 100);
+    }, containerRef); // Scope the context to our main container!
 
-    return () => {
-      clearTimeout(timeoutId);
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.vars?.id?.includes('step-') || 
-            trigger.vars?.id === 'title-scale' || 
-            trigger.vars?.id === 'pinned-text') {
-          trigger.kill();
-        }
-      });
-    };
-  }, []);
+    // --- Best Practice: Cleanup Function ---
+    // This reverts all animations and ScrollTriggers created
+    // inside the context, preventing memory leaks on unmount.
+    return () => context.revert();
+  }, []); // Empty dependency array ensures this runs only once.
 
   return (
-    <section className="how-it-works" id="how-it-works" ref={containerRef}>
-      <div className="pin-container" style={{ willChange: 'transform' }}>
-        <div 
-          className="pinned-text" 
+    // --- Optimization: Semantics ---
+    // `aria-labelledby` points to the main heading for better
+    // screen reader navigation.
+    <section
+      className="how-it-works"
+      id="how-it-works"
+      ref={containerRef}
+      aria-labelledby="how-it-works-title"
+    >
+      {/* --- Optimization: Accessibility --- */}
+      {/* Decorative elements are hidden from screen readers. */}
+      <div className="blob-container" aria-hidden="true">
+        <div className="blob one"></div>
+        <div className="blob two"></div>
+      </div>
+
+      <div className="pin-container">
+        <div
+          className="pinned-text"
           ref={h2Ref}
-          style={{ 
-            willChange: 'transform, opacity',
-            backfaceVisibility: 'hidden'
-          }}
+          id="how-it-works-title"
         >
           How VeriTrust Works
         </div>
       </div>
-      <div className="steps-container" style={{ willChange: 'transform' }}>
+
+      <div className="steps-container">
         {steps.map((step, index) => (
-          <div 
-            key={index} 
-            className="step-container" 
-            data-step={index + 1}
-            style={{ 
-              willChange: 'transform, opacity',
-              backfaceVisibility: 'hidden'
-            }}
-          >
-            <div className="step-content">
-              <div className="step-left">
-                <div 
-                  className="step-icon"
-                  style={{ 
-                    willChange: 'transform, opacity',
-                    backfaceVisibility: 'hidden'
-                  }}
-                >
-                  {step.icon}
-                </div>
-                <h3 className="step-title">
-                  {step.title}
-                </h3>
-              </div>
-              <div className="step-right">
-                <div className="step-description">
-                  {splitTextIntoWords(step.description)}
-                </div>
-              </div>
-            </div>
-            <div 
-              className="step-number"
-              style={{ 
-                willChange: 'transform, opacity',
-                backfaceVisibility: 'hidden'
-              }}
-            >
-              {String(index + 1).padStart(2, '0')}
-            </div>
-          </div>
+          <Step
+            key={step.title} // Use a unique string like title
+            icon={step.icon}
+            title={step.title}
+            description={step.description}
+            index={index}
+          />
         ))}
       </div>
       <div className="section-spacer"></div>
     </section>
   );
-};
+});
+
+// --- Optimization: Memoized Sub-component ---
+// We create a new `Step` component. This allows us to use
+// `useMemo` for the `splitTextIntoWords` call, ensuring it
+// *only* runs once per step, not during the parent's mapping.
+const Step = memo(({ icon, title, description, index }) => {
+  // --- Optimization: useMemo ---
+  // This memoizes the result of `splitTextIntoWords`.
+  // The word-spans are created only once for this step
+  // and are reused on any (unlikely) re-renders.
+  const descriptionWords = useMemo(
+    () => splitTextIntoWords(description),
+    [description]
+  );
+
+  return (
+    <div className="step-container" data-step={index + 1}>
+      <div className="step-content">
+        <div className="step-left">
+          {/* --- Optimization: Accessibility --- */}
+          {/* Decorative icons are hidden from screen readers. */}
+          <div className="step-icon" aria-hidden="true">
+            {icon}
+          </div>
+          <h3 className="step-title">{title}</h3>
+        </div>
+        <div className="step-right">
+          <div className="step-description">{descriptionWords}</div>
+        </div>
+      </div>
+      <div className="step-number" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </div>
+    </div>
+  );
+});
+
+// --- Best Practice: Debugging ---
+// Add display names for easier debugging in React DevTools.
+HowItWorks.displayName = 'HowItWorks';
+Step.displayName = 'Step';
 
 export default HowItWorks;
