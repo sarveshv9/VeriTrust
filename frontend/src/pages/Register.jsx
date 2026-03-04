@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../utils/api';
 import '../styles/Register.css';
 import bgImage from '../assets/BG.png';
 import vtLogo from '../assets/VT_logo.png';
@@ -8,6 +10,7 @@ const Register = () => {
     const [keyPair, setKeyPair] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -15,16 +18,11 @@ const Register = () => {
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:3000/register?name=${encodeURIComponent(name)}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            const { ok, data } = await apiFetch('/register', {
+                method: 'POST',
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (ok) {
                 setKeyPair({
                     publicKey: data.publicKey || data.public_key,
                     privateKey: data.privateKey || data.private_key
