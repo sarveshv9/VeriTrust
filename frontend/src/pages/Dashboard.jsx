@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Home, User, BarChart2, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
@@ -106,22 +107,23 @@ const Dashboard = () => {
 
                 <div className="dash-nav-section">
                     <div className="dash-nav-label">Main</div>
-                    <Link to="/dashboard" className="dash-nav-item active">
-                        <span className="nav-icon">📊</span> Dashboard
+                    <Link to="/" className="dash-nav-item">
+                        <Home className="nav-icon" size={18} /> Home
                     </Link>
                     {profile && (
                         <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="dash-nav-item">
-                            <span className="nav-icon">👤</span> Profile
+                            <User className="nav-icon" size={18} /> Profile
                         </Link>
                     )}
-                    <Link to="/" className="dash-nav-item">
-                        <span className="nav-icon">🏠</span> Home
+                    <Link to="/dashboard" className="dash-nav-item active">
+                        <BarChart2 className="nav-icon" size={18} /> Dashboard
                     </Link>
+
                 </div>
 
                 <div className="dash-sidebar-footer">
                     <button onClick={handleLogout} className="dash-logout-btn">
-                        <span className="nav-icon">🚪</span> Logout
+                        <LogOut className="nav-icon" size={18} /> Logout
                     </button>
                 </div>
             </aside>

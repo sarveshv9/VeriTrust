@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Home, User, BarChart2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import WriteReview from '../components/WriteReview';
@@ -73,16 +74,16 @@ const Profile = () => {
                 <div className="prof-nav-section">
                     <div className="prof-nav-label">Navigation</div>
                     <Link to="/" className="prof-nav-item">
-                        <span className="nav-icon">🏠</span> Home
+                        <Home className="nav-icon" size={18} /> Home
                     </Link>
+                    <span className="prof-nav-item active">
+                        <User className="nav-icon" size={18} /> Profile
+                    </span>
                     {isOwnProfile && (
                         <Link to="/dashboard" className="prof-nav-item">
-                            <span className="nav-icon">📊</span> Dashboard
+                            <BarChart2 className="nav-icon" size={18} /> Dashboard
                         </Link>
                     )}
-                    <span className="prof-nav-item active">
-                        <span className="nav-icon">👤</span> Profile
-                    </span>
                 </div>
             </aside>
 
