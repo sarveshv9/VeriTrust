@@ -8,6 +8,10 @@ RUN npm ci --only=production
 
 COPY src/ ./src/
 
+RUN mkdir -p /src/db && chown -R node:node /src/db
+
 EXPOSE 3000
 
-CMD ["npm", "start"]
+USER node
+
+CMD ["node", "src/main.js"]
