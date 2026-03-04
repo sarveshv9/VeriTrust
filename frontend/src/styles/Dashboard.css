@@ -1,0 +1,505 @@
+/* Dashboard — Crypto-style dark green dashboard */
+
+/* ── Page layout ─────────────────────────────────────────── */
+.dashboard-page {
+    display: flex;
+    min-height: 100dvh;
+    width: 100%;
+    background: #0a0f0a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #e8e8e8;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.dash-sidebar {
+    width: 240px;
+    min-height: 100dvh;
+    background: #0d120d;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+.dash-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 36px;
+    padding: 0 8px;
+}
+
+.dash-sidebar-brand img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.dash-nav-section {
+    margin-bottom: 28px;
+}
+
+.dash-nav-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.3);
+    padding: 0 12px;
+    margin-bottom: 8px;
+}
+
+.dash-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 2px;
+}
+
+.dash-nav-item:hover {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dash-nav-item.active {
+    color: #fff;
+    background: #4ade80;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    font-weight: 600;
+}
+
+.dash-nav-item .nav-icon {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.dash-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dash-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.dash-logout-btn:hover {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.08);
+}
+
+/* ── Main content ────────────────────────────────────────── */
+.dash-main {
+    flex: 1;
+    padding: 32px 40px;
+    overflow-y: auto;
+    background: radial-gradient(ellipse at 20% 0%, rgba(34, 197, 94, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(34, 197, 94, 0.03) 0%, transparent 50%),
+        #0a0f0a;
+}
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.dash-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.dash-page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.dash-wallet-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: monospace;
+}
+
+.dash-wallet-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+}
+
+.dash-wallet-copy {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.dash-wallet-copy:hover {
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+/* ── Alerts ──────────────────────────────────────────────── */
+.dash-alert {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.dash-alert-error {
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+    color: #fca5a5;
+}
+
+.dash-alert-success {
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    color: #86efac;
+}
+
+/* ── Stats row ───────────────────────────────────────────── */
+.dash-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.dash-stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 22px 20px;
+}
+
+.dash-stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+}
+
+.dash-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+}
+
+.dash-stat-value.green {
+    color: #4ade80;
+}
+
+.dash-stat-sub {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 4px;
+}
+
+/* ── Grid ────────────────────────────────────────────────── */
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.dash-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.dash-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dash-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+/* ── Form ────────────────────────────────────────────────── */
+.dash-form .dash-field {
+    margin-bottom: 16px;
+}
+
+.dash-form label {
+    display: block;
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.dash-form input {
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+.dash-form input:focus {
+    border-color: rgba(74, 222, 128, 0.5);
+    background: rgba(74, 222, 128, 0.04);
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.08);
+}
+
+.dash-form input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.dash-save-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Inter', sans-serif;
+    margin-top: 4px;
+    letter-spacing: 0.01em;
+}
+
+.dash-save-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.dash-save-btn:active {
+    transform: scale(0.98);
+}
+
+.dash-save-btn:disabled {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.25);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Info list ───────────────────────────────────────────── */
+.dash-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: background 0.2s;
+}
+
+.dash-info-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dash-info-label {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.dash-info-value {
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.dash-info-value.mono {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #4ade80;
+}
+
+/* ── Reviews ─────────────────────────────────────────────── */
+.dash-review-item {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 10px;
+    transition: background 0.2s;
+}
+
+.dash-review-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dash-review-item:last-child {
+    margin-bottom: 0;
+}
+
+.dash-review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.dash-review-stars {
+    color: #fbbf24;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.dash-review-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.dash-review-comment {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 6px 0;
+}
+
+.dash-review-block {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.25);
+    font-family: monospace;
+}
+
+.dash-empty {
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    padding: 28px 0;
+    font-size: 0.9rem;
+}
+
+.dash-view-all {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    color: #4ade80;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.dash-view-all:hover {
+    color: #86efac;
+}
+
+/* ── Welcome card ─────────────────────────────────────────── */
+.dash-welcome {
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.7;
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+/* ── Loading ──────────────────────────────────────────────── */
+.dash-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    width: 100%;
+    background: #0a0f0a;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dash-sidebar {
+        display: none;
+    }
+
+    .dash-main {
+        padding: 24px 16px;
+    }
+
+    .dash-topbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .dash-page-title {
+        font-size: 1.5rem;
+    }
+
+    .dash-stats-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
+import vtLogo from '../assets/VT_logo.png';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
     const { isLoggedIn, user, logout } = useAuth();
@@ -12,55 +14,41 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [copyText, setCopyText] = useState('Copy');
 
-    // Form fields
     const [name, setName] = useState('');
     const [occupation, setOccupation] = useState('');
     const [location, setLocation] = useState('');
     const [contact, setContact] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
-    // Redirect if not logged in
-    useEffect(() => {
-        if (!isLoggedIn) {
-            navigate('/login');
-        }
-    }, [isLoggedIn, navigate]);
+    useEffect(() => { if (!isLoggedIn) navigate('/login'); }, [isLoggedIn, navigate]);
 
-    // Fetch profile on mount
     useEffect(() => {
         if (!user?.publicKey) return;
-
         const fetchProfile = async () => {
             setLoading(true);
             try {
                 const { ok, data } = await apiFetch(`/profile/${encodeURIComponent(user.publicKey)}`);
-
                 if (ok) {
                     setProfile(data.data);
-                    // Pre-fill the form with existing data
                     setName(data.data.name || '');
                     setOccupation(data.data.occupation || '');
                     setLocation(data.data.location || '');
+                    setContact(data.data.contact || '');
                 } else if (data.message === 'Profile not found') {
-                    // No profile yet — user will create one
                     setProfile(null);
                 } else {
                     setError(data.message || 'Failed to load profile');
                 }
-
-                // Fetch reviews for this profile
                 const reviewRes = await apiFetch(`/reviews/${encodeURIComponent(user.publicKey)}`);
-                if (reviewRes.ok) {
-                    setReviews(reviewRes.data.data || []);
-                }
-            } catch (err) {
+                if (reviewRes.ok) setReviews(reviewRes.data.data || []);
+            } catch {
                 setError('Connection error. Is the backend running?');
             } finally {
                 setLoading(false);
             }
         };
-
         fetchProfile();
     }, [user]);
 
@@ -69,148 +57,223 @@ const Dashboard = () => {
         setSubmitting(true);
         setError('');
         setSuccess('');
-
         const isUpdate = !!profile;
-        const method = isUpdate ? 'PUT' : 'POST';
-
         try {
             const { ok, data } = await apiFetch('/profile', {
-                method,
+                method: isUpdate ? 'PUT' : 'POST',
                 body: JSON.stringify({ name, occupation, location, contact }),
             });
-
             if (ok) {
-                setSuccess(isUpdate ? 'Profile updated successfully!' : 'Profile created successfully!');
-                // Re-fetch profile to get updated data
+                setSuccess(isUpdate ? 'Profile updated!' : 'Profile created!');
                 const profileRes = await apiFetch(`/profile/${encodeURIComponent(user.publicKey)}`);
-                if (profileRes.ok) {
-                    setProfile(profileRes.data.data);
-                }
+                if (profileRes.ok) setProfile(profileRes.data.data);
             } else {
                 setError(data.message || 'Failed to save profile');
             }
-        } catch (err) {
-            setError('Connection error. Is the backend running?');
+        } catch {
+            setError('Connection error.');
         } finally {
             setSubmitting(false);
         }
     };
 
-    const handleLogout = () => {
-        logout();
-        navigate('/');
+    const handleLogout = () => { logout(); navigate('/'); };
+
+    const copyKey = () => {
+        if (user?.publicKey) {
+            navigator.clipboard.writeText(user.publicKey);
+            setCopyText('Copied!');
+            setTimeout(() => setCopyText('Copy'), 2000);
+        }
     };
+
+    const truncateKey = (key) => `${key.substring(0, 8)}...${key.substring(key.length - 8)}`;
 
     if (!isLoggedIn) return null;
 
     if (loading) {
-        return (
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <p>Loading your dashboard...</p>
-            </div>
-        );
+        return <div className="dash-loading"><p>Loading dashboard...</p></div>;
     }
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1>Dashboard</h1>
-                <div>
-                    <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-                    <button onClick={handleLogout}>Logout</button>
+        <div className="dashboard-page">
+            {/* ── Sidebar ── */}
+            <aside className="dash-sidebar">
+                <Link to="/" className="dash-sidebar-brand">
+                    <img src={vtLogo} alt="VeriTrust" />
+                    <span>VeriTrust</span>
+                </Link>
+
+                <div className="dash-nav-section">
+                    <div className="dash-nav-label">Main</div>
+                    <Link to="/dashboard" className="dash-nav-item active">
+                        <span className="nav-icon">📊</span> Dashboard
+                    </Link>
+                    {profile && (
+                        <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="dash-nav-item">
+                            <span className="nav-icon">👤</span> Profile
+                        </Link>
+                    )}
+                    <Link to="/" className="dash-nav-item">
+                        <span className="nav-icon">🏠</span> Home
+                    </Link>
                 </div>
-            </div>
 
-            {error && <div style={{ color: 'red', marginBottom: '1rem', padding: '0.5rem', border: '1px solid red' }}>{error}</div>}
-            {success && <div style={{ color: 'green', marginBottom: '1rem', padding: '0.5rem', border: '1px solid green' }}>{success}</div>}
-
-            {/* Profile Form */}
-            <section style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #ccc' }}>
-                <h2>{profile ? 'Edit Profile' : 'Create Profile'}</h2>
-                <form onSubmit={handleSubmitProfile}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label htmlFor="name">Name *</label><br />
-                        <input
-                            id="name"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem' }}
-                        />
-                    </div>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label htmlFor="occupation">Occupation *</label><br />
-                        <input
-                            id="occupation"
-                            type="text"
-                            value={occupation}
-                            onChange={(e) => setOccupation(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem' }}
-                        />
-                    </div>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label htmlFor="location">Location</label><br />
-                        <input
-                            id="location"
-                            type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            style={{ width: '100%', padding: '0.5rem' }}
-                        />
-                    </div>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label htmlFor="contact">Contact Info</label><br />
-                        <input
-                            id="contact"
-                            type="text"
-                            value={contact}
-                            onChange={(e) => setContact(e.target.value)}
-                            style={{ width: '100%', padding: '0.5rem' }}
-                            placeholder="Email, phone, etc."
-                        />
-                    </div>
-                    <button type="submit" disabled={submitting}>
-                        {submitting ? 'Saving...' : (profile ? 'Update Profile' : 'Create Profile')}
+                <div className="dash-sidebar-footer">
+                    <button onClick={handleLogout} className="dash-logout-btn">
+                        <span className="nav-icon">🚪</span> Logout
                     </button>
-                </form>
-            </section>
+                </div>
+            </aside>
 
-            {/* Profile Info */}
-            {profile && (
-                <section style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #ccc' }}>
-                    <h2>Your Profile</h2>
-                    <p><strong>Name:</strong> {profile.name}</p>
-                    <p><strong>Occupation:</strong> {profile.occupation}</p>
-                    <p><strong>Location:</strong> {profile.location || 'Not set'}</p>
-                    <p><strong>Average Rating:</strong> {profile.averageRating || 'No reviews yet'}</p>
-                    <p><strong>Review Count:</strong> {profile.reviewCount}</p>
-                    <p><strong>Registered:</strong> {new Date(profile.registeredAt).toLocaleDateString()}</p>
-                    <p><strong>Block Index:</strong> {profile.blockIndex}</p>
-                    <p style={{ fontSize: '0.8rem', wordBreak: 'break-all' }}>
-                        <strong>Your Public Key:</strong> {user.publicKey?.substring(0, 80)}...
-                    </p>
-                </section>
-            )}
-
-            {/* Reviews Received */}
-            <section style={{ padding: '1rem', border: '1px solid #ccc' }}>
-                <h2>Reviews Received ({reviews.length})</h2>
-                {reviews.length === 0 ? (
-                    <p>No reviews yet.</p>
-                ) : (
-                    reviews.map((review, index) => (
-                        <div key={index} style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                            <p><strong>Rating:</strong> {'⭐'.repeat(review.rating)} ({review.rating}/5)</p>
-                            <p>{review.comment}</p>
-                            <p style={{ fontSize: '0.8rem', color: '#666' }}>
-                                {new Date(review.timestamp).toLocaleDateString()} | Block #{review.blockIndex}
-                            </p>
+            {/* ── Main content ── */}
+            <main className="dash-main">
+                {/* Top bar */}
+                <div className="dash-topbar">
+                    <h1 className="dash-page-title">Dashboard</h1>
+                    {user?.publicKey && (
+                        <div className="dash-wallet-pill">
+                            <span className="dash-wallet-dot"></span>
+                            <span>{truncateKey(user.publicKey)}</span>
+                            <button onClick={copyKey} className="dash-wallet-copy">{copyText}</button>
                         </div>
-                    ))
+                    )}
+                </div>
+
+                {error && <div className="dash-alert dash-alert-error">{error}</div>}
+                {success && <div className="dash-alert dash-alert-success">{success}</div>}
+
+                {/* Stats row */}
+                {profile && (
+                    <div className="dash-stats-row">
+                        <div className="dash-stat-card">
+                            <div className="dash-stat-label">Average Rating</div>
+                            <div className="dash-stat-value green">
+                                {profile.averageRating ? profile.averageRating : '—'}
+                            </div>
+                            <div className="dash-stat-sub">out of 5.0</div>
+                        </div>
+                        <div className="dash-stat-card">
+                            <div className="dash-stat-label">Total Reviews</div>
+                            <div className="dash-stat-value">{profile.reviewCount}</div>
+                            <div className="dash-stat-sub">received</div>
+                        </div>
+                        <div className="dash-stat-card">
+                            <div className="dash-stat-label">Block Index</div>
+                            <div className="dash-stat-value">#{profile.blockIndex}</div>
+                            <div className="dash-stat-sub">on chain</div>
+                        </div>
+                        <div className="dash-stat-card">
+                            <div className="dash-stat-label">Status</div>
+                            <div className="dash-stat-value green">Active</div>
+                            <div className="dash-stat-sub">verified</div>
+                        </div>
+                    </div>
                 )}
-            </section>
+
+                {/* Two-column grid */}
+                <div className="dash-grid">
+                    {/* Left: Edit form */}
+                    <div className="dash-card">
+                        <div className="dash-card-head">
+                            <h3 className="dash-card-title">{profile ? 'Edit Profile' : 'Create Profile'}</h3>
+                        </div>
+                        <form onSubmit={handleSubmitProfile} className="dash-form">
+                            <div className="dash-field">
+                                <label htmlFor="name">Full Name *</label>
+                                <input id="name" type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="John Doe" />
+                            </div>
+                            <div className="dash-field">
+                                <label htmlFor="occupation">Occupation *</label>
+                                <input id="occupation" type="text" value={occupation} onChange={e => setOccupation(e.target.value)} required placeholder="Freelance Designer" />
+                            </div>
+                            <div className="dash-field">
+                                <label htmlFor="location">Location</label>
+                                <input id="location" type="text" value={location} onChange={e => setLocation(e.target.value)} placeholder="City, Country" />
+                            </div>
+                            <div className="dash-field">
+                                <label htmlFor="contact">Contact</label>
+                                <input id="contact" type="text" value={contact} onChange={e => setContact(e.target.value)} placeholder="Email or website" />
+                            </div>
+                            <button type="submit" disabled={submitting} className="dash-save-btn">
+                                {submitting ? 'Saving...' : (profile ? 'Update Profile' : 'Create Profile')}
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Right column */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                        {profile ? (
+                            <div className="dash-card">
+                                <div className="dash-card-head">
+                                    <h3 className="dash-card-title">Account Details</h3>
+                                </div>
+                                <div className="dash-info-list">
+                                    <div className="dash-info-row">
+                                        <span className="dash-info-label">Name</span>
+                                        <span className="dash-info-value">{profile.name}</span>
+                                    </div>
+                                    <div className="dash-info-row">
+                                        <span className="dash-info-label">Occupation</span>
+                                        <span className="dash-info-value">{profile.occupation}</span>
+                                    </div>
+                                    <div className="dash-info-row">
+                                        <span className="dash-info-label">Location</span>
+                                        <span className="dash-info-value">{profile.location || '—'}</span>
+                                    </div>
+                                    <div className="dash-info-row">
+                                        <span className="dash-info-label">Registered</span>
+                                        <span className="dash-info-value">{new Date(profile.registeredAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className="dash-info-row">
+                                        <span className="dash-info-label">Public Key</span>
+                                        <span className="dash-info-value mono">{truncateKey(user.publicKey)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="dash-card">
+                                <div className="dash-card-head">
+                                    <h3 className="dash-card-title">Welcome to VeriTrust</h3>
+                                </div>
+                                <p className="dash-welcome">
+                                    You haven't created your profile yet. Fill out the form to register on the blockchain and start building your trusted reputation.
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Reviews */}
+                        <div className="dash-card">
+                            <div className="dash-card-head">
+                                <h3 className="dash-card-title">Recent Reviews</h3>
+                            </div>
+                            {reviews.length === 0 ? (
+                                <p className="dash-empty">No reviews received yet.</p>
+                            ) : (
+                                <>
+                                    {reviews.slice(0, 4).map((review, i) => (
+                                        <div key={i} className="dash-review-item">
+                                            <div className="dash-review-top">
+                                                <span className="dash-review-stars">
+                                                    {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                                                </span>
+                                                <span className="dash-review-date">{new Date(review.timestamp).toLocaleDateString()}</span>
+                                            </div>
+                                            <p className="dash-review-comment">"{review.comment}"</p>
+                                            <span className="dash-review-block">Block #{review.blockIndex}</span>
+                                        </div>
+                                    ))}
+                                    {reviews.length > 4 && (
+                                        <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="dash-view-all">
+                                            View all {reviews.length} reviews →
+                                        </Link>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     );
 };

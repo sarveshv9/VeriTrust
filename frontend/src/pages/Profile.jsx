@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import WriteReview from '../components/WriteReview';
+import vtLogo from '../assets/VT_logo.png';
+import '../styles/Profile.css';
 
 const Profile = () => {
     const { publicKey } = useParams();
@@ -22,11 +24,8 @@ const Profile = () => {
     const fetchData = useCallback(async () => {
         setLoading(true);
         setError('');
-
         try {
-            // Fetch profile
             const profileRes = await apiFetch(`/profile/${encodeURIComponent(decodedKey)}`);
-
             if (profileRes.ok) {
                 setProfile(profileRes.data.data);
             } else {
@@ -34,107 +33,141 @@ const Profile = () => {
                 setLoading(false);
                 return;
             }
-
-            // Fetch reviews
             const reviewRes = await apiFetch(`/reviews/${encodeURIComponent(decodedKey)}?offset=${offset}&limit=${limit}`);
             if (reviewRes.ok) {
                 setReviews(reviewRes.data.data || []);
                 setTotalReviews(reviewRes.data.total || 0);
             }
-        } catch (err) {
+        } catch {
             setError('Connection error. Is the backend running?');
         } finally {
             setLoading(false);
         }
     }, [decodedKey, offset]);
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    const handleReviewPosted = () => {
-        // Refresh both profile (for updated rating) and reviews
-        fetchData();
-    };
+    useEffect(() => { fetchData(); }, [fetchData]);
+    const handleReviewPosted = () => fetchData();
 
     if (loading) {
-        return (
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <p>Loading profile...</p>
-            </div>
-        );
+        return <div className="prof-loading"><p>Loading profile...</p></div>;
     }
 
     if (error) {
         return (
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <p style={{ color: 'red' }}>{error}</p>
-                <Link to="/">← Back to Home</Link>
+            <div className="prof-error">
+                <p className="prof-error-text">{error}</p>
+                <Link to="/" className="prof-error-link">← Back to Home</Link>
             </div>
         );
     }
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '1rem' }}>
-                <Link to="/">← Home</Link>
-                {isOwnProfile && <Link to="/dashboard" style={{ marginLeft: '1rem' }}>Dashboard</Link>}
-            </div>
+        <div className="profile-page">
+            {/* ── Sidebar ── */}
+            <aside className="prof-sidebar">
+                <Link to="/" className="prof-sidebar-brand">
+                    <img src={vtLogo} alt="VeriTrust" />
+                    <span>VeriTrust</span>
+                </Link>
 
-            {/* Profile Info */}
-            <section style={{ padding: '1rem', border: '1px solid #ccc', marginBottom: '1rem' }}>
-                <h1>{profile.name}</h1>
-                <p><strong>Occupation:</strong> {profile.occupation}</p>
-                <p><strong>Location:</strong> {profile.location || 'Not specified'}</p>
-                <p><strong>Average Rating:</strong> {profile.averageRating ? `${profile.averageRating}/5` : 'No reviews yet'}</p>
-                <p><strong>Reviews:</strong> {profile.reviewCount}</p>
-                <p><strong>Registered:</strong> {new Date(profile.registeredAt).toLocaleDateString()}</p>
-                <p style={{ fontSize: '0.8rem', color: '#666' }}>
-                    <strong>Block:</strong> #{profile.blockIndex}
-                </p>
-            </section>
+                <div className="prof-nav-section">
+                    <div className="prof-nav-label">Navigation</div>
+                    <Link to="/" className="prof-nav-item">
+                        <span className="nav-icon">🏠</span> Home
+                    </Link>
+                    {isOwnProfile && (
+                        <Link to="/dashboard" className="prof-nav-item">
+                            <span className="nav-icon">📊</span> Dashboard
+                        </Link>
+                    )}
+                    <span className="prof-nav-item active">
+                        <span className="nav-icon">👤</span> Profile
+                    </span>
+                </div>
+            </aside>
 
-            {/* Write Review (only if viewing someone else's profile and logged in) */}
-            {!isOwnProfile && (
-                <WriteReview subjectKey={decodedKey} onReviewPosted={handleReviewPosted} />
-            )}
+            {/* ── Main content ── */}
+            <main className="prof-main">
+                <div className="prof-topbar">
+                    <h1 className="prof-page-title">Profile</h1>
+                </div>
 
-            {/* Reviews List */}
-            <section style={{ padding: '1rem', border: '1px solid #ccc', marginTop: '1rem' }}>
-                <h2>Reviews ({totalReviews})</h2>
-                {reviews.length === 0 ? (
-                    <p>No reviews yet.</p>
-                ) : (
-                    reviews.map((review, index) => (
-                        <div key={index} style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                            <p><strong>Rating:</strong> {'⭐'.repeat(review.rating)} ({review.rating}/5)</p>
-                            <p>{review.comment}</p>
-                            <p style={{ fontSize: '0.8rem', color: '#666' }}>
-                                {new Date(review.timestamp).toLocaleDateString()} | Block #{review.blockIndex}
-                            </p>
-                        </div>
-                    ))
-                )}
-
-                {/* Pagination */}
-                {totalReviews > limit && (
-                    <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-                        <button
-                            disabled={offset === 0}
-                            onClick={() => setOffset(Math.max(0, offset - limit))}
-                        >
-                            ← Previous
-                        </button>
-                        <span>Page {Math.floor(offset / limit) + 1} of {Math.ceil(totalReviews / limit)}</span>
-                        <button
-                            disabled={offset + limit >= totalReviews}
-                            onClick={() => setOffset(offset + limit)}
-                        >
-                            Next →
-                        </button>
+                {/* Hero card */}
+                <div className="prof-hero-card">
+                    <div className="prof-identity">
+                        <h2 className="prof-name">{profile.name}</h2>
+                        <p className="prof-occupation">{profile.occupation}</p>
                     </div>
+
+                    <div className="prof-stats">
+                        <div className="prof-stat">
+                            <div className="prof-stat-value green">
+                                {profile.averageRating || '—'}
+                            </div>
+                            <div className="prof-stat-label">Avg Rating</div>
+                        </div>
+                        <div className="prof-stat">
+                            <div className="prof-stat-value">{profile.reviewCount}</div>
+                            <div className="prof-stat-label">Reviews</div>
+                        </div>
+                        <div className="prof-stat">
+                            <div className="prof-stat-value">{profile.location || '—'}</div>
+                            <div className="prof-stat-label">Location</div>
+                        </div>
+                        <div className="prof-stat">
+                            <div className="prof-stat-value">{new Date(profile.registeredAt).toLocaleDateString()}</div>
+                            <div className="prof-stat-label">Registered</div>
+                        </div>
+                    </div>
+
+                    <div className="prof-block-footer">
+                        Blockchain Verification · Block #{profile.blockIndex}
+                    </div>
+                </div>
+
+                {/* Write Review */}
+                {!isOwnProfile && (
+                    <WriteReview subjectKey={decodedKey} onReviewPosted={handleReviewPosted} />
                 )}
-            </section>
+
+                {/* Reviews card */}
+                <div className="prof-reviews-card">
+                    <div className="prof-reviews-head">
+                        <h2 className="prof-reviews-title">Reviews ({totalReviews})</h2>
+                    </div>
+
+                    {reviews.length === 0 ? (
+                        <p className="prof-empty">No reviews yet. Be the first to leave one!</p>
+                    ) : (
+                        reviews.map((review, i) => (
+                            <div key={i} className="prof-review-item">
+                                <div className="prof-review-top">
+                                    <span className="prof-review-stars">
+                                        {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                                    </span>
+                                    <span className="prof-review-date">{new Date(review.timestamp).toLocaleDateString()}</span>
+                                </div>
+                                <p className="prof-review-comment">"{review.comment}"</p>
+                                <span className="prof-review-block">Block #{review.blockIndex}</span>
+                            </div>
+                        ))
+                    )}
+
+                    {totalReviews > limit && (
+                        <div className="prof-pagination">
+                            <button className="prof-page-btn" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - limit))}>
+                                ← Previous
+                            </button>
+                            <span className="prof-page-info">
+                                Page {Math.floor(offset / limit) + 1} of {Math.ceil(totalReviews / limit)}
+                            </span>
+                            <button className="prof-page-btn" disabled={offset + limit >= totalReviews} onClick={() => setOffset(offset + limit)}>
+                                Next →
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </main>
         </div>
     );
 };
