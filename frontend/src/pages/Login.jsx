@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../utils/api';
 import '../styles/Login.css';
 import bgImage from '../assets/BG.png';
 import vtLogo from '../assets/VT_logo.png';
@@ -7,6 +10,8 @@ const Login = () => {
     const [privateKey, setPrivateKey] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -38,28 +43,16 @@ const Login = () => {
         setError('');
 
         try {
-            // Backend expects POST /login with private key
-            const response = await fetch('http://localhost:3000/login', { // change
+            const { ok, data } = await apiFetch('/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ private_key: privateKey })
+                body: JSON.stringify({ private_key: privateKey }),
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                // Assuming the backend sends a JWT token
+            if (ok) {
                 const token = data.token || data.jwt;
                 if (token) {
-                    localStorage.setItem('veritrust_token', token);
-                    // Also store user info if provided
-                    if (data.user) {
-                        localStorage.setItem('veritrust_user', JSON.stringify(data.user));
-                    }
-                    // Redirect to profile page
-                    window.location.href = '/profile';
+                    login(token, data.user || {});
+                    navigate('/dashboard');
                 } else {
                     setError('Login successful, but no token received.');
                 }
