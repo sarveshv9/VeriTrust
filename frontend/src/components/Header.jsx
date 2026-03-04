@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 // 'prop-types' import removed as requested
 
 import '../styles/Header.css';
@@ -435,6 +436,13 @@ NavigationComponent.displayName = 'NavigationComponent';
 const Header = () => {
   const [navPortal, setNavPortal] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   // --- Optimization: Portal Creation ---
   // This effect runs only once on mount to find/create the portal target.
@@ -496,8 +504,17 @@ const Header = () => {
           {Logo}
           <div className="nav-placeholder"></div>
           <div className="header-actions">
-            <a href="/login" className="auth-btn login-btn">Login</a>
-            <a href="/register" className="auth-btn register-btn">Register</a>
+            {isLoggedIn ? (
+              <>
+                <Link to="/dashboard" className="auth-btn login-btn">Dashboard</Link>
+                <button onClick={handleLogout} className="auth-btn register-btn">Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="auth-btn login-btn">Login</Link>
+                <Link to="/register" className="auth-btn register-btn">Register</Link>
+              </>
+            )}
             <button
               className="mobile-menu-toggle"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
