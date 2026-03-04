@@ -6,12 +6,14 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />

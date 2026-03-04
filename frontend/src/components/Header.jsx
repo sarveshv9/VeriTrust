@@ -208,10 +208,8 @@ const NavigationComponent = React.memo(({ onScrollTo, isOpen, closeMenu }) => {
     const navLinks = navLinksRef.current;
     const dots = dotsRef.current;
 
-    let mm = gsap.matchMedia();
-
     // Desktop animations
-    mm.add("(min-width: 769px)", () => {
+    gsap.matchMedia().add("(min-width: 769px)", () => {
       let currentScrollProgress = 0;
       let isHovered = false;
 
@@ -382,14 +380,19 @@ const NavigationComponent = React.memo(({ onScrollTo, isOpen, closeMenu }) => {
         }
       };
 
-      navContainer.addEventListener('mouseenter', handleMouseEnter);
-      navContainer.addEventListener('mouseleave', handleMouseLeave);
+      if (navContainer) {
+        navContainer.addEventListener('mouseenter', handleMouseEnter);
+        navContainer.addEventListener('mouseleave', handleMouseLeave);
+      }
 
       return () => {
-        mm.revert();
+        if (navContainer) {
+          navContainer.removeEventListener('mouseenter', handleMouseEnter);
+          navContainer.removeEventListener('mouseleave', handleMouseLeave);
+        }
       };
-    }); // end mm.add
-  }, []); // Empty dependency array prevents infinite re-renders without breaking external GSAP selectors
+    }); // end matchMedia
+  }, { scope: navRef }); // useGSAP scope dependency
 
   return (
     <div

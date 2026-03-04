@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 
@@ -116,7 +116,7 @@ const Dashboard = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h1>Dashboard</h1>
                 <div>
-                    <a href="/" style={{ marginRight: '1rem' }}>Home</a>
+                    <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
                     <button onClick={handleLogout}>Logout</button>
                 </div>
             </div>

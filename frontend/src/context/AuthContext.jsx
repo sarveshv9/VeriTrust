@@ -3,25 +3,18 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [token, setToken] = useState(null);
-    const [user, setUser] = useState(null);
-
-    // Restore session from localStorage on mount
-    useEffect(() => {
-        const savedToken = localStorage.getItem("veritrust_token");
+    const [token, setToken] = useState(() => localStorage.getItem("veritrust_token"));
+    const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem("veritrust_user");
-
-        if (savedToken) {
-            setToken(savedToken);
-        }
         if (savedUser) {
             try {
-                setUser(JSON.parse(savedUser));
+                return JSON.parse(savedUser);
             } catch {
-                // Corrupted user data — ignore
+                return null;
             }
         }
-    }, []);
+        return null;
+    });
 
     const login = (newToken, userData) => {
         localStorage.setItem("veritrust_token", newToken);
