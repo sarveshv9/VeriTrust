@@ -1,0 +1,226 @@
+/* ============================================
+   BLOCKCHAIN VISUALIZER — DARK NEOBRUTALISM
+   ============================================ */
+
+.blockchain-visualizer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0px var(--neo-accent-cyan);
+}
+
+.blockchain-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--neo-border-color);
+}
+
+.blockchain-header h3 {
+    font-family: var(--neo-font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neo-text);
+    margin: 0 0 0.4rem 0;
+}
+
+.blockchain-header p {
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    font-size: 0.78rem;
+    margin: 0;
+}
+
+/* ── Scroll container ───────────────────── */
+.blockchain-scroll-container {
+    display: flex;
+    gap: 0;
+    /* No gap — blocks connected by links */
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neo-accent-cyan) var(--neo-surface-light);
+}
+
+.blockchain-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-track {
+    background: var(--neo-surface-light);
+    border-radius: 6px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--neo-accent-cyan);
+    border-radius: 6px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: var(--neo-accent-yellow);
+}
+
+/* ── Block card wrapper ─────────────────── */
+.block-card-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.block-card {
+    background: var(--neo-surface-light);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    width: 240px;
+    padding: 1rem;
+    transition: box-shadow 0.1s, transform 0.1s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.block-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--neo-accent-cyan);
+    border-color: var(--neo-accent-cyan);
+}
+
+/* Genesis block has yellow accent */
+.block-card.genesis {
+    border-left: 4px solid var(--neo-accent-yellow);
+    box-shadow: 4px 4px 0px var(--neo-accent-yellow);
+}
+
+.block-card.genesis:hover {
+    box-shadow: 6px 6px 0px var(--neo-accent-yellow);
+    border-color: var(--neo-accent-yellow);
+}
+
+/* Other blocks get cyan */
+.block-card:not(.genesis) {
+    border-left: 4px solid var(--neo-accent-cyan);
+}
+
+/* ── Block head ─────────────────────────── */
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.6rem;
+}
+
+.block-index {
+    font-family: var(--neo-font-heading);
+    font-weight: 700;
+    color: var(--neo-text);
+    font-size: 1.1rem;
+}
+
+.block-badge {
+    background: rgba(0, 245, 212, 0.1);
+    color: var(--neo-accent-cyan);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: var(--neo-font-heading);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--neo-accent-cyan);
+}
+
+.block-badge.genesis {
+    background: rgba(245, 230, 66, 0.1);
+    color: var(--neo-accent-yellow);
+    border-color: var(--neo-accent-yellow);
+}
+
+/* ── Block details ──────────────────────── */
+.block-detail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+}
+
+.block-detail-label {
+    font-family: var(--neo-font-heading);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: var(--neo-text-muted);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.1em;
+}
+
+.block-detail-value {
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text);
+    word-break: break-all;
+}
+
+.block-detail-value.hash {
+    color: var(--neo-accent-cyan);
+}
+
+.block-detail-value.time {
+    color: var(--neo-text-muted);
+}
+
+/* ── Transactions ───────────────────────── */
+.block-transactions {
+    margin-top: 1rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tx-count {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-family: var(--neo-font-heading);
+    font-weight: 700;
+    font-size: 0.72rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ── Chain link arrow ───────────────────── */
+.chain-link {
+    color: var(--neo-accent-yellow);
+    font-size: 1.2rem;
+    margin: 0 8px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ── States ─────────────────────────────── */
+.empty-state {
+    padding: 2.5rem;
+    text-align: center;
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+}
+
+.loading-state {
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--neo-font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neo-accent-cyan);
+}

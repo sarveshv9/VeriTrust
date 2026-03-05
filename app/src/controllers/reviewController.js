@@ -34,15 +34,7 @@ const reviewController = {
           .json({ success: false, message: "Subject profile not found" });
       }
 
-      // One review per person
-      if (blockchain.hasReviewed(reviewerKey, subjectKey)) {
-        return res
-          .status(409)
-          .json({
-            success: false,
-            message: "You have already reviewed this person",
-          });
-      }
+
 
       const block = blockchain.addTransaction({
         type: "POST_REVIEW",

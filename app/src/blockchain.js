@@ -116,6 +116,62 @@ function getProfile(publicKey) {
   return profile; // null if not found
 }
 
+// Get all profiles (latest state of each)
+function getAllProfiles() {
+  const chain = loadChain();
+  const profilesMap = new Map();
+
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "REGISTER_PROFILE" || tx.type === "UPDATE_PROFILE") {
+        profilesMap.set(tx.publicKey, {
+          ...tx,
+          blockIndex: block.index,
+          blockHash: block.hash,
+          timestamp: block.timestamp,
+        });
+      }
+    }
+  }
+  // Return early if no profiles
+  if (profilesMap.size === 0) return [];
+
+  // Fetch all reviews to compute reviewCount and averageRating
+  const allReviewsMap = new Map();
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "POST_REVIEW") {
+        if (!allReviewsMap.has(tx.subjectKey)) {
+          allReviewsMap.set(tx.subjectKey, []);
+        }
+        allReviewsMap.get(tx.subjectKey).push(tx);
+      }
+    }
+  }
+
+  const profiles = [];
+  for (const profile of profilesMap.values()) {
+    const reviews = allReviewsMap.get(profile.publicKey) || [];
+    const avg = reviews.length
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(2)
+      : null;
+
+    profiles.push({
+      publicKey: profile.publicKey,
+      name: profile.name,
+      occupation: profile.occupation,
+      location: profile.location,
+      contactHash: profile.contactHash,
+      registeredAt: profile.timestamp,
+      blockIndex: profile.blockIndex,
+      reviewCount: reviews.length,
+      averageRating: avg ? parseFloat(avg) : null,
+    });
+  }
+
+  return profiles;
+}
+
 // Get all reviews for a given publicKey
 function getReviews(publicKey) {
   const chain = loadChain();
@@ -176,12 +232,18 @@ function getChainInfo() {
   };
 }
 
+// Get full chain
+function getFullChain() {
+  return loadChain();
+}
+
 module.exports = {
   addTransaction,
   getProfile,
+  getAllProfiles,
   getReviews,
   hasReviewed,
-  totalProfiles,
   getChainInfo,
   getAllTransactions,
+  getFullChain,
 };

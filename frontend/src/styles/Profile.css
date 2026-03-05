@@ -1,0 +1,447 @@
+/* ============================================
+   PROFILE — DARK NEOBRUTALISM
+   ============================================ */
+
+.profile-page {
+    display: flex;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
+}
+
+/* ── Sidebar — mirrors Dashboard sidebar ────── */
+.prof-sidebar {
+    width: 240px;
+    height: 100%;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: var(--neo-surface);
+    border-right: 2px solid var(--neo-border-color);
+}
+
+.prof-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    padding: 0 4px;
+}
+
+.prof-sidebar-brand img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.prof-nav-section {
+    margin-bottom: 24px;
+}
+
+.prof-nav-label {
+    font-family: var(--neo-font-heading);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--neo-text-muted);
+    padding: 0 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.prof-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+}
+
+.prof-nav-item:hover {
+    color: var(--neo-text);
+    background: var(--neo-surface-light);
+    border-color: var(--neo-border-color);
+}
+
+.prof-nav-item.active {
+    color: #000;
+    background: var(--neo-accent-yellow);
+    border-color: #000;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.prof-nav-item .nav-icon {
+    font-size: 1rem;
+    width: 18px;
+    text-align: center;
+}
+
+.prof-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid var(--neo-border-color);
+}
+
+.prof-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none;
+}
+
+.prof-logout-btn:hover {
+    color: var(--neo-accent-orange) !important;
+    background: transparent !important;
+    border-color: var(--neo-accent-orange);
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── Main content ─────────────────────────── */
+.prof-main {
+    flex: 1;
+    padding: 36px 44px;
+    overflow-y: auto;
+    height: 100%;
+    background: var(--neo-bg);
+}
+
+/* ── Top bar ──────────────────────────────── */
+.prof-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--neo-border-color);
+}
+
+.prof-page-title {
+    font-family: var(--neo-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+/* ── Hero card ───────────────────────────── */
+.prof-hero-card {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0px var(--neo-accent-cyan);
+    padding: 32px;
+    margin-bottom: 20px;
+}
+
+.prof-identity {
+    margin-bottom: 28px;
+}
+
+.prof-name {
+    font-family: var(--neo-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0 0 6px 0;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.prof-occupation {
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.prof-block-footer {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 2px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--neo-font-body);
+    font-size: 0.7rem;
+    color: var(--neo-text-muted);
+}
+
+/* ── Stats row ──────────────────────────── */
+.prof-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.prof-stat {
+    padding: 18px 14px;
+    background: var(--neo-surface-light);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.prof-stat-value {
+    font-family: var(--neo-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin-bottom: 4px;
+    line-height: 1;
+}
+
+.prof-stat-value.green {
+    color: var(--neo-accent-cyan);
+}
+
+.prof-stat-label {
+    font-family: var(--neo-font-heading);
+    font-size: 0.6rem;
+    color: var(--neo-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+/* ── Reviews card ───────────────────────── */
+.prof-reviews-card {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0px #000;
+    padding: 24px;
+}
+
+.prof-reviews-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--neo-border-color);
+}
+
+.prof-reviews-title {
+    font-family: var(--neo-font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--neo-text);
+    margin: 0;
+}
+
+.prof-review-item {
+    padding: 14px 16px;
+    background: var(--neo-surface-light);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: none;
+}
+
+.prof-review-item:hover {
+    border-color: var(--neo-border-color);
+    box-shadow: 3px 3px 0px #000;
+}
+
+.prof-review-item:last-child {
+    margin-bottom: 0;
+}
+
+.prof-review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.prof-review-stars {
+    color: var(--neo-accent-yellow);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.prof-review-date {
+    font-family: var(--neo-font-body);
+    font-size: 0.72rem;
+    color: var(--neo-text-muted);
+}
+
+.prof-review-comment {
+    font-family: var(--neo-font-body);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0 0 8px 0;
+}
+
+.prof-review-block {
+    font-family: var(--neo-font-body);
+    font-size: 0.68rem;
+    color: var(--neo-text-muted);
+}
+
+.prof-empty {
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    text-align: center;
+    padding: 32px 0;
+    font-size: 0.85rem;
+    border: 2px dashed rgba(255, 255, 255, 0.12);
+}
+
+/* ── Pagination ─────────────────────────── */
+.prof-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.prof-page-btn {
+    color: var(--neo-text-muted);
+    background: var(--neo-surface-light);
+    border: 2px solid var(--neo-border-color);
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    box-shadow: 3px 3px 0px #000;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.prof-page-btn:hover:not(:disabled) {
+    background: var(--neo-accent-yellow);
+    color: #000;
+    border-color: #000;
+    box-shadow: 0px 0px 0px #000;
+    transform: translate(3px, 3px);
+}
+
+.prof-page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.prof-page-info {
+    font-family: var(--neo-font-body);
+    font-size: 0.75rem;
+    color: var(--neo-text-muted);
+}
+
+/* ── Loading & Error ────────────────────── */
+.prof-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    width: 100%;
+    background: var(--neo-bg);
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-heading);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.prof-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    width: 100%;
+    background: var(--neo-bg);
+    gap: 20px;
+}
+
+.prof-error-text {
+    font-family: var(--neo-font-heading);
+    color: var(--neo-accent-orange);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+.prof-error-link {
+    color: var(--neo-text);
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    font-family: var(--neo-font-heading);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    box-shadow: 4px 4px 0px var(--neo-accent-yellow);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.prof-error-link:hover {
+    box-shadow: 0px 0px 0px var(--neo-accent-yellow);
+    transform: translate(4px, 4px);
+    color: var(--neo-text);
+}
+
+/* ── Responsive ─────────────────────────── */
+@media (max-width: 768px) {
+    .prof-sidebar {
+        display: none;
+    }
+
+    .prof-main {
+        padding: 24px 16px;
+    }
+
+    .prof-name {
+        font-size: 1.8rem;
+    }
+
+    .prof-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .prof-hero-card {
+        padding: 24px;
+    }
+}

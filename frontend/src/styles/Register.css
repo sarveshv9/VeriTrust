@@ -1,157 +1,240 @@
+/* ============================================
+   REGISTER PAGE — DARK NEOBRUTALISM
+   ============================================ */
+
 .register-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
-    background: linear-gradient(135deg, #121212 0%, #1e1e2f 100%);
-    color: white;
-    padding: 20px;
+    padding: 40px 20px;
     box-sizing: border-box;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 40px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+/* Shared .auth-wrapper, .auth-side-image, .auth-logo etc. are styled in Login.css */
+/* Register entry label */
+.register-container .auth-form-content::before {
+    content: 'Register';
+    display: block;
+    font-family: var(--neo-font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--neo-accent-green);
+    margin-bottom: 12px;
+    opacity: 0.7;
 }
 
-.glass-card h2 {
-    margin-top: 0;
-    margin-bottom: 24px;
-    text-align: center;
-    font-size: 2rem;
-    background: linear-gradient(90deg, #646cff, #a78bfa);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Override Login.css ::before for the wrapper */
+.register-container .auth-wrapper {
+    box-shadow: 8px 8px 0px var(--neo-accent-green);
 }
 
+.register-container .auth-logo {
+    color: var(--neo-accent-green);
+}
+
+.register-container .auth-quote h3 {
+    color: var(--neo-accent-green);
+}
+
+.register-container .indicator.active {
+    background: var(--neo-accent-green);
+}
+
+/* === Input group spacing === */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+}
+
+/* === Checkbox Group === */
+.checkbox-group {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
-.input-group label {
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #ccc;
-}
-
-.input-group input {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-    color: white;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-.input-group input:focus {
-    border-color: #646cff;
-}
-
-.submit-btn,
-.export-btn {
-    width: 100%;
-    padding: 14px;
-    border-radius: 8px;
-    border: none;
-    background: #646cff;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
+.checkbox-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    background: var(--neo-surface-light);
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.1s ease;
-    margin-top: 10px;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: none;
 }
 
-.submit-btn:hover,
-.export-btn:hover {
-    background: #535bf2;
+.checkbox-group input[type="checkbox"]:checked {
+    background: var(--neo-accent-green);
+    border-color: var(--neo-accent-green);
 }
 
-.submit-btn:active,
-.export-btn:active {
-    transform: scale(0.98);
+.checkbox-group input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #000;
+    font-size: 13px;
+    font-weight: 700;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.submit-btn:disabled {
-    background: #444;
-    cursor: not-allowed;
+.checkbox-group label {
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    color: var(--neo-text-muted);
+    user-select: none;
+    line-height: 1.5;
 }
 
+.checkbox-group label a {
+    color: var(--neo-accent-green);
+    text-decoration: none;
+    border-bottom: 1px solid var(--neo-accent-green);
+}
+
+.checkbox-group label a:hover {
+    color: var(--neo-accent-yellow);
+    border-bottom-color: var(--neo-accent-yellow);
+}
+
+/* === Submit button === */
+.register-submit {
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    background-color: var(--neo-accent-green);
+    color: #000;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.register-submit:hover {
+    background-color: var(--neo-accent-green) !important;
+}
+
+/* === Error and Success messages === */
 .error-message {
-    color: #ff6b6b;
-    font-size: 0.9rem;
-    margin-bottom: 16px;
-    text-align: center;
+    color: var(--neo-accent-orange);
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--neo-accent-orange);
+    padding-left: 10px;
 }
 
 .success-message {
-    color: #51cf66;
+    color: var(--neo-accent-green);
+    font-family: var(--neo-font-heading);
     font-size: 1.1rem;
-    font-weight: bold;
-    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
     margin-bottom: 10px;
 }
 
 .warning-text {
-    color: #ffd43b;
-    font-size: 0.85rem;
-    text-align: center;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
     margin-bottom: 20px;
+    line-height: 1.5;
+    border-left: 3px solid var(--neo-accent-yellow);
+    padding-left: 10px;
+}
+
+/* === Key display boxes (post-register keys screen) === */
+.keys-container {
+    animation: neoReveal 0.2s ease forwards;
 }
 
 .key-box {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .key-box label {
     display: block;
-    font-size: 0.85rem;
-    color: #ccc;
-    margin-bottom: 6px;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--neo-text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
 }
 
 .key-box textarea {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.3);
-    color: #a78bfa;
-    font-family: monospace;
-    font-size: 0.85rem;
+    padding: 12px;
+    border-radius: 6px;
+    border: 2px solid var(--neo-border-color);
+    background: var(--neo-surface-light);
+    color: var(--neo-accent-cyan);
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
     resize: vertical;
-    min-height: 80px;
+    min-height: 75px;
     outline: none;
     word-break: break-all;
     box-sizing: border-box;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+    transition: none;
 }
 
+.key-box textarea:focus {
+    border-color: var(--neo-accent-cyan);
+    box-shadow: 4px 4px 0px var(--neo-accent-cyan);
+}
+
+/* === Login link post-register === */
 .login-link {
-    margin-top: 20px;
+    margin-top: 24px;
     text-align: center;
 }
 
 .login-link a {
-    color: #ccc;
+    color: var(--neo-accent-cyan);
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
+    font-family: var(--neo-font-heading);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 2px solid var(--neo-accent-cyan);
+    padding-bottom: 2px;
 }
 
 .login-link a:hover {
-    color: #646cff;
-    text-decoration: underline;
+    color: var(--neo-accent-yellow);
+    border-bottom-color: var(--neo-accent-yellow);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .register-container .auth-wrapper {
+        flex-direction: column;
+        box-shadow: 4px 4px 0px var(--neo-accent-green);
+    }
+
+    .auth-side-image {
+        min-height: 220px;
+        flex: none;
+        border-right: none;
+        border-bottom: 2px solid var(--neo-border-color);
+    }
+
+    .auth-side-form {
+        padding: 30px 24px;
+    }
 }

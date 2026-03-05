@@ -21,7 +21,6 @@ const Home = () => {
 
     return (
         <>
-            <div id="nav-portal"></div>
             <div className="smooth-wrapper">
                 <div className="smooth-content">
                     {/* Container for Header and Hero */}

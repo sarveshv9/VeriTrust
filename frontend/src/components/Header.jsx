@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 // 'prop-types' import removed as requested
 
 import '../styles/Header.css';
@@ -206,10 +208,8 @@ const NavigationComponent = React.memo(({ onScrollTo, isOpen, closeMenu }) => {
     const navLinks = navLinksRef.current;
     const dots = dotsRef.current;
 
-    let mm = gsap.matchMedia();
-
     // Desktop animations
-    mm.add("(min-width: 769px)", () => {
+    gsap.matchMedia().add("(min-width: 769px)", () => {
       let currentScrollProgress = 0;
       let isHovered = false;
 
@@ -380,14 +380,19 @@ const NavigationComponent = React.memo(({ onScrollTo, isOpen, closeMenu }) => {
         }
       };
 
-      navContainer.addEventListener('mouseenter', handleMouseEnter);
-      navContainer.addEventListener('mouseleave', handleMouseLeave);
+      if (navContainer) {
+        navContainer.addEventListener('mouseenter', handleMouseEnter);
+        navContainer.addEventListener('mouseleave', handleMouseLeave);
+      }
 
       return () => {
-        mm.revert();
+        if (navContainer) {
+          navContainer.removeEventListener('mouseenter', handleMouseEnter);
+          navContainer.removeEventListener('mouseleave', handleMouseLeave);
+        }
       };
-    }); // end mm.add
-  }, []); // Empty dependency array prevents infinite re-renders without breaking external GSAP selectors
+    }); // end matchMedia
+  }, { scope: navRef }); // useGSAP scope dependency
 
   return (
     <div
@@ -434,6 +439,13 @@ NavigationComponent.displayName = 'NavigationComponent';
 const Header = () => {
   const [navPortal, setNavPortal] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   // --- Optimization: Portal Creation ---
   // This effect runs only once on mount to find/create the portal target.
@@ -495,7 +507,17 @@ const Header = () => {
           {Logo}
           <div className="nav-placeholder"></div>
           <div className="header-actions">
-            {/* Actions (e.g., buttons) would go here */}
+            {isLoggedIn ? (
+              <>
+                <Link to="/dashboard" className="auth-btn login-btn">Dashboard</Link>
+                <button onClick={handleLogout} className="auth-btn register-btn">Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="auth-btn login-btn">Login</Link>
+                <Link to="/register" className="auth-btn register-btn">Register</Link>
+              </>
+            )}
             <button
               className="mobile-menu-toggle"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

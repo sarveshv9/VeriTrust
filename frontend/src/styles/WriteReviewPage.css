@@ -1,0 +1,529 @@
+/* ============================================
+   WRITE REVIEW PAGE — DARK NEOBRUTALISM
+   ============================================ */
+
+/* ── Page layout ─────────────────────────── */
+.wrp-page {
+    display: flex;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
+}
+
+/* ── Sidebar — same as Dashboard/Freelancers ─ */
+.wrp-sidebar {
+    width: 240px;
+    height: 100%;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: var(--neo-surface);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wrp-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 36px;
+    padding: 0 4px;
+}
+
+.wrp-sidebar-brand img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.wrp-nav-section {
+    margin-bottom: 24px;
+}
+
+.wrp-nav-label {
+    font-family: var(--neo-font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--neo-text-muted);
+    padding: 0 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.wrp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+}
+
+.wrp-nav-item:hover {
+    color: var(--neo-text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.wrp-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.wrp-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.wrp-logout-btn:hover {
+    color: var(--neo-accent-orange) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── Main content ─────────────────────────── */
+.wrp-main {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 36px 48px;
+    background: var(--neo-bg);
+}
+
+/* ── Top bar / back button ────────────────── */
+.wrp-topbar {
+    margin-bottom: 28px;
+}
+
+.wrp-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.wrp-back-btn:hover {
+    color: var(--neo-text);
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.04) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── Content area ─────────────────────────── */
+.wrp-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 680px;
+}
+
+/* ── Freelancer identity card ─────────────── */
+.wrp-identity-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+}
+
+.wrp-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background: var(--neo-surface-light);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--neo-font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--neo-accent-yellow);
+    flex-shrink: 0;
+}
+
+.wrp-identity-info {
+    flex: 1;
+}
+
+.wrp-name {
+    font-family: var(--neo-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0 0 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+.wrp-verified {
+    color: var(--neo-accent-cyan);
+    flex-shrink: 0;
+}
+
+.wrp-occupation {
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 10px 0;
+}
+
+.wrp-stats {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    color: var(--neo-text-muted);
+}
+
+.wrp-star-icon {
+    color: var(--neo-accent-yellow);
+}
+
+.wrp-stat-divider {
+    opacity: 0.4;
+}
+
+/* ── Review form ──────────────────────────── */
+.wrp-form {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wrp-form-title {
+    font-family: var(--neo-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.wrp-form-subtitle {
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    color: var(--neo-text-muted);
+    margin: -12px 0 0;
+    line-height: 1.6;
+}
+
+.wrp-form-subtitle strong {
+    color: var(--neo-text);
+}
+
+/* ── Fields ───────────────────────────────── */
+.wrp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wrp-label {
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--neo-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ── Interactive star rating ──────────────── */
+.star-rating-input {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star-btn {
+    background: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 4px !important;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: color 0.1s !important;
+    min-width: unset !important;
+    width: auto !important;
+}
+
+.star-btn.active {
+    color: var(--neo-accent-yellow) !important;
+}
+
+.star-btn:hover {
+    color: var(--neo-accent-yellow) !important;
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.star-label {
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    color: var(--neo-text-muted);
+    margin-left: 8px;
+}
+
+.wrp-rating-desc {
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--neo-accent-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ── Inline success banner ─────────────────── */
+.wrp-success-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(0, 245, 61, 0.08);
+    border: 1px solid rgba(0, 245, 61, 0.3);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--neo-accent-cyan);
+    animation: wrp-fade-in 0.25s ease;
+}
+
+@keyframes wrp-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Textarea ─────────────────────────────── */
+.wrp-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: var(--neo-surface-light);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--neo-text);
+    font-family: var(--neo-font-body);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-shadow: none;
+}
+
+.wrp-textarea::placeholder {
+    color: var(--neo-text-muted);
+    opacity: 0.6;
+}
+
+.wrp-textarea:focus {
+    border-color: var(--neo-accent-yellow);
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.12);
+}
+
+.wrp-char-count {
+    font-family: var(--neo-font-body);
+    font-size: 0.75rem;
+    color: var(--neo-text-muted);
+    text-align: right;
+    opacity: 0.7;
+}
+
+/* ── Error message ──────────────────────────  */
+.wrp-error-msg {
+    font-family: var(--neo-font-body);
+    font-size: 0.85rem;
+    color: var(--neo-accent-orange);
+    padding: 10px 14px;
+    border-left: 3px solid var(--neo-accent-orange);
+    background: rgba(255, 92, 0, 0.06);
+    border-radius: 0 6px 6px 0;
+}
+
+/* ── Submit button ──────────────────────────  */
+.wrp-submit-btn {
+    padding: 14px 32px;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    align-self: flex-start;
+}
+
+/* ── Success state ──────────────────────────  */
+.wrp-success {
+    padding: 40px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.wrp-success-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(0, 245, 61, 0.12);
+    border: 2px solid var(--neo-accent-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: var(--neo-accent-cyan);
+    font-weight: 700;
+}
+
+.wrp-success h2 {
+    font-family: var(--neo-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0;
+}
+
+.wrp-success p {
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+    font-size: 0.9rem;
+}
+
+.wrp-success-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.wrp-link-btn {
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    color: var(--neo-text-muted);
+    text-decoration: none;
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.wrp-link-btn:hover {
+    color: var(--neo-text);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Auth prompt ────────────────────────────  */
+.wrp-auth-prompt {
+    padding: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
+}
+
+/* ── Loading / error states ─────────────────  */
+.wrp-loading {
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    color: var(--neo-text-muted);
+    padding: 40px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.wrp-error {
+    font-family: var(--neo-font-body);
+    color: var(--neo-accent-orange);
+    padding: 16px;
+    border-left: 3px solid var(--neo-accent-orange);
+    font-size: 0.88rem;
+}
+
+/* ── Responsive ─────────────────────────────  */
+@media (max-width: 768px) {
+    .wrp-sidebar {
+        display: none;
+    }
+
+    .wrp-main {
+        padding: 20px 16px;
+    }
+
+    .wrp-identity-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .wrp-form {
+        padding: 20px;
+    }
+
+    .wrp-submit-btn {
+        width: 100%;
+        align-self: stretch;
+    }
+}
