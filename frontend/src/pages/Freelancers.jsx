@@ -129,7 +129,7 @@ const Freelancers = () => {
                 ) : (
                     <div className="free-grid">
                         {profiles.map((profile) => (
-                            <Link to={`/profile/${encodeURIComponent(profile.publicKey)}`} key={profile.publicKey} className="free-card glass-panel">
+                            <Link to={`/review/${encodeURIComponent(profile.publicKey)}`} key={profile.publicKey} className="free-card glass-panel">
                                 <div className="fc-header">
                                     <div className="fc-avatar">
                                         {profile.name.charAt(0).toUpperCase()}
@@ -165,7 +165,7 @@ const Freelancers = () => {
                                 </div>
                                 <div className="fc-footer">
                                     <span className="fc-block-info">Block #{profile.blockIndex}</span>
-                                    <span className="fc-view-btn">View Profile →</span>
+                                    <span className="fc-view-btn">Write a Review →</span>
                                 </div>
                             </Link>
                         ))}

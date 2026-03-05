@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Freelancers from './pages/Freelancers';
+import WriteReviewPage from './pages/WriteReviewPage';
 import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 import './styles/neobrutalism.css';
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile/:publicKey" element={<Profile />} />
           <Route path="/freelancers" element={<Freelancers />} />
+          <Route path="/review/:publicKey" element={<WriteReviewPage />} />
         </Routes>
       </Router>
     </AuthProvider>
