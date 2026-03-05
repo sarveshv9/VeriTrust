@@ -1,18 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
 /* === Global Variables & Theme === */
 :root {
-  --bg-primary: #09090b;
-  --bg-secondary: #121318;
-  --accent-glow-primary: rgba(34, 211, 238, 0.2);
-  --accent-glow-secondary: rgba(192, 132, 252, 0.2);
-  --accent-cyan: #22d3ee;
-  --accent-purple: #c084fc;
-  --accent-gradient: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  --bg-primary: #000000;
+  --bg-secondary: #0d0d0d;
+
+  /* Pastel accents */
+  --accent-lavender: #93a7e8;
+  --accent-honey: #f5c97a;
+  --accent-sage: #a8dba8;
+  --accent-peach: #f4a47c;
+  --accent-powder: #93c9e8;
+  --accent-rose: #f2a8b8;
+
+  /* Keep legacy names mapped to pastels so nothing breaks */
+  --accent-cyan: var(--accent-powder);
+  --accent-purple: var(--accent-lavender);
+
+  --accent-glow-primary: rgba(147, 167, 232, 0.15);
+  --accent-glow-secondary: rgba(245, 201, 122, 0.15);
+  --accent-gradient: linear-gradient(135deg, var(--accent-lavender), var(--accent-honey));
+
   --text-primary: #f8fafc;
-  --text-secondary: #e2e8f0;
+  --text-secondary: #c9c4d8;
+
   --glass-bg: rgba(255, 255, 255, 0.02);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-glow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-glow: 0 4px 30px rgba(0, 0, 0, 0.6);
+
+  /* Neo-brutalist button tokens */
+  --neo-font-heading: 'Syne', sans-serif;
+  --neo-font-body: 'DM Sans', sans-serif;
 }
+
 
 /* === Global Reset & Base Styles === */
 * {
@@ -21,7 +41,6 @@
   box-sizing: border-box;
 }
 
-/* Hide scrollbars for all elements */
 *::-webkit-scrollbar {
   display: none;
 }
@@ -43,26 +62,15 @@ html {
   overflow-x: hidden;
 }
 
-html::-webkit-scrollbar {
-  display: none;
-}
-
-html {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
 body {
-  margin: 0;
-  padding: 0;
   overflow-x: hidden;
   color: var(--text-primary);
   min-height: 100vh;
   background-color: var(--bg-primary);
-  font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--neo-font-body), 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* === Glassmorphism Utilities === */
+/* === Glassmorphism Utilities (unchanged) === */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
@@ -79,45 +87,48 @@ body {
   background-clip: text;
 }
 
-/* === Global Components === */
+/* === Neo-Brutalist Primary Button === */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 12px 24px;
-  border-radius: 10px;
-  border: none;
-  background: var(--accent-gradient);
-  color: #fff;
-  font-family: 'GeneralSans-Semibold', -apple-system, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: var(--accent-lavender);
+  color: #000000;
+  font-family: var(--neo-font-heading), 'GeneralSans-Semibold', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  letter-spacing: 0.02em;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 3px 3px 0px rgba(147, 167, 232, 0.5);
+  letter-spacing: 0.01em;
   text-decoration: none;
 }
 
 .btn-primary:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--accent-glow-primary);
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px transparent;
+  filter: none;
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px transparent;
 }
 
 .btn-primary:disabled {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--glass-border);
-  color: rgba(255, 255, 255, 0.3);
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.25);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
 }
 
+/* === Form Input (unchanged) === */
 .form-input {
   width: 100%;
   padding: 14px 16px;
@@ -126,9 +137,9 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Ranade-Regular', -apple-system, sans-serif;
+  font-family: var(--neo-font-body), 'Ranade-Regular', sans-serif;
   outline: none;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
 
@@ -137,24 +148,14 @@ body {
 }
 
 .form-input:focus {
-  border-color: var(--accent-purple);
-  background: var(--accent-glow-secondary);
-  box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.1);
+  border-color: var(--accent-lavender);
+  background: rgba(147, 167, 232, 0.04);
+  box-shadow: 0 0 0 3px rgba(147, 167, 232, 0.1);
 }
 
-body::-webkit-scrollbar {
-  display: none;
-}
-
-body {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-/* === NEW: Scoped Background Image Container === */
+/* === Background Container === */
 .hero-background-container {
   position: relative;
-  /* Establishes a positioning context for the ::before pseudo-element */
 }
 
 .hero-background-container::before {
@@ -165,7 +166,7 @@ body {
   transform: translateX(-50%);
   width: 140vw;
   height: 150%;
-  background: radial-gradient(circle at 50% 10%, rgba(34, 211, 238, 0.15) 0%, rgba(192, 132, 252, 0.05) 50%, transparent 80%);
+  background: radial-gradient(circle at 50% 10%, rgba(147, 167, 232, 0.07) 0%, rgba(245, 201, 122, 0.03) 50%, transparent 80%);
   z-index: -1;
   pointer-events: none;
 }
@@ -179,27 +180,15 @@ body {
   height: 100%;
   background:
     linear-gradient(to bottom, transparent 60%, var(--bg-primary) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opactiy='0.05'/%3E%3C/svg%3E");
-  opacity: 0.15;
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.12;
   z-index: -1;
   mix-blend-mode: overlay;
   pointer-events: none;
 }
 
-
-/* === REMOVED Background Image from .smooth-wrapper === */
-/* .smooth-wrapper::before {
-  ...styles removed from here...
-} 
-*/
-
 /* === Section Backgrounds === */
-.how-it-works {
-  background-color: transparent;
-  position: relative;
-  z-index: 1;
-}
-
+.how-it-works,
 .cta-section,
 .footer {
   background: transparent;
@@ -207,7 +196,6 @@ body {
   z-index: 1;
 }
 
-/* === Header and Hero transparent to show background === */
 .header,
 .hero {
   position: relative;
@@ -215,7 +203,7 @@ body {
   background: transparent;
 }
 
-/* === Responsive Layout === */
+/* === Layout === */
 .container {
   margin: 0 auto;
   padding: 0 24px;
@@ -229,48 +217,32 @@ body {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 12px;
-  }
-}
-
 /* === Custom Fonts === */
 @font-face {
   font-family: "GeneralSans-Semibold";
   src: url("../assets/fonts/GeneralSans-Semibold.otf") format("opentype");
   font-weight: 600;
-  font-style: normal;
 }
 
 @font-face {
   font-family: "Ranade-Light";
   src: url("../assets/fonts/Ranade-Light.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
 }
 
 @font-face {
   font-family: "Ranade-Regular";
   src: url("../assets/fonts/Ranade-Regular.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
 }
 
 @font-face {
   font-family: "GeneralSans-Extralight";
   src: url("../assets/fonts/GeneralSans-Extralight.otf") format("opentype");
   font-weight: 200;
-  font-style: normal;
 }
 
-/* === Responsive Design === */
+/* === Responsive === */
 @media (max-width: 1200px) {
   .container {
     max-width: 960px;
@@ -286,6 +258,7 @@ body {
 @media (max-width: 768px) {
   .container {
     max-width: 540px;
+    padding: 0 16px;
   }
 }
 
@@ -293,5 +266,11 @@ body {
   .container {
     max-width: 100%;
     padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
   }
 }

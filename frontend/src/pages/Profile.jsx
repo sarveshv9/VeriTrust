@@ -77,11 +77,12 @@ const Profile = () => {
                     <span>VeriTrust</span>
                 </Link>
 
+                <Link to="/" className="prof-back-home-btn">
+                    <Home size={16} /> Back to Home
+                </Link>
+
                 <div className="prof-nav-section">
                     <div className="prof-nav-label">Navigation</div>
-                    <Link to="/" className="prof-nav-item">
-                        <Home className="nav-icon" size={18} /> Home
-                    </Link>
                     <Link to="/freelancers" className="prof-nav-item">
                         <Search className="nav-icon" size={18} /> Freelancers
                     </Link>

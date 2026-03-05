@@ -16,16 +16,16 @@
   height: 1px;
   background: linear-gradient(90deg,
       transparent,
-      rgba(34, 211, 238, 0.4) 25%,
-      rgba(192, 132, 252, 0.3) 50%,
-      rgba(34, 211, 238, 0.3) 75%,
+      rgba(34, 211, 238, 0.25) 25%,
+      rgba(147, 167, 232, 0.2) 50%,
+      rgba(34, 211, 238, 0.25) 75%,
       transparent);
   animation: headerGlow 4s ease-in-out infinite alternate;
 }
 
 @keyframes headerGlow {
   0% {
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   100% {
@@ -42,7 +42,7 @@
   position: relative;
 }
 
-/* Logo container */
+/* Logo */
 .logo {
   flex: 0 0 auto;
   z-index: 1;
@@ -58,15 +58,11 @@
   font-family: "Honk", system-ui, sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
-  /* Honk doesn’t use 900, 400 works fine */
   font-style: normal;
-  font-variation-settings:
-    "MORF" 25,
-    "SHLN" 60;
-
+  font-variation-settings: "MORF" 25, "SHLN" 60;
   line-height: 1.1;
   color: var(--text-primary);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 40px;
@@ -75,7 +71,7 @@
 
 .logo h1:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
 .logo-img {
@@ -88,16 +84,16 @@
 
 .logo-img:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
 @keyframes titleGlow {
   0% {
-    text-shadow: 0 0 10px rgba(241, 245, 249, 0.4);
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
   }
 
   100% {
-    text-shadow: 0 0 20px rgba(241, 245, 249, 0.9);
+    text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
   }
 }
 
@@ -108,7 +104,7 @@
   }
 }
 
-/* Navigation container - Corrected */
+/* Navigation container — Neo-brutalist */
 .nav-container {
   position: fixed;
   top: 24px;
@@ -116,24 +112,20 @@
   transform: translateX(-50%);
   z-index: 1000;
   width: fit-content;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  background: #000000;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1.5px solid rgba(34, 211, 238, 0.35);
   border-radius: 50px;
-  padding: 8px;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.2),
-    0 0 32px var(--accent-glow-primary),
-    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  padding: 6px;
+  box-shadow: 4px 4px 0px rgba(34, 211, 238, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1 !important;
-  /* Removed CSS transition to prevent conflicts with GSAP */
+  transition: box-shadow 0.12s ease, transform 0.12s ease;
 }
 
-/* Navigation wrapper - contains both states */
 .nav {
   position: relative;
   display: flex;
@@ -145,7 +137,6 @@
   transform: none !important;
 }
 
-/* Navigation links container */
 .nav-links {
   display: flex;
   gap: 8px;
@@ -156,52 +147,34 @@
   width: 100%;
 }
 
-/* Navigation links - Corrected */
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
   position: relative;
-  /* width removed to allow links to size to content */
-  padding: 10px 20px;
-  border-radius: 50px;
-  /* Fully rounded to match the container */
+  padding: 8px 18px;
+  border-radius: 6px;
   cursor: pointer;
-  font-family: "Ranade-Light", system-ui, sans-serif;
+  font-family: 'Syne', "Ranade-Light", system-ui, sans-serif;
   border: 1px solid transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
   text-align: center;
 }
 
 .nav-link::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 50px;
-  opacity: 0;
-  box-shadow:
-    0 4px 16px var(--accent-glow-primary),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  transition: opacity 0.3s ease;
-}
-
-.nav-link:hover::before {
-  opacity: 1;
+  display: none;
 }
 
 .nav-link:hover {
   color: var(--text-primary);
-  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
-  background: rgba(34, 211, 238, 0.05);
-  border-color: rgba(34, 211, 238, 0.2);
+  background: rgba(34, 211, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.25);
+  border-radius: 50px;
 }
 
-/* Veritrust logo for condensed state */
+/* Condensed logo dots */
 .nav-dots {
   display: flex;
   gap: 0.3rem;
@@ -216,22 +189,16 @@
   pointer-events: none;
 }
 
-/* Changed from dot to Veritrust text logo */
 .dot {
-  /* Remove dot styles */
   width: auto;
   height: auto;
   background-color: transparent;
   border-radius: 0;
-
   font-family: "Honk", system-ui;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "MORF" 20,
-    "SHLN" 70;
-
+  font-variation-settings: "MORF" 20, "SHLN" 70;
   font-size: 44px;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -243,23 +210,14 @@
   content: 'VeriTrust';
 }
 
-/* Enhanced hover effects for the Veritrust logo */
 .nav-container:hover .dot {
   color: var(--text-primary);
-  text-shadow:
-    0 0 10px rgba(34, 211, 238, 0.6),
-    0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5), 0 2px 8px rgba(0, 0, 0, 0.5);
   transform: scale(1.02);
 }
 
-/* Enhanced hover effects for the container */
 .nav-container:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(34, 211, 238, 0.25);
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.3),
-    0 0 40px rgba(34, 211, 238, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-color: rgba(34, 211, 238, 0.55);
 }
 
 /* Header actions */
@@ -281,19 +239,16 @@
   }
 }
 
-/* Accessibility improvements */
+/* Accessibility */
 .nav-container:focus-within {
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.12),
-    0 0 40px rgba(59, 130, 246, 0.15),
-    0 0 0 2px rgba(59, 130, 246, 0.5);
+  box-shadow: 4px 4px 0px rgba(34, 211, 238, 0.35);
+  border-color: rgba(34, 211, 238, 0.55);
 }
 
 .nav-link:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.8);
+  outline: 2px solid rgba(34, 211, 238, 0.6);
   outline-offset: 2px;
-  border-radius: 50px;
-  /* Matched the link's border-radius */
+  border-radius: 6px;
 }
 
 /* Mobile Menu Button */
@@ -312,7 +267,48 @@
   transform: scale(1.1);
 }
 
-/* Responsive design */
+/* Auth Buttons — Neo-brutalist */
+.auth-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'Syne', "GeneralSans-Semibold", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: #000000;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.login-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+
+.login-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(34, 211, 238, 0.4);
+  background: rgba(34, 211, 238, 0.05);
+}
+
+.register-btn {
+  background: var(--accent-cyan, #22d3ee);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #000000;
+  box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.4);
+}
+
+.register-btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px transparent;
+  background: var(--accent-cyan, #22d3ee);
+  color: #000000;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: row;
@@ -320,7 +316,6 @@
     padding: 16px 20px;
   }
 
-  /* Hamburger visible */
   .mobile-menu-toggle {
     display: flex;
     align-items: center;
@@ -334,8 +329,8 @@
     left: 0 !important;
     width: 100vw;
     height: 100vh;
-    background: rgba(1, 10, 21, 0.98);
-    backdrop-filter: blur(20px);
+    background: #000000;
+    backdrop-filter: none;
     z-index: 1000;
     flex-direction: column;
     justify-content: center;
@@ -343,11 +338,11 @@
     padding: 0;
     border: none;
     border-radius: 0;
+    box-shadow: none;
   }
 
   .nav-container {
     display: none;
-    /* Hide when not open */
   }
 
   .nav-links {
@@ -370,7 +365,6 @@
 
   .header-actions {
     opacity: 1;
-    /* Override animation initially hidden */
     transform: translateY(0);
     animation: none;
     gap: 8px;
@@ -380,46 +374,4 @@
     padding: 6px 12px !important;
     font-size: 13px !important;
   }
-}
-
-.auth-btn {
-  padding: 8px 18px;
-  border-radius: 50px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  font-family: "Ranade-Light", system-ui, sans-serif;
-  letter-spacing: 0.5px;
-  /* Add default text color for consistency */
-  color: var(--text-secondary);
-}
-
-.login-btn {
-  background: transparent;
-  border: 1px solid transparent;
-}
-
-.login-btn:hover {
-  color: var(--text-primary);
-  text-shadow: 0 0 10px rgba(241, 245, 249, 0.5);
-}
-
-.register-btn {
-  /* Match the `.glass-panel` style defined in App.css */
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  color: var(--text-primary);
-}
-
-.register-btn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(34, 211, 238, 0.2);
-  box-shadow: 0 4px 16px var(--accent-glow-primary);
-  transform: translateY(-1px);
 }

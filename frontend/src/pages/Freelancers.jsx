@@ -58,11 +58,12 @@ const Freelancers = () => {
                     <span>VeriTrust</span>
                 </Link>
 
+                <Link to="/" className="free-back-home-btn">
+                    <Home size={16} /> Back to Home
+                </Link>
+
                 <div className="free-nav-section">
                     <div className="free-nav-label">Navigation</div>
-                    <Link to="/" className="free-nav-item">
-                        <Home className="nav-icon" size={18} /> Home
-                    </Link>
                     <span className="free-nav-item active">
                         <Search className="nav-icon" size={18} /> Freelancers
                     </span>

@@ -3,7 +3,7 @@ import useSmoothScroll from '../hooks/useSmoothScroll';
 import { useGSAPScrollZoom } from '../hooks/useGSAPScrollZoom';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
-import HowItWorks from '../components/HowItWorks';
+import FeaturedFreelancers from '../components/FeaturedFreelancers';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 import FooterGradient from '../components/elements/FooterGradient';
@@ -28,7 +28,7 @@ const Home = () => {
                         <Header />
                         <Hero />
                     </div>
-                    <HowItWorks />
+                    <FeaturedFreelancers />
                     <FooterGradient>
                         <CTASection />
                         <Footer />

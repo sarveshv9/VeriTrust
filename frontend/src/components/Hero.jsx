@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import '../styles/Hero.css';
-import SparkleButton from './elements/SparkleButton'; // Using original static import
 
 // --- Optimization: Memoization ---
 // React.memo prevents re-renders if props (onSearchGig) haven't changed.
@@ -146,18 +145,7 @@ const Hero = React.memo(({ onSearchGig }) => {
         {/* Converted the <div> to a <form> element. This is more
             semantic and allows users to "submit" with the Enter key.
             `onSubmit` handler prevents default page reload. */}
-        <form
-          ref={formRef}
-          className="submit-form"
-          onSubmit={handleFormSubmit}
-        >
-          <SparkleButton
-            text="Submit Now"
-            onClick={handleSubmit} // Still passing onClick for the button's internal handler
-            ariaLabel="Submit your information to get started"
-            // The button's default type is "submit" inside a form
-          />
-        </form>
+
 
         <div ref={scrollIndicatorRef} className="scroll-indicator">
           <span>Scroll Down</span>
@@ -178,7 +166,7 @@ const Hero = React.memo(({ onSearchGig }) => {
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
-      strokeLinejoin="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>

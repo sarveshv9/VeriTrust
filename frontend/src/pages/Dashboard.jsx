@@ -23,6 +23,7 @@ const Dashboard = () => {
     const [location, setLocation] = useState('');
     const [contact, setContact] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     useEffect(() => { if (!isLoggedIn) navigate('/login'); }, [isLoggedIn, navigate]);
 
@@ -69,6 +70,7 @@ const Dashboard = () => {
                 setSuccess(isUpdate ? 'Profile updated!' : 'Profile created!');
                 const profileRes = await apiFetch(`/profile/${encodeURIComponent(user.publicKey)}`);
                 if (profileRes.ok) setProfile(profileRes.data.data);
+                setRefreshTrigger(prev => prev + 1);
             } else {
                 setError(data.message || 'Failed to save profile');
             }
@@ -106,11 +108,12 @@ const Dashboard = () => {
                     <span>VeriTrust</span>
                 </Link>
 
+                <Link to="/" className="dash-back-home-btn">
+                    <Home size={16} /> Back to Home
+                </Link>
+
                 <div className="dash-nav-section">
                     <div className="dash-nav-label">Navigation</div>
-                    <Link to="/" className="dash-nav-item">
-                        <Home className="nav-icon" size={18} /> Home
-                    </Link>
                     <Link to="/freelancers" className="dash-nav-item">
                         <Search className="nav-icon" size={18} /> Freelancers
                     </Link>
@@ -280,7 +283,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <BlockchainVisualizer />
+                <BlockchainVisualizer refreshTrigger={refreshTrigger} />
             </main>
         </div>
     );

@@ -502,6 +502,42 @@
     font-size: 0.88rem;
 }
 
+.free-back-home-btn,
+.wrp-back-home-btn,
+.dash-back-home-btn,
+.prof-back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 10px 16px 0px;
+    /* sits between logo and nav section */
+    padding: 8px 14px;
+    font-family: 'Syne', 'GeneralSans-Semibold', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #000000;
+    background: var(--accent-cyan, #22d3ee);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.45);
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    white-space: nowrap;
+    width: calc(100% - 32px);
+    /* full sidebar width minus margins */
+    justify-content: center;
+}
+
+.free-back-home-btn:hover,
+.wrp-back-home-btn:hover,
+.dash-back-home-btn:hover,
+.prof-back-home-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px transparent;
+    color: #000000;
+}
+
 /* ── Responsive ─────────────────────────────  */
 @media (max-width: 768px) {
     .wrp-sidebar {
