@@ -1,0 +1,187 @@
+.blockchain-visualizer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(15, 23, 42, 0.4);
+    /* Match dash-card */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.blockchain-header {
+    margin-bottom: 1.5rem;
+}
+
+.blockchain-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+}
+
+.blockchain-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.blockchain-scroll-container {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(45, 212, 191, 0.5) rgba(0, 0, 0, 0.1);
+}
+
+.blockchain-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(45, 212, 191, 0.5);
+    border-radius: 4px;
+}
+
+.blockchain-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(45, 212, 191, 0.8);
+}
+
+.block-card-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.block-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    width: 250px;
+    padding: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.block-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(45, 212, 191, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+        0 0 10px rgba(45, 212, 191, 0.2);
+}
+
+.block-card.genesis {
+    border-left: 4px solid #a855f7;
+    /* Purple accent for genesis */
+}
+
+.block-card:not(.genesis) {
+    border-left: 4px solid #2dd4bf;
+    /* Cyan/Teal accent for other blocks */
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.block-index {
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.block-badge {
+    background: rgba(45, 212, 191, 0.1);
+    color: #2dd4bf;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.block-badge.genesis {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+    border-color: rgba(168, 85, 247, 0.2);
+}
+
+.block-detail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+}
+
+.block-detail-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.05em;
+}
+
+.block-detail-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    color: #e2e8f0;
+    word-break: break-all;
+}
+
+.block-detail-value.hash {
+    color: #2dd4bf;
+}
+
+.block-detail-value.time {
+    color: #94a3b8;
+    font-family: inherit;
+}
+
+.block-transactions {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tx-count {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.chain-link {
+    color: rgba(255, 255, 255, 0.2);
+    margin-left: 1rem;
+}
+
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.loading-state {
+    padding: 2rem;
+    text-align: center;
+    color: #2dd4bf;
+}

@@ -232,13 +232,18 @@ function getChainInfo() {
   };
 }
 
+// Get full chain
+function getFullChain() {
+  return loadChain();
+}
+
 module.exports = {
   addTransaction,
   getProfile,
   getAllProfiles,
   getReviews,
   hasReviewed,
-  totalProfiles,
   getChainInfo,
   getAllTransactions,
+  getFullChain,
 };

@@ -4,6 +4,7 @@ import { Home, User, BarChart2, LogOut, Search } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
+import BlockchainVisualizer from '../components/BlockchainVisualizer';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -278,6 +279,8 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+
+                <BlockchainVisualizer />
             </main>
         </div>
     );

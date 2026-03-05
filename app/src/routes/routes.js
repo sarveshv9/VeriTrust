@@ -11,6 +11,10 @@ router.get("/", (req, res) => {
   res.json({ message: "Gig Reputation API", chain: blockchain.getChainInfo() });
 });
 
+router.get("/chain", (req, res) => {
+  res.json({ data: blockchain.getFullChain() });
+});
+
 // Auth
 router.post("/register", authController.register);
 router.post("/login", authController.login);
