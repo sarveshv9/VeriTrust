@@ -1,226 +1,338 @@
 /* ============================================
-   BLOCKCHAIN VISUALIZER — DARK NEOBRUTALISM
+   BLOCKCHAIN VISUALIZER — TREE LAYOUT
    ============================================ */
 
 .blockchain-visualizer {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: var(--neo-surface);
-    border: 2px solid var(--neo-border-color);
-    border-radius: 6px;
-    box-shadow: 5px 5px 0px var(--neo-accent-cyan);
+    width: 100%;
+    font-family: var(--neo-font-body, 'Inter', sans-serif);
+    color: var(--neo-text, #f0f0f0);
 }
 
-.blockchain-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--neo-border-color);
+/* ── Header ───────────────────────────────── */
+.bv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.blockchain-header h3 {
-    font-family: var(--neo-font-heading);
-    font-size: 0.85rem;
+.bv-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--neo-text-muted, #888);
+}
+
+.bv-header-left h3 {
+    font-family: var(--neo-font-heading, 'Outfit', sans-serif);
+    font-size: 1.05rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--neo-text);
-    margin: 0 0 0.4rem 0;
+    color: var(--neo-text, #f0f0f0);
+    margin: 0 0 2px;
 }
 
-.blockchain-header p {
-    font-family: var(--neo-font-body);
-    color: var(--neo-text-muted);
-    font-size: 0.78rem;
+.bv-header-left p {
+    font-size: 0.75rem;
+    color: var(--neo-text-muted, #888);
     margin: 0;
 }
 
-/* ── Scroll container ───────────────────── */
-.blockchain-scroll-container {
-    display: flex;
-    gap: 0;
-    /* No gap — blocks connected by links */
-    overflow-x: auto;
-    padding: 1rem 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--neo-accent-cyan) var(--neo-surface-light);
-}
-
-.blockchain-scroll-container::-webkit-scrollbar {
-    height: 6px;
-}
-
-.blockchain-scroll-container::-webkit-scrollbar-track {
-    background: var(--neo-surface-light);
-    border-radius: 6px;
-}
-
-.blockchain-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--neo-accent-cyan);
-    border-radius: 6px;
-}
-
-.blockchain-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: var(--neo-accent-yellow);
-}
-
-/* ── Block card wrapper ─────────────────── */
-.block-card-wrapper {
+.bv-header-badge {
     display: flex;
     align-items: center;
-    flex-shrink: 0;
-}
-
-.block-card {
-    background: var(--neo-surface-light);
-    border: 2px solid var(--neo-border-color);
-    border-radius: 6px;
-    width: 240px;
-    padding: 1rem;
-    transition: box-shadow 0.1s, transform 0.1s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.block-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px var(--neo-accent-cyan);
-    border-color: var(--neo-accent-cyan);
-}
-
-/* Genesis block has yellow accent */
-.block-card.genesis {
-    border-left: 4px solid var(--neo-accent-yellow);
-    box-shadow: 4px 4px 0px var(--neo-accent-yellow);
-}
-
-.block-card.genesis:hover {
-    box-shadow: 6px 6px 0px var(--neo-accent-yellow);
-    border-color: var(--neo-accent-yellow);
-}
-
-/* Other blocks get cyan */
-.block-card:not(.genesis) {
-    border-left: 4px solid var(--neo-accent-cyan);
-}
-
-/* ── Block head ─────────────────────────── */
-.block-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.6rem;
-}
-
-.block-index {
-    font-family: var(--neo-font-heading);
-    font-weight: 700;
-    color: var(--neo-text);
-    font-size: 1.1rem;
-}
-
-.block-badge {
-    background: rgba(0, 245, 212, 0.1);
-    color: var(--neo-accent-cyan);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-family: var(--neo-font-heading);
-    font-size: 0.62rem;
-    font-weight: 700;
+    gap: 5px;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 245, 61, 0.3);
+    color: var(--neo-accent-cyan, #00f53d);
+    background: rgba(0, 245, 61, 0.06);
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border: 1px solid var(--neo-accent-cyan);
+    letter-spacing: 0.06em;
 }
 
-.block-badge.genesis {
-    background: rgba(245, 230, 66, 0.1);
-    color: var(--neo-accent-yellow);
-    border-color: var(--neo-accent-yellow);
-}
-
-/* ── Block details ──────────────────────── */
-.block-detail {
+/* ── Tree container ───────────────────────── */
+.bv-tree {
     display: flex;
     flex-direction: column;
-    margin-bottom: 0.75rem;
-}
-
-.block-detail-label {
-    font-family: var(--neo-font-heading);
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    color: var(--neo-text-muted);
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-    letter-spacing: 0.1em;
-}
-
-.block-detail-value {
-    font-family: var(--neo-font-body);
-    font-size: 0.78rem;
-    color: var(--neo-text);
-    word-break: break-all;
-}
-
-.block-detail-value.hash {
-    color: var(--neo-accent-cyan);
-}
-
-.block-detail-value.time {
-    color: var(--neo-text-muted);
-}
-
-/* ── Transactions ───────────────────────── */
-.block-transactions {
-    margin-top: 1rem;
-    padding-top: 0.6rem;
-    border-top: 2px solid rgba(255, 255, 255, 0.08);
-    font-family: var(--neo-font-body);
-    font-size: 0.78rem;
-    color: var(--neo-text);
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    overflow-x: auto;
+    padding-bottom: 16px;
 }
 
-.tx-count {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 2px 10px;
-    border-radius: 6px;
-    font-family: var(--neo-font-heading);
-    font-weight: 700;
-    font-size: 0.72rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+/* ── Root (Genesis) ───────────────────────── */
+.bv-root-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* ── Chain link arrow ───────────────────── */
-.chain-link {
-    color: var(--neo-accent-yellow);
-    font-size: 1.2rem;
-    margin: 0 8px;
-    font-weight: 700;
-    flex-shrink: 0;
+.bv-trunk-line {
+    width: 2px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
 }
 
-/* ── States ─────────────────────────────── */
-.empty-state {
-    padding: 2.5rem;
-    text-align: center;
-    font-family: var(--neo-font-body);
+/* ── Freelancer row ───────────────────────── */
+.bv-freelancer-row {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    position: relative;
+}
+
+/* Horizontal connector bar above freelancer columns */
+.bv-freelancer-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: calc(100% - 80px);
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.bv-freelancer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+}
+
+.bv-branch-line {
+    width: 2px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Generic node styles ──────────────────── */
+.bv-node {
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 160px;
+    max-width: 200px;
+    position: relative;
+    transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
+    box-sizing: border-box;
+}
+
+.bv-node-icon {
     color: var(--neo-text-muted);
-    border: 2px dashed rgba(255, 255, 255, 0.15);
-    font-size: 0.85rem;
+    margin-bottom: 2px;
 }
 
-.loading-state {
-    padding: 2rem;
+.bv-node-label {
+    font-family: var(--neo-font-heading, 'Outfit', sans-serif);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--neo-text, #f0f0f0);
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.bv-node-meta {
+    font-size: 0.72rem;
+    color: var(--neo-text-muted, #888);
+    line-height: 1.3;
+}
+
+.bv-node-hash {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    opacity: 0.5;
+    margin-top: 4px;
+}
+
+.bv-node-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+}
+
+.bv-block-tag,
+.bv-rating-tag,
+.bv-review-count-tag,
+.bv-date-tag {
+    font-size: 0.62rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.bv-block-tag {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--neo-text-muted);
+}
+
+.bv-rating-tag {
+    background: rgba(34, 211, 238, 0.12);
+    color: var(--neo-accent-yellow, #22d3ee);
+}
+
+.bv-review-count-tag {
+    background: rgba(184, 255, 87, 0.1);
+    color: var(--neo-accent-green, #b8ff57);
+}
+
+.bv-date-tag {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--neo-text-muted);
+}
+
+.bv-expand-hint {
+    font-size: 0.62rem;
+    color: var(--neo-accent-yellow, #22d3ee);
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+/* ── Genesis node ─────────────────────────── */
+.bv-node-genesis {
+    background: rgba(34, 211, 238, 0.06);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.15);
     text-align: center;
-    font-family: var(--neo-font-heading);
-    font-size: 0.8rem;
+    align-items: center;
+}
+
+.bv-node-genesis .bv-node-label {
+    color: var(--neo-accent-yellow, #22d3ee);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--neo-accent-cyan);
+}
+
+/* ── Profile (freelancer) node ───────────── */
+.bv-node-profile {
+    background: var(--neo-surface, #181818);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+}
+
+.bv-node-profile:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.2);
+}
+
+.bv-node-profile.open {
+    border-color: var(--neo-accent-yellow, #22d3ee);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.25);
+}
+
+/* ── Reviews sub-tree ─────────────────────── */
+.bv-reviews-subtree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+}
+
+.bv-sub-trunk {
+    width: 2px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.bv-review-row {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    position: relative;
+}
+
+.bv-review-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bv-review-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.bv-sub-branch-line {
+    width: 2px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Review node ──────────────────────────── */
+.bv-node-review {
+    background: rgba(184, 255, 87, 0.04);
+    border: 1px solid rgba(184, 255, 87, 0.18);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+    min-width: 150px;
+    max-width: 185px;
+}
+
+.bv-stars {
+    font-size: 0.75rem;
+    color: var(--neo-accent-yellow, #22d3ee);
+    letter-spacing: 1px;
+}
+
+.bv-review-comment {
+    font-family: var(--neo-font-body, 'Inter', sans-serif);
+    font-weight: 400;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--neo-text-muted, #888);
+    line-height: 1.4;
+}
+
+.bv-hash-small {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    opacity: 0.35;
+    margin-top: 4px;
+}
+
+/* ── Empty / loading / error ─────────────── */
+.bv-empty {
+    text-align: center;
+    padding: 32px 0;
+    font-size: 0.82rem;
+    color: var(--neo-text-muted, #888);
+}
+
+.bv-loading {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    color: var(--neo-accent-yellow, #22d3ee);
+    animation: bv-pulse 1.2s ease-in-out infinite;
+}
+
+.bv-error {
+    color: var(--neo-accent-orange, #ff5c00);
+}
+
+@keyframes bv-pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
