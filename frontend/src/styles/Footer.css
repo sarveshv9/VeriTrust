@@ -15,7 +15,7 @@
   --font-primary: 'Syne', "GeneralSans-Semibold", -apple-system, sans-serif;
   --font-light: "GeneralSans-Extralight", -apple-system, sans-serif;
 
-  --primary-color: var(--accent-lavender, #c4b5f4);
+  --primary-color: var(--accent-lavender, #93a7e8);
   --secondary-color: var(--accent-honey, #f5c97a);
   --text-muted: rgba(255, 255, 255, 0.4);
   --border-color: rgba(255, 255, 255, 0.07);
@@ -52,7 +52,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-lavender, #c4b5f4), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-lavender, #93a7e8), transparent);
   opacity: 0.35;
   animation: footerRule 4s ease-in-out infinite alternate;
 }
@@ -94,7 +94,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: var(--spacing-md);
-  background: linear-gradient(135deg, var(--text-primary, #f5f0ff), var(--accent-lavender, #c4b5f4), var(--accent-honey, #f5c97a));
+  background: linear-gradient(135deg, var(--text-primary, #f5f0ff), var(--accent-lavender, #93a7e8), var(--accent-honey, #f5c97a));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -146,15 +146,15 @@
 
 .social-link:hover,
 .social-link:focus {
-  color: var(--accent-lavender, #c4b5f4);
+  color: var(--accent-lavender, #93a7e8);
   transform: translate(2px, 2px);
   box-shadow: 0px 0px 0px transparent;
-  border-color: rgba(196, 181, 244, 0.35);
-  background: rgba(196, 181, 244, 0.05);
+  border-color: rgba(147, 167, 232, 0.35);
+  background: rgba(147, 167, 232, 0.05);
 }
 
 .social-link:focus {
-  outline: 2px solid var(--accent-lavender, #c4b5f4);
+  outline: 2px solid var(--accent-lavender, #93a7e8);
   outline-offset: 2px;
 }
 
@@ -191,12 +191,12 @@
 
 .footer-links a:hover,
 .footer-links a:focus {
-  color: var(--accent-lavender, #c4b5f4);
+  color: var(--accent-lavender, #93a7e8);
   transform: translateX(4px);
 }
 
 .footer-links a:focus {
-  outline: 1px solid var(--accent-lavender, #c4b5f4);
+  outline: 1px solid var(--accent-lavender, #93a7e8);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -224,8 +224,8 @@
 .contact-item:hover {
   transform: translate(2px, 2px);
   box-shadow: 0px 0px 0px transparent;
-  border-color: rgba(196, 181, 244, 0.2);
-  background: rgba(196, 181, 244, 0.03);
+  border-color: rgba(147, 167, 232, 0.2);
+  background: rgba(147, 167, 232, 0.03);
 }
 
 .contact-icon {
@@ -284,11 +284,11 @@
 
 .footer-bottom-links a:hover,
 .footer-bottom-links a:focus {
-  color: var(--accent-lavender, #c4b5f4);
+  color: var(--accent-lavender, #93a7e8);
 }
 
 .footer-bottom-links a:focus {
-  outline: 1px solid var(--accent-lavender, #c4b5f4);
+  outline: 1px solid var(--accent-lavender, #93a7e8);
   outline-offset: 2px;
 }
 

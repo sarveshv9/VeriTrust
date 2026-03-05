@@ -198,9 +198,9 @@
 
 /* ── Genesis node ─────────────────────────── */
 .bv-node-genesis {
-    background: rgba(34, 211, 238, 0.06);
-    border: 1px solid rgba(34, 211, 238, 0.25);
-    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.15);
+    background: rgba(245, 201, 122, 0.06);
+    border: 1px solid rgba(245, 201, 122, 0.25);
+    box-shadow: 3px 3px 0px rgba(245, 201, 122, 0.15);
     text-align: center;
     align-items: center;
 }
@@ -214,19 +214,19 @@
 
 /* ── Profile (freelancer) node ───────────── */
 .bv-node-profile {
-    background: var(--neo-surface, #181818);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+    background: rgba(34, 211, 238, 0.06);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.15);
 }
 
 .bv-node-profile:hover {
     border-color: rgba(34, 211, 238, 0.4);
-    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.2);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.25);
 }
 
 .bv-node-profile.open {
-    border-color: var(--neo-accent-yellow, #22d3ee);
-    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.25);
+    border-color: rgba(34, 211, 238, 0.6);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.35);
 }
 
 /* ── Reviews sub-tree ─────────────────────── */
@@ -276,9 +276,9 @@
 
 /* ── Review node ──────────────────────────── */
 .bv-node-review {
-    background: rgba(184, 255, 87, 0.04);
-    border: 1px solid rgba(184, 255, 87, 0.18);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+    background: rgba(147, 167, 232, 0.08);
+    border: 1px solid rgba(147, 167, 232, 0.25);
+    box-shadow: 3px 3px 0px rgba(147, 167, 232, 0.15);
     min-width: 150px;
     max-width: 185px;
 }

@@ -20,14 +20,14 @@
     /* soft peach */
     --neo-accent-cyan: #93c9e8;
     /* powder blue */
-    --neo-accent-lavender: #c4b5f4;
+    --neo-accent-lavender: #93a7e8;
     /* soft lavender */
     --neo-accent-rose: #f2a8b8;
     /* dusty rose */
     --neo-accent-red: #f25f5c;
 
     /* Primary action accent */
-    --neo-accent-primary: var(--neo-accent-lavender);
+    --neo-accent-primary: var(--neo-accent-cyan);
 
     /* Borders */
     --neo-border-color: rgba(255, 255, 255, 0.1);
@@ -36,7 +36,7 @@
     --neo-border-accent: 2px solid var(--neo-accent-primary);
 
     /* Shadows */
-    --neo-shadow-color: rgba(196, 181, 244, 0.4);
+    --neo-shadow-color: rgba(34, 211, 238, 0.4);
     --neo-shadow: 3px 3px 0px var(--neo-shadow-color);
     --neo-shadow-white: 3px 3px 0px rgba(255, 255, 255, 0.08);
     --neo-shadow-black: 3px 3px 0px #000000;
@@ -96,7 +96,7 @@
     background-color: var(--neo-accent-primary);
     color: #000000;
     border: 1.5px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.5);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.5);
     transition: transform 0.12s ease, box-shadow 0.12s ease;
     cursor: pointer;
     text-decoration: none;
@@ -151,8 +151,8 @@
 .neobrutalism-body input:focus,
 .neobrutalism-body textarea:focus {
     outline: none;
-    border-color: var(--neo-accent-lavender);
-    box-shadow: 0 0 0 3px rgba(196, 181, 244, 0.1);
+    border-color: var(--neo-accent-cyan);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
 }
 
 /* ================================= */
@@ -174,14 +174,14 @@
 .neobrutalism-card {
     background-color: var(--neo-surface);
     border: 1.5px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.25);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.25);
     border-radius: 12px;
     padding: 2rem;
     transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .neobrutalism-card:hover {
-    box-shadow: 5px 5px 0px rgba(196, 181, 244, 0.35);
+    box-shadow: 5px 5px 0px rgba(34, 211, 238, 0.35);
 }
 
 /* ================================= */
@@ -227,7 +227,7 @@
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.25) !important;
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.25) !important;
     border-radius: 12px !important;
 }
 
@@ -244,9 +244,9 @@
 }
 
 .neobrutalism-body .form-input:focus {
-    border-color: var(--neo-accent-lavender) !important;
+    border-color: var(--neo-accent-cyan) !important;
     background-color: var(--neo-surface-light) !important;
-    box-shadow: 0 0 0 3px rgba(196, 181, 244, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15) !important;
 }
 
 .neobrutalism-body .form-input::placeholder {
@@ -264,7 +264,7 @@
     background-image: none !important;
     color: #000000 !important;
     border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.5) !important;
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.5) !important;
     border-radius: 8px !important;
     font-family: var(--neo-font-heading) !important;
     font-weight: 600 !important;

@@ -86,7 +86,7 @@
 
 .prof-nav-item.active {
     color: #000;
-    background: var(--neo-accent-yellow);
+    background: var(--neo-accent-rose);
     border-color: #000;
     box-shadow: 2px 2px 0px #000;
 }
@@ -438,10 +438,10 @@
     font-weight: 700;
     letter-spacing: 0.02em;
     color: #000000;
-    background: var(--accent-lavender, #c4b5f4);
+    background: var(--accent-cyan, #22d3ee);
     border: 1.5px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.45);
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.45);
     text-decoration: none;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
     white-space: nowrap;

@@ -54,7 +54,7 @@ const FeaturedFreelancers = () => {
             <div className="ff-container">
                 <div className="ff-header">
                     <h2 className="ff-title">
-                        Top <span className="text-gradient accent-lavender">Trusted</span> Talent
+                        Top <span className="text-gradient accent-cyan">Trusted</span> Talent
                     </h2>
                     <p className="ff-subtitle">
                         Discover top-rated freelancers with verified on-chain reputation.

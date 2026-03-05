@@ -22,10 +22,10 @@
   --cta-text-max-width: 600px;
 
   /* Colors */
-  --primary-color: var(--accent-lavender, #c4b5f4);
-  --secondary-color: var(--accent-honey, #f5c97a);
+  --primary-color: var(--accent-cyan, #22d3ee);
+  --secondary-color: var(--accent-lavender, #93a7e8);
   --text-muted: rgba(255, 255, 255, 0.5);
-  --border-primary: rgba(196, 181, 244, 0.4);
+  --border-primary: rgba(34, 211, 238, 0.4);
   --border-secondary: rgba(255, 255, 255, 0.08);
 
   /* Spacing */
@@ -71,7 +71,7 @@
   margin-bottom: var(--gap-medium);
   line-height: 1.2;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, var(--text-primary, #f5f0ff), var(--accent-lavender, #c4b5f4));
+  background: linear-gradient(135deg, var(--text-primary, #f5f0ff), var(--accent-cyan, #22d3ee));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -127,16 +127,16 @@
 }
 
 .cta-button:focus-visible {
-  outline: 2px solid var(--accent-lavender, #c4b5f4);
+  outline: 2px solid var(--accent-cyan, #22d3ee);
   outline-offset: 3px;
 }
 
-/* Primary = filled lavender with hard shadow */
+/* Primary = filled cyan with hard shadow */
 .cta-button.primary {
-  background: var(--accent-lavender, #c4b5f4);
+  background: var(--accent-cyan, #22d3ee);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   color: #000000;
-  box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.55);
+  box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.35);
 }
 
 .cta-button.primary:hover,
@@ -158,7 +158,7 @@
   transform: translate(3px, 3px);
   box-shadow: 0px 0px 0px transparent;
   color: var(--text-primary, #f5f0ff);
-  border-color: rgba(196, 181, 244, 0.25);
+  border-color: rgba(34, 211, 238, 0.35);
 }
 
 /* Stats */
@@ -183,7 +183,7 @@
   font-family: var(--font-primary);
   font-size: clamp(24px, 4vw, 36px);
   font-weight: 700;
-  color: var(--accent-lavender, #c4b5f4);
+  color: var(--accent-cyan, #22d3ee);
   line-height: 1;
 }
 
@@ -277,7 +277,7 @@
 /* High contrast */
 @media (prefers-contrast: high) {
   .cta-button.primary {
-    background: var(--accent-lavender, #c4b5f4);
+    background: var(--accent-cyan, #22d3ee);
     color: #000;
     border-color: #fff;
   }

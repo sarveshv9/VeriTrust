@@ -51,7 +51,7 @@
     padding: 1.5rem;
     background-color: var(--neo-surface-light);
     border: 1.5px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 3px 3px 0px rgba(196, 181, 244, 0.25);
+    box-shadow: 3px 3px 0px rgba(147, 167, 232, 0.25);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     color: inherit;
     display: flex;
@@ -61,13 +61,13 @@
 
 .ff-card:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px rgba(196, 181, 244, 0.4);
+    box-shadow: 5px 5px 0px rgba(147, 167, 232, 0.4);
 }
 
 /* Cyclic Borders */
 .ff-card.accent-lavender-border:hover {
     border-color: var(--neo-accent-lavender);
-    box-shadow: 5px 5px 0px rgba(196, 181, 244, 0.4);
+    box-shadow: 5px 5px 0px rgba(147, 167, 232, 0.4);
 }
 
 .ff-card.accent-honey-border:hover {
@@ -100,8 +100,8 @@
     font-family: var(--neo-font-heading);
     font-weight: 700;
     font-size: 1.25rem;
-    color: var(--neo-accent-lavender);
-    box-shadow: 2px 2px 0px rgba(196, 181, 244, 0.2);
+    color: var(--neo-accent-cyan, #22d3ee);
+    box-shadow: 2px 2px 0px rgba(34, 211, 238, 0.2);
 }
 
 .ff-card.accent-honey-border .ff-avatar {
@@ -110,8 +110,8 @@
 }
 
 .ff-card.accent-powder-border .ff-avatar {
-    color: var(--neo-accent-cyan);
-    box-shadow: 2px 2px 0px rgba(147, 201, 232, 0.2);
+    color: var(--neo-accent-lavender, #93a7e8);
+    box-shadow: 2px 2px 0px rgba(147, 167, 232, 0.2);
 }
 
 .ff-identity {
@@ -130,7 +130,7 @@
 }
 
 .verified-icon {
-    color: var(--neo-accent-lavender);
+    color: var(--neo-accent-cyan, #22d3ee);
 }
 
 .ff-card.accent-honey-border .verified-icon {
@@ -138,7 +138,7 @@
 }
 
 .ff-card.accent-powder-border .verified-icon {
-    color: var(--neo-accent-cyan);
+    color: var(--neo-accent-lavender, #93a7e8);
 }
 
 
