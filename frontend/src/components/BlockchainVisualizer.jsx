@@ -20,7 +20,7 @@ const starBar = (rating) =>
     '★'.repeat(rating) + '☆'.repeat(5 - rating);
 
 /* ─── BlockchainVisualizer ────────────────────────────── */
-const BlockchainVisualizer = () => {
+const BlockchainVisualizer = ({ refreshTrigger = 0 }) => {
     const [chain, setChain] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -42,7 +42,7 @@ const BlockchainVisualizer = () => {
             }
         };
         fetchChain();
-    }, []);
+    }, [refreshTrigger]);
 
     /* ─── Build tree data from raw chain ─────────────── */
     const { freelancers, reviewsMap, genesisBlock, nameMap } = useMemo(() => {
@@ -68,6 +68,15 @@ const BlockchainVisualizer = () => {
                             blockHash: block.hash,
                             timestamp: block.timestamp,
                         });
+                    } else {
+                        const fl = freelancers.find(f => f.publicKey === tx.publicKey);
+                        if (fl) {
+                            if (tx.name) fl.name = tx.name;
+                            if (tx.occupation) fl.occupation = tx.occupation;
+                            fl.blockIndex = block.index;
+                            fl.blockHash = block.hash;
+                            fl.timestamp = block.timestamp;
+                        }
                     }
                 }
                 if (tx.type === 'POST_REVIEW') {
