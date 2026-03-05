@@ -1,25 +1,30 @@
-/* Dashboard — Crypto-style dark green dashboard */
+/* ============================================
+   DASHBOARD — DARK NEOBRUTALISM
+   ============================================ */
 
-/* ── Page layout ─────────────────────────────────────────── */
+/* ── Page layout ─────────────────────────────────  */
 .dashboard-page {
     display: flex;
-    min-height: 100dvh;
+    height: 100dvh;
     width: 100%;
-    background: var(--bg-primary);
-    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: var(--text-primary);
+    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
 }
 
-/* ── Sidebar ─────────────────────────────────────────────── */
+/* ── Sidebar ──────────────────────────────────────  */
 .dash-sidebar {
     width: 240px;
-    min-height: 100dvh;
+    height: 100%;
     padding: 28px 16px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    position: sticky;
-    top: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: var(--neo-surface);
+    border-right: 2px solid var(--neo-border-color);
 }
 
 .dash-sidebar-brand {
@@ -27,68 +32,76 @@
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: #fff;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-heading);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1rem;
+    text-transform: uppercase;
     margin-bottom: 36px;
-    padding: 0 8px;
+    padding: 0 4px;
 }
 
 .dash-sidebar-brand img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
 .dash-nav-section {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .dash-nav-label {
-    font-size: 0.68rem;
+    font-family: var(--neo-font-body);
+    font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.3);
-    padding: 0 12px;
-    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+    color: var(--neo-text-muted);
+    padding: 0 8px;
+    margin-bottom: 10px;
+    display: block;
 }
 
 .dash-nav-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.9rem;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: background 0.15s, color 0.15s;
     margin-bottom: 2px;
+    border: 1px solid transparent;
 }
 
 .dash-nav-item:hover {
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--neo-text);
+    background: var(--neo-surface-light);
+    border-color: var(--neo-border-color);
 }
 
 .dash-nav-item.active {
-    color: #fff;
-    background: var(--accent-gradient);
-    font-weight: 600;
+    color: #000;
+    background: var(--neo-accent-yellow);
+    border-color: #000;
+    box-shadow: 2px 2px 0px #000;
 }
 
 .dash-nav-item .nav-icon {
-    font-size: 1.1rem;
-    width: 20px;
+    font-size: 1rem;
+    width: 18px;
     text-align: center;
 }
 
 .dash-sidebar-footer {
     margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 2px solid var(--neo-border-color);
 }
 
 .dash-logout-btn {
@@ -96,44 +109,53 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
     background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.9rem;
+    border: 1px solid transparent;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none;
 }
 
 .dash-logout-btn:hover {
-    color: #f87171;
-    background: rgba(248, 113, 113, 0.08);
+    color: var(--neo-accent-orange);
+    background: transparent !important;
+    border-color: var(--neo-accent-orange);
+    box-shadow: none !important;
+    transform: none !important;
 }
 
-/* ── Main content ────────────────────────────────────────── */
+/* ── Main content ──────────────────────────────── */
 .dash-main {
     flex: 1;
-    padding: 32px 40px;
+    padding: 36px 44px;
     overflow-y: auto;
-    background: transparent;
+    height: 100%;
+    background: var(--neo-bg);
 }
 
-/* ── Top bar ─────────────────────────────────────────────── */
+/* ── Top bar ──────────────────────────────────── */
 .dash-topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--neo-border-color);
 }
 
 .dash-page-title {
+    font-family: var(--neo-font-heading);
     font-size: 1.8rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--neo-text);
     margin: 0;
+    line-height: 1.2;
     letter-spacing: -0.02em;
 }
 
@@ -141,111 +163,135 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: monospace;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text-muted);
+    box-shadow: 3px 3px 0px var(--neo-accent-cyan);
 }
 
 .dash-wallet-dot {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
-    background: var(--accent-cyan);
+    border-radius: 6px;
+    /* Sharp */
+    background: var(--neo-accent-cyan);
 }
 
 .dash-wallet-copy {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--neo-text-muted);
     cursor: pointer;
     font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: all 0.2s;
-    font-family: inherit;
+    padding: 2px 4px;
+    border-radius: 6px;
+    transition: none;
+    font-family: var(--neo-font-body);
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 .dash-wallet-copy:hover {
-    color: var(--accent-cyan);
-    background: var(--accent-glow-primary);
+    color: var(--neo-accent-cyan);
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
-/* ── Alerts ──────────────────────────────────────────────── */
+/* ── Alerts ──────────────────────────────────── */
 .dash-alert {
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 6px;
     margin-bottom: 24px;
-    font-size: 0.88rem;
+    font-family: var(--neo-font-body);
+    font-size: 0.85rem;
     font-weight: 500;
+    border-left: 4px solid;
 }
 
 .dash-alert-error {
-    background: rgba(248, 113, 113, 0.1);
-    border: 1px solid rgba(248, 113, 113, 0.2);
-    color: #fca5a5;
+    background: var(--neo-surface);
+    border-color: var(--neo-accent-orange);
+    color: var(--neo-accent-orange);
 }
 
 .dash-alert-success {
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.2);
-    color: #86efac;
+    background: var(--neo-surface);
+    border-color: var(--neo-accent-green);
+    color: var(--neo-accent-green);
 }
 
-/* ── Stats row ───────────────────────────────────────────── */
+/* ── Stats row ──────────────────────────────── */
 .dash-stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .dash-stat-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
     padding: 22px 20px;
+    box-shadow: 4px 4px 0px #000;
 }
 
 .dash-stat-label {
+    font-family: var(--neo-font-body);
     font-size: 0.75rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 8px;
+    color: var(--neo-text-muted);
+    margin-bottom: 6px;
 }
 
 .dash-stat-value {
-    font-size: 1.75rem;
+    font-family: var(--neo-font-heading);
+    font-size: 2.2rem;
     font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.02em;
+    color: var(--neo-text);
+    line-height: 1;
 }
 
 .dash-stat-value.green {
-    color: var(--accent-cyan);
+    color: var(--neo-accent-cyan);
 }
 
 .dash-stat-sub {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.35);
-    margin-top: 4px;
+    font-family: var(--neo-font-body);
+    font-size: 0.72rem;
+    color: var(--neo-text-muted);
+    margin-top: 6px;
 }
 
-/* ── Grid ────────────────────────────────────────────────── */
+/* ── Grid ───────────────────────────────────── */
 .dash-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
-/* ── Cards ── handled by global .glass-panel ── */
+/* ── Cards ──────────────────────────────────── */
 .dash-card {
+    background: var(--neo-surface) !important;
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0px #000;
+    backdrop-filter: none !important;
     padding: 24px;
+}
+
+/* Override glass-panel specifically */
+.neobrutalism-body .glass-panel {
+    background: var(--neo-surface) !important;
+    backdrop-filter: none !important;
+    border: 2px solid var(--neo-border-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 5px 5px 0px #000 !important;
 }
 
 .dash-card-head {
@@ -253,16 +299,19 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--neo-border-color);
 }
 
 .dash-card-title {
-    font-size: 1rem;
+    font-family: var(--neo-font-heading);
+    font-size: 0.95rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--neo-text);
     margin: 0;
 }
 
-/* ── Form ────────────────────────────────────────────────── */
+/* ── Form (write review etc.) ───────────────── */
 .dash-form .dash-field {
     margin-bottom: 16px;
 }
@@ -270,70 +319,69 @@
 .dash-form label {
     display: block;
     margin-bottom: 6px;
-    color: rgba(255, 255, 255, 0.45);
+    font-family: var(--neo-font-body);
     font-size: 0.82rem;
     font-weight: 500;
+    color: var(--neo-text-muted);
 }
-
-/* Form inputs are now handled by .form-input from App.css globally */
 
 .dash-form input::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: var(--neo-text-muted);
+    opacity: 0.5;
 }
 
-/* Button globally replaced by .btn-primary */
-
-/* ── Info list ───────────────────────────────────────────── */
+/* ── Info list ──────────────────────────────── */
 .dash-info-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 2px;
 }
 
 .dash-info-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
-    transition: background 0.2s;
+    padding: 10px 12px;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    transition: none;
 }
 
 .dash-info-row:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--neo-surface-light);
 }
 
 .dash-info-label {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.85rem;
-    font-weight: 400;
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    color: var(--neo-text-muted);
 }
 
 .dash-info-value {
-    color: #fff;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
+    font-size: 0.85rem;
 }
 
 .dash-info-value.mono {
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: var(--accent-cyan);
+    font-family: var(--neo-font-body);
+    font-size: 0.75rem;
+    color: var(--neo-accent-cyan);
 }
 
-/* ── Reviews ─────────────────────────────────────────────── */
+/* ── Reviews ────────────────────────────────── */
 .dash-review-item {
     padding: 14px 16px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: var(--neo-surface-light);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     margin-bottom: 10px;
-    transition: background 0.2s;
+    transition: none;
 }
 
 .dash-review-item:hover {
-    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--neo-border-color);
+    box-shadow: 3px 3px 0px #000;
 }
 
 .dash-review-item:last-child {
@@ -344,76 +392,92 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .dash-review-stars {
-    color: #fbbf24;
+    color: var(--neo-accent-yellow);
     font-size: 0.9rem;
     letter-spacing: 2px;
 }
 
 .dash-review-date {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
+    font-family: var(--neo-font-body);
+    font-size: 0.72rem;
+    color: var(--neo-text-muted);
 }
 
 .dash-review-comment {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin: 0 0 6px 0;
+    font-family: var(--neo-font-body);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 8px 0;
 }
 
 .dash-review-block {
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.25);
-    font-family: monospace;
+    font-family: var(--neo-font-body);
+    font-size: 0.68rem;
+    color: var(--neo-text-muted);
 }
 
 .dash-empty {
-    color: rgba(255, 255, 255, 0.3);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
     text-align: center;
-    padding: 28px 0;
-    font-size: 0.9rem;
+    padding: 32px 0;
+    font-size: 0.85rem;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
 }
 
 .dash-view-all {
     display: block;
     text-align: center;
-    margin-top: 14px;
-    color: var(--accent-cyan);
+    margin-top: 16px;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--neo-accent-cyan);
     text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: color 0.2s;
+    border-bottom: 1px solid var(--neo-accent-cyan);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 2px;
+    transition: none;
 }
 
 .dash-view-all:hover {
-    color: var(--accent-purple);
+    color: var(--neo-accent-yellow);
+    border-bottom-color: var(--neo-accent-yellow);
 }
 
-/* ── Welcome card ─────────────────────────────────────────── */
+/* ── Welcome card ─────────────────────────────── */
 .dash-welcome {
-    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
     line-height: 1.7;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     margin: 0;
 }
 
-/* ── Loading ──────────────────────────────────────────────── */
+/* ── Loading ──────────────────────────────────── */
 .dash-loading {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100dvh;
     width: 100%;
-    background: var(--bg-primary);
-    color: rgba(255, 255, 255, 0.4);
-    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--neo-bg);
+    font-family: var(--neo-font-heading);
+    color: var(--neo-text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────── */
 @media (max-width: 1024px) {
     .dash-grid {
         grid-template-columns: 1fr;
@@ -440,7 +504,7 @@
     }
 
     .dash-page-title {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
     .dash-stats-row {

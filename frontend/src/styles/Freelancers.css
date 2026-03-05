@@ -1,25 +1,30 @@
-/* Freelancers — Standalone page matching Dashboard/Profile layout */
+/* ============================================
+   FREELANCERS — DARK NEOBRUTALISM
+   ============================================ */
 
-/* ── Page layout ─────────────────────────────────────────── */
+/* ── Page layout ─────────────────────────── */
 .freelancers-page {
     display: flex;
-    min-height: 100dvh;
+    height: 100dvh;
     width: 100%;
-    background: var(--bg-primary);
-    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: var(--text-primary);
+    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
 }
 
-/* ── Sidebar ─────────────────────────────────────────────── */
+/* ── Sidebar ──────────────────────────────── */
 .free-sidebar {
     width: 240px;
-    min-height: 100dvh;
+    height: 100%;
     padding: 28px 16px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    position: sticky;
-    top: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: var(--neo-surface);
+    border-right: 2px solid var(--neo-border-color);
 }
 
 .free-sidebar-brand {
@@ -27,69 +32,77 @@
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: #fff;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-heading);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1rem;
+    text-transform: uppercase;
     margin-bottom: 36px;
-    padding: 0 8px;
+    padding: 0 4px;
 }
 
 .free-sidebar-brand img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
 .free-nav-section {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .free-nav-label {
-    font-size: 0.68rem;
-    font-weight: 600;
+    font-family: var(--neo-font-heading);
+    font-size: 0.62rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.3);
-    padding: 0 12px;
-    margin-bottom: 8px;
+    letter-spacing: 0.12em;
+    color: var(--neo-text-muted);
+    padding: 0 8px;
+    margin-bottom: 10px;
+    display: block;
 }
 
 .free-nav-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.9rem;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: background 0.15s, color 0.15s;
     margin-bottom: 2px;
+    border: 1px solid transparent;
     cursor: pointer;
 }
 
 .free-nav-item:hover {
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--neo-text);
+    background: var(--neo-surface-light);
+    border-color: var(--neo-border-color);
 }
 
 .free-nav-item.active {
-    color: #fff;
-    background: var(--accent-gradient);
-    font-weight: 600;
+    color: #000;
+    background: var(--neo-accent-yellow);
+    border-color: #000;
+    box-shadow: 2px 2px 0px #000;
 }
 
 .free-nav-item .nav-icon {
-    font-size: 1.1rem;
-    width: 20px;
+    font-size: 1rem;
+    width: 18px;
     text-align: center;
 }
 
 .free-sidebar-footer {
     margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 2px solid var(--neo-border-color);
 }
 
 .free-logout-btn {
@@ -97,58 +110,71 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
     background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.9rem;
+    border: 1px solid transparent;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none;
 }
 
 .free-logout-btn:hover {
-    color: #f87171;
-    background: rgba(248, 113, 113, 0.08);
+    color: var(--neo-accent-orange) !important;
+    background: transparent !important;
+    border-color: var(--neo-accent-orange);
+    box-shadow: none !important;
+    transform: none !important;
 }
 
-/* ── Main content ────────────────────────────────────────── */
+/* ── Main content ─────────────────────────── */
 .free-main {
     flex: 1;
-    padding: 32px 40px;
+    padding: 36px 44px;
     overflow-y: auto;
-    background: transparent;
+    height: 100%;
+    background: var(--neo-bg);
 }
 
-/* ── Top bar ─────────────────────────────────────────────── */
+/* ── Top bar ──────────────────────────────── */
 .free-topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--neo-border-color);
 }
 
 .free-page-title {
+    font-family: var(--neo-font-heading);
     font-size: 1.8rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--neo-text);
     margin: 0;
     letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
-/* ── Search section ──────────────────────────────────────── */
+/* ── Search section ───────────────────────── */
 .free-search-card {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    box-shadow: 4px 4px 0px #000;
     padding: 24px;
     margin-bottom: 32px;
-    border-radius: 16px;
 }
 
 .free-subtitle {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin: 0 0 20px 0;
+    font-family: var(--neo-font-body);
+    font-size: 0.85rem;
+    color: var(--neo-text-muted);
+    margin: 0 0 18px 0;
 }
 
 .free-search-form {
@@ -166,98 +192,106 @@
 
 .free-search-icon {
     position: absolute;
-    left: 16px;
-    color: rgba(255, 255, 255, 0.4);
+    left: 14px;
+    color: var(--neo-text-muted);
 }
 
 .free-search-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 0.95rem;
-    padding: 12px 16px 12px 48px;
-    border-radius: 12px;
+    background: var(--neo-surface-light);
+    border: 2px solid var(--neo-border-color);
+    color: var(--neo-text);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    padding: 11px 14px 11px 44px;
+    border-radius: 6px;
     outline: none;
-    transition: all 0.2s ease;
-    font-family: inherit;
+    transition: none;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
 .free-search-input:focus {
-    border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--neo-accent-cyan);
+    box-shadow: 4px 4px 0px var(--neo-accent-cyan);
 }
 
 .free-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--neo-text-muted);
+    opacity: 0.5;
 }
 
 .free-search-btn {
-    padding: 12px 28px;
+    padding: 11px 28px;
+    /* Main styles from neobrutalism.css global button */
 }
 
-/* ── Grid ────────────────────────────────────────────────── */
+/* ── Grid ─────────────────────────────────── */
 .free-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 20px;
 }
 
-/* ── Freelancer Card ─────────────────────────────────────── */
+/* ── Freelancer Card ─────────────────────── */
 .free-card {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 22px;
     text-decoration: none;
-    color: var(--text-light);
-    transition: all 0.3s ease;
+    color: var(--neo-text);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 6px;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    box-shadow: 5px 5px 0px #000;
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
-.free-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
-}
-
+/* Left accent strip as brutalist decoration */
 .free-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.free-card:hover::before {
+    width: 4px;
+    height: 100%;
+    background: var(--neo-accent-green);
     opacity: 1;
 }
 
+.free-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0px var(--neo-accent-green);
+    border-color: var(--neo-accent-green);
+}
+
+/* ── Card header ──────────────────────────── */
 .fc-header {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-left: 8px;
+    /* offset from strip */
 }
 
 .fc-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    /* SHARP */
+    background: var(--neo-surface-light);
+    border: 2px solid var(--neo-border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-family: var(--neo-font-heading);
+    font-size: 1.4rem;
     font-weight: 700;
-    color: var(--accent-cyan);
+    color: var(--neo-accent-green);
+    box-shadow: 3px 3px 0px #000;
 }
 
 .fc-identity {
@@ -265,145 +299,170 @@
 }
 
 .fc-name {
-    font-size: 1.15rem;
+    font-family: var(--neo-font-heading);
+    font-size: 1rem;
     font-weight: 600;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    color: var(--neo-text);
 }
 
 .verified-icon {
-    color: var(--accent-cyan);
+    color: var(--neo-accent-cyan);
 }
 
 .fc-occupation {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 4px 0 0;
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text-muted);
+    margin: 6px 0 0;
 }
 
+/* ── Details ────────────────────────────── */
 .fc-details {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding-left: 8px;
 }
 
 .fc-detail-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text-muted);
 }
 
+/* ── Stats ──────────────────────────────── */
 .fc-stats {
     display: flex;
-    gap: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    margin-bottom: 20px;
+    gap: 16px;
+    padding: 14px 8px;
+    border-top: 2px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 16px;
 }
 
 .fc-stat {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .fc-stat-label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
+    font-family: var(--neo-font-heading);
+    font-size: 0.6rem;
+    color: var(--neo-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
 }
 
 .fc-stat-value {
-    font-size: 1.05rem;
-    font-weight: 600;
+    font-family: var(--neo-font-heading);
+    font-size: 1rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    color: var(--neo-text);
 }
 
 .star-filled {
-    color: #fbbf24;
-    fill: #fbbf24;
+    color: var(--neo-accent-yellow);
+    fill: var(--neo-accent-yellow);
 }
 
 .star-empty {
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.15);
 }
 
 .has-rating {
-    color: #fbbf24;
+    color: var(--neo-accent-yellow);
 }
 
+/* ── Card footer ────────────────────────── */
 .fc-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
+    padding-left: 8px;
 }
 
 .fc-block-info {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.3);
-    font-family: monospace;
+    font-family: var(--neo-font-body);
+    font-size: 0.68rem;
+    color: var(--neo-text-muted);
 }
 
 .fc-view-btn {
-    font-size: 0.85rem;
-    color: var(--accent-cyan);
-    font-weight: 500;
-    transition: transform 0.3s ease;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--neo-accent-green);
+    letter-spacing: 0.08em;
+    transition: none;
 }
 
 .free-card:hover .fc-view-btn {
-    transform: translateX(5px);
+    color: var(--neo-accent-yellow);
 }
 
-/* ── States ──────────────────────────────────────────────── */
+/* ── States ──────────────────────────────── */
 .free-loading,
 .free-error,
 .free-empty {
     text-align: center;
     padding: 60px 20px;
-    border-radius: 16px;
-}
-
-.free-error {
-    max-width: 500px;
-    margin: 0 auto;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text-muted);
 }
 
 .free-error p {
-    color: #ef4444;
+    color: var(--neo-accent-orange);
+    font-family: var(--neo-font-heading);
+    text-transform: uppercase;
     margin-bottom: 20px;
+    font-size: 0.85rem;
 }
 
 .free-empty h3 {
-    font-size: 1.5rem;
+    font-family: var(--neo-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
     margin-bottom: 12px;
-    color: var(--text-light);
+    color: var(--neo-text);
 }
 
 .free-empty p {
-    color: var(--text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.85rem;
+    color: var(--neo-text-muted);
 }
 
 .free-loading {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 50vh;
+    min-height: 30vh;
     width: 100%;
-    color: rgba(255, 255, 255, 0.4);
-    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--neo-font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neo-accent-cyan);
+    border-style: dashed;
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/* ── Responsive ──────────────────────────── */
 @media (max-width: 768px) {
     .free-sidebar {
         display: none;
@@ -420,7 +479,7 @@
     }
 
     .free-page-title {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
     .free-search-form {

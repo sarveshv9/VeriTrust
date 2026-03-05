@@ -1,306 +1,240 @@
+/* ============================================
+   REGISTER PAGE — DARK NEOBRUTALISM
+   ============================================ */
+
 .register-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
     width: 100%;
-    padding: 20px;
+    padding: 40px 20px;
     box-sizing: border-box;
-    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
 }
 
-.auth-wrapper {
-    display: flex;
-    width: 100%;
-    max-width: 1000px;
-    min-height: 600px;
-    border-radius: 20px;
-    overflow: hidden;
-    animation: authReveal 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-@keyframes authReveal {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.auth-side-image {
-    flex: 1;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.auth-image-overlay {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 100%);
-    width: 100%;
-    height: 100%;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box;
-}
-
-.auth-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.auth-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: white;
-}
-
-.auth-logo-icon {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-}
-
-.back-link {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 6px 14px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.back-link:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.auth-quote {
-    margin-bottom: 20px;
-}
-
-.auth-quote h3 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 500;
-    color: white;
-}
-
-.auth-quote p {
-    margin: 5px 0 0;
-    font-size: 1.8rem;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.auth-indicators {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.indicator {
-    width: 12px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-}
-
-.indicator.active {
-    width: 24px;
-    background: white;
-}
-
-.auth-side-form {
-    flex: 1.2;
-    padding: 50px 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-}
-
-.auth-form-content {
-    max-width: 400px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.auth-form-content h2 {
-    font-size: 2rem;
+/* Shared .auth-wrapper, .auth-side-image, .auth-logo etc. are styled in Login.css */
+/* Register entry label */
+.register-container .auth-form-content::before {
+    content: 'Register';
+    display: block;
+    font-family: var(--neo-font-body);
+    font-size: 0.7rem;
     font-weight: 600;
-    margin: 0 0 10px 0;
-    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--neo-accent-green);
+    margin-bottom: 12px;
+    opacity: 0.7;
 }
 
-.auth-form-content .subtitle {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin: 0 0 30px 0;
+/* Override Login.css ::before for the wrapper */
+.register-container .auth-wrapper {
+    box-shadow: 8px 8px 0px var(--neo-accent-green);
 }
 
-.auth-form-content .subtitle a {
-    color: #9e85f5;
-    /* Matching purple from reference */
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+.register-container .auth-logo {
+    color: var(--neo-accent-green);
 }
 
-.auth-form-content .subtitle a:hover {
-    color: #b7a6fc;
-    text-decoration: underline;
+.register-container .auth-quote h3 {
+    color: var(--neo-accent-green);
 }
 
+.register-container .indicator.active {
+    background: var(--neo-accent-green);
+}
+
+/* === Input group spacing === */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
-/* .form-input is used globally for inputs instead */
-
+/* === Checkbox Group === */
 .checkbox-group {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 12px;
     margin-bottom: 24px;
 }
 
 .checkbox-group input[type="checkbox"] {
     appearance: none;
+    -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    background: var(--neo-surface-light);
     cursor: pointer;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: none;
 }
 
 .checkbox-group input[type="checkbox"]:checked {
-    background: #fff;
-    border-color: #fff;
+    background: var(--neo-accent-green);
+    border-color: var(--neo-accent-green);
 }
 
 .checkbox-group input[type="checkbox"]:checked::after {
     content: '✓';
     color: #000;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 700;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .checkbox-group label {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+    color: var(--neo-text-muted);
     user-select: none;
+    line-height: 1.5;
 }
 
 .checkbox-group label a {
-    color: #9e85f5;
+    color: var(--neo-accent-green);
     text-decoration: none;
+    border-bottom: 1px solid var(--neo-accent-green);
 }
 
 .checkbox-group label a:hover {
-    text-decoration: underline;
+    color: var(--neo-accent-yellow);
+    border-bottom-color: var(--neo-accent-yellow);
 }
 
+/* === Submit button === */
 .register-submit {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    background-color: var(--neo-accent-green);
+    color: #000;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0px #000;
 }
 
+.register-submit:hover {
+    background-color: var(--neo-accent-green) !important;
+}
+
+/* === Error and Success messages === */
 .error-message {
-    color: #ff6b6b;
-    font-size: 0.85rem;
+    color: var(--neo-accent-orange);
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
     margin-bottom: 15px;
-}
-
-/* Key Display UI updates */
-.keys-container {
-    animation: authReveal 0.4s ease forwards;
+    border-left: 3px solid var(--neo-accent-orange);
+    padding-left: 10px;
 }
 
 .success-message {
-    color: #51cf66;
+    color: var(--neo-accent-green);
+    font-family: var(--neo-font-heading);
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
     margin-bottom: 10px;
 }
 
 .warning-text {
-    color: #ffd43b;
-    font-size: 0.85rem;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
     margin-bottom: 20px;
     line-height: 1.5;
+    border-left: 3px solid var(--neo-accent-yellow);
+    padding-left: 10px;
+}
+
+/* === Key display boxes (post-register keys screen) === */
+.keys-container {
+    animation: neoReveal 0.2s ease forwards;
 }
 
 .key-box {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .key-box label {
     display: block;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 6px;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--neo-text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
 }
 
 .key-box textarea {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.2);
-    color: #b7a6fc;
-    font-family: monospace;
-    font-size: 0.85rem;
+    border-radius: 6px;
+    border: 2px solid var(--neo-border-color);
+    background: var(--neo-surface-light);
+    color: var(--neo-accent-cyan);
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
     resize: vertical;
-    min-height: 70px;
+    min-height: 75px;
     outline: none;
     word-break: break-all;
     box-sizing: border-box;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+    transition: none;
 }
 
+.key-box textarea:focus {
+    border-color: var(--neo-accent-cyan);
+    box-shadow: 4px 4px 0px var(--neo-accent-cyan);
+}
+
+/* === Login link post-register === */
 .login-link {
-    margin-top: 20px;
+    margin-top: 24px;
     text-align: center;
 }
 
 .login-link a {
-    color: #9e85f5;
+    color: var(--neo-accent-cyan);
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-family: var(--neo-font-heading);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 2px solid var(--neo-accent-cyan);
+    padding-bottom: 2px;
 }
 
 .login-link a:hover {
-    text-decoration: underline;
+    color: var(--neo-accent-yellow);
+    border-bottom-color: var(--neo-accent-yellow);
 }
 
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
-    .auth-wrapper {
+    .register-container .auth-wrapper {
         flex-direction: column;
+        box-shadow: 4px 4px 0px var(--neo-accent-green);
     }
 
     .auth-side-image {
-        min-height: 250px;
+        min-height: 220px;
         flex: none;
+        border-right: none;
+        border-bottom: 2px solid var(--neo-border-color);
     }
 
     .auth-side-form {
-        padding: 30px;
+        padding: 30px 24px;
     }
 }

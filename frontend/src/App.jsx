@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home';
 import Register from './pages/Register';
@@ -9,11 +9,27 @@ import Profile from './pages/Profile';
 import Freelancers from './pages/Freelancers';
 import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
+import './styles/neobrutalism.css';
+
+const ThemeController = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      document.body.classList.remove('neobrutalism-body');
+    } else {
+      document.body.classList.add('neobrutalism-body');
+    }
+  }, [location.pathname]);
+
+  return null;
+};
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <ThemeController />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
