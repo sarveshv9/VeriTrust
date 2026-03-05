@@ -15,12 +15,9 @@
     width: 100%;
     max-width: 1000px;
     min-height: 600px;
+    /* Styles are now handled by .glass-panel from App.css */
     border-radius: 20px;
     overflow: hidden;
-    background: #1a1b26;
-    /* Dark slate background as per reference */
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     animation: authReveal 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     opacity: 0;
     transform: translateY(20px);
@@ -175,10 +172,9 @@
     width: 100%;
     padding: 16px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    /* Same as ref */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
     font-family: monospace;
     font-size: 0.85rem;
     resize: vertical;
@@ -189,13 +185,13 @@
 }
 
 .key-textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-    font-family: inherit;
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .key-textarea:focus {
-    border-color: #9e85f5;
-    background: rgba(158, 133, 245, 0.05);
+    border-color: var(--accent-purple);
+    background: var(--accent-glow-secondary);
+    box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.1);
 }
 
 .file-upload-wrapper {
@@ -225,6 +221,7 @@
     letter-spacing: 1px;
 }
 
+/* Removed because it conflicts with .btn-primary */
 .file-upload-label {
     display: flex;
     align-items: center;
@@ -233,7 +230,7 @@
     padding: 14px 20px;
     border: 1px dashed rgba(255, 255, 255, 0.3);
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
@@ -242,41 +239,19 @@
 }
 
 .file-upload-label:hover {
-    border-color: #9e85f5;
+    border-color: var(--accent-cyan);
     color: #fff;
-    background: rgba(158, 133, 245, 0.05);
+    background: var(--accent-glow-primary);
 }
 
 .file-input {
     display: none;
 }
 
-.submit-btn.login-submit {
+.login-submit {
     width: 100%;
     padding: 14px;
-    border-radius: 8px;
-    border: none;
-    background: #7155e2;
-    /* Purple match from Reference */
-    color: white;
     font-size: 1.05rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.submit-btn.login-submit:hover {
-    background: #8b74fc;
-}
-
-.submit-btn.login-submit:active {
-    transform: scale(0.98);
-}
-
-.submit-btn.login-submit:disabled {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.3);
-    cursor: not-allowed;
 }
 
 .error-message {

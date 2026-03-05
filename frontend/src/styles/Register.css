@@ -16,10 +16,6 @@
     min-height: 600px;
     border-radius: 20px;
     overflow: hidden;
-    background: #1a1b26;
-    /* Dark slate background as per reference */
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     animation: authReveal 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     opacity: 0;
     transform: translateY(20px);
@@ -170,29 +166,7 @@
     margin-bottom: 20px;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    /* Same as ref */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.3s ease, background 0.3s ease;
-    box-sizing: border-box;
-    font-family: inherit;
-}
-
-.input-group input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-}
-
-.input-group input:focus {
-    border-color: #9e85f5;
-    background: rgba(158, 133, 245, 0.05);
-}
+/* .form-input is used globally for inputs instead */
 
 .checkbox-group {
     display: flex;
@@ -243,32 +217,9 @@
     text-decoration: underline;
 }
 
-.submit-btn.register-submit {
+.register-submit {
     width: 100%;
     padding: 14px;
-    border-radius: 8px;
-    border: none;
-    background: #7155e2;
-    /* Purple match from Reference */
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.1s ease;
-}
-
-.submit-btn.register-submit:hover {
-    background: #8b74fc;
-}
-
-.submit-btn.register-submit:active {
-    transform: scale(0.98);
-}
-
-.submit-btn.register-submit:disabled {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.3);
-    cursor: not-allowed;
 }
 
 .error-message {

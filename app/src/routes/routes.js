@@ -20,6 +20,7 @@ router.post("/profile", requireAuth, profileController.onCreate);
 router.put("/profile", requireAuth, profileController.onUpdate);
 router.get("/profile/:publicKey", profileController.onGet);
 router.get("/profiles/count", profileController.onCount);
+router.get("/profiles", profileController.onGetAll);
 
 // Reviews
 router.post("/review", requireAuth, reviewController.onPost);

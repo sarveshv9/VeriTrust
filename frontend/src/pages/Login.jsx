@@ -121,7 +121,7 @@ const Login = () => {
 
                             {error && <div className="error-message">{error}</div>}
 
-                            <button type="submit" disabled={loading} className="submit-btn login-submit">
+                            <button type="submit" disabled={loading} className="btn-primary login-submit">
                                 {loading ? 'Authenticating...' : 'Log in Securely'}
                             </button>
                         </form>

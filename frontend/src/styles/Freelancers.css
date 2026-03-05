@@ -1,0 +1,437 @@
+/* Freelancers — Standalone page matching Dashboard/Profile layout */
+
+/* ── Page layout ─────────────────────────────────────────── */
+.freelancers-page {
+    display: flex;
+    min-height: 100dvh;
+    width: 100%;
+    background: var(--bg-primary);
+    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.free-sidebar {
+    width: 240px;
+    min-height: 100dvh;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+.free-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 36px;
+    padding: 0 8px;
+}
+
+.free-sidebar-brand img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.free-nav-section {
+    margin-bottom: 28px;
+}
+
+.free-nav-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.3);
+    padding: 0 12px;
+    margin-bottom: 8px;
+}
+
+.free-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.free-nav-item:hover {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.free-nav-item.active {
+    color: #fff;
+    background: var(--accent-gradient);
+    font-weight: 600;
+}
+
+.free-nav-item .nav-icon {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.free-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.free-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.free-logout-btn:hover {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.08);
+}
+
+/* ── Main content ────────────────────────────────────────── */
+.free-main {
+    flex: 1;
+    padding: 32px 40px;
+    overflow-y: auto;
+    background: transparent;
+}
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.free-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.free-page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* ── Search section ──────────────────────────────────────── */
+.free-search-card {
+    padding: 24px;
+    margin-bottom: 32px;
+    border-radius: 16px;
+}
+
+.free-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 0 20px 0;
+}
+
+.free-search-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.free-search-input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.free-search-icon {
+    position: absolute;
+    left: 16px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.free-search-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 12px 16px 12px 48px;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.free-search-input:focus {
+    border-color: var(--accent-cyan);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.free-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.free-search-btn {
+    padding: 12px 28px;
+}
+
+/* ── Grid ────────────────────────────────────────────────── */
+.free-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+/* ── Freelancer Card ─────────────────────────────────────── */
+.free-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.free-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+}
+
+.free-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.free-card:hover::before {
+    opacity: 1;
+}
+
+.fc-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.fc-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.fc-identity {
+    flex: 1;
+}
+
+.fc-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.verified-icon {
+    color: var(--accent-cyan);
+}
+
+.fc-occupation {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 4px 0 0;
+}
+
+.fc-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.fc-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.fc-stats {
+    display: flex;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 20px;
+}
+
+.fc-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fc-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fc-stat-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.star-filled {
+    color: #fbbf24;
+    fill: #fbbf24;
+}
+
+.star-empty {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.has-rating {
+    color: #fbbf24;
+}
+
+.fc-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.fc-block-info {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: monospace;
+}
+
+.fc-view-btn {
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+.free-card:hover .fc-view-btn {
+    transform: translateX(5px);
+}
+
+/* ── States ──────────────────────────────────────────────── */
+.free-loading,
+.free-error,
+.free-empty {
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 16px;
+}
+
+.free-error {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.free-error p {
+    color: #ef4444;
+    margin-bottom: 20px;
+}
+
+.free-empty h3 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: var(--text-light);
+}
+
+.free-empty p {
+    color: var(--text-muted);
+}
+
+.free-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .free-sidebar {
+        display: none;
+    }
+
+    .free-main {
+        padding: 24px 16px;
+    }
+
+    .free-topbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .free-page-title {
+        font-size: 1.5rem;
+    }
+
+    .free-search-form {
+        flex-direction: column;
+    }
+
+    .free-search-input-wrapper {
+        width: 100%;
+    }
+
+    .free-search-btn {
+        width: 100%;
+    }
+}

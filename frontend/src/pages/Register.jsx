@@ -85,6 +85,7 @@ const Register = () => {
                                     <input
                                         type="text"
                                         id="name"
+                                        className="form-input"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="Full Name"
@@ -98,7 +99,7 @@ const Register = () => {
                                 </div>
 
                                 {error && <div className="error-message">{error}</div>}
-                                <button type="submit" disabled={loading} className="submit-btn register-submit">
+                                <button type="submit" disabled={loading} className="btn-primary register-submit">
                                     {loading ? 'Creating account...' : 'Create account'}
                                 </button>
                             </form>
@@ -119,7 +120,7 @@ const Register = () => {
                                     <textarea readOnly value={keyPair.privateKey} />
                                 </div>
 
-                                <button onClick={handleExport} className="submit-btn register-submit">
+                                <button onClick={handleExport} className="btn-primary register-submit">
                                     Export Keys (.txt)
                                 </button>
                                 <div className="login-link">

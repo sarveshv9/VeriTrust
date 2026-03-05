@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Home, User, BarChart2 } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Home, User, BarChart2, Search, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import WriteReview from '../components/WriteReview';
@@ -9,7 +9,8 @@ import '../styles/Profile.css';
 
 const Profile = () => {
     const { publicKey } = useParams();
-    const { user } = useAuth();
+    const { user, logout, isLoggedIn } = useAuth();
+    const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -49,6 +50,11 @@ const Profile = () => {
     useEffect(() => { fetchData(); }, [fetchData]);
     const handleReviewPosted = () => fetchData();
 
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     if (loading) {
         return <div className="prof-loading"><p>Loading profile...</p></div>;
     }
@@ -65,7 +71,7 @@ const Profile = () => {
     return (
         <div className="profile-page">
             {/* ── Sidebar ── */}
-            <aside className="prof-sidebar">
+            <aside className="prof-sidebar glass-panel" style={{ borderRadius: 0, borderTop: 'none', borderBottom: 'none', borderLeft: 'none' }}>
                 <Link to="/" className="prof-sidebar-brand">
                     <img src={vtLogo} alt="VeriTrust" />
                     <span>VeriTrust</span>
@@ -76,6 +82,9 @@ const Profile = () => {
                     <Link to="/" className="prof-nav-item">
                         <Home className="nav-icon" size={18} /> Home
                     </Link>
+                    <Link to="/freelancers" className="prof-nav-item">
+                        <Search className="nav-icon" size={18} /> Freelancers
+                    </Link>
                     <span className="prof-nav-item active">
                         <User className="nav-icon" size={18} /> Profile
                     </span>
@@ -85,6 +94,14 @@ const Profile = () => {
                         </Link>
                     )}
                 </div>
+
+                {isLoggedIn && (
+                    <div className="prof-sidebar-footer">
+                        <button onClick={handleLogout} className="prof-logout-btn">
+                            <LogOut className="nav-icon" size={18} /> Logout
+                        </button>
+                    </div>
+                )}
             </aside>
 
             {/* ── Main content ── */}
@@ -94,28 +111,28 @@ const Profile = () => {
                 </div>
 
                 {/* Hero card */}
-                <div className="prof-hero-card">
+                <div className="prof-hero-card glass-panel">
                     <div className="prof-identity">
                         <h2 className="prof-name">{profile.name}</h2>
                         <p className="prof-occupation">{profile.occupation}</p>
                     </div>
 
                     <div className="prof-stats">
-                        <div className="prof-stat">
+                        <div className="prof-stat glass-panel">
                             <div className="prof-stat-value green">
                                 {profile.averageRating || '—'}
                             </div>
                             <div className="prof-stat-label">Avg Rating</div>
                         </div>
-                        <div className="prof-stat">
+                        <div className="prof-stat glass-panel">
                             <div className="prof-stat-value">{profile.reviewCount}</div>
                             <div className="prof-stat-label">Reviews</div>
                         </div>
-                        <div className="prof-stat">
+                        <div className="prof-stat glass-panel">
                             <div className="prof-stat-value">{profile.location || '—'}</div>
                             <div className="prof-stat-label">Location</div>
                         </div>
-                        <div className="prof-stat">
+                        <div className="prof-stat glass-panel">
                             <div className="prof-stat-value">{new Date(profile.registeredAt).toLocaleDateString()}</div>
                             <div className="prof-stat-label">Registered</div>
                         </div>
@@ -132,7 +149,7 @@ const Profile = () => {
                 )}
 
                 {/* Reviews card */}
-                <div className="prof-reviews-card">
+                <div className="prof-reviews-card glass-panel">
                     <div className="prof-reviews-head">
                         <h2 className="prof-reviews-title">Reviews ({totalReviews})</h2>
                     </div>

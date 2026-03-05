@@ -114,8 +114,8 @@ const profileController = {
       const reviews = blockchain.getReviews(publicKey);
       const avg = reviews.length
         ? (
-            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-          ).toFixed(2)
+          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        ).toFixed(2)
         : null;
 
       res.status(200).json({
@@ -142,6 +142,30 @@ const profileController = {
       res
         .status(200)
         .json({ success: true, totalProfiles: blockchain.totalProfiles() });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  },
+
+  // GET /profiles  (public)
+  onGetAll: async (req, res) => {
+    try {
+      const { search } = req.query;
+      let profiles = blockchain.getAllProfiles();
+
+      if (search) {
+        const lowerSearch = search.toLowerCase();
+        profiles = profiles.filter(
+          (p) =>
+            (p.name && p.name.toLowerCase().includes(lowerSearch)) ||
+            (p.occupation && p.occupation.toLowerCase().includes(lowerSearch))
+        );
+      }
+
+      res.status(200).json({
+        success: true,
+        data: profiles,
+      });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
     }

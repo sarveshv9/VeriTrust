@@ -4,17 +4,15 @@
     display: flex;
     min-height: 100dvh;
     width: 100%;
-    background: #0a0f0a;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #e8e8e8;
+    background: var(--bg-primary);
+    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */
 .prof-sidebar {
     width: 240px;
     min-height: 100dvh;
-    background: #0d120d;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
     padding: 28px 16px;
     display: flex;
     flex-direction: column;
@@ -76,7 +74,7 @@
 
 .prof-nav-item.active {
     color: #fff;
-    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+    background: var(--accent-gradient);
     font-weight: 600;
 }
 
@@ -86,14 +84,40 @@
     text-align: center;
 }
 
+.prof-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prof-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.prof-logout-btn:hover {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.08);
+}
+
 /* ── Main content ────────────────────────────────────────── */
 .prof-main {
     flex: 1;
     padding: 32px 40px;
     overflow-y: auto;
-    background: radial-gradient(ellipse at 20% 0%, rgba(34, 211, 238, 0.2) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 100%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
-        #0a0f0a;
+    background: transparent;
 }
 
 /* ── Top bar ─────────────────────────────────────────────── */
@@ -114,9 +138,6 @@
 
 /* ── Hero card ───────────────────────────────────────────── */
 .prof-hero-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
     padding: 32px;
     margin-bottom: 20px;
 }
@@ -149,9 +170,6 @@
 
 .prof-stat {
     padding: 18px 16px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
     text-align: center;
 }
 
@@ -164,7 +182,7 @@
 }
 
 .prof-stat-value.green {
-    color: #4ade80;
+    color: var(--accent-cyan);
 }
 
 .prof-stat-label {
@@ -186,9 +204,6 @@
 
 /* ── Reviews card ────────────────────────────────────────── */
 .prof-reviews-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
     padding: 24px;
 }
 
@@ -286,9 +301,9 @@
 }
 
 .prof-page-btn:hover:not(:disabled) {
-    background: rgba(74, 222, 128, 0.1);
-    border-color: rgba(74, 222, 128, 0.3);
-    color: #4ade80;
+    background: var(--accent-glow-primary);
+    border-color: rgba(34, 211, 238, 0.3);
+    color: var(--accent-cyan);
 }
 
 .prof-page-btn:disabled {
@@ -308,9 +323,9 @@
     justify-content: center;
     min-height: 100dvh;
     width: 100%;
-    background: #0a0f0a;
+    background: var(--bg-primary);
     color: rgba(255, 255, 255, 0.4);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .prof-error {
@@ -320,9 +335,9 @@
     justify-content: center;
     min-height: 100dvh;
     width: 100%;
-    background: #0a0f0a;
+    background: var(--bg-primary);
     gap: 16px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Ranade-Regular', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .prof-error-text {
