@@ -1,5 +1,6 @@
 /* Hero Section - GSAP-Ready without Root Variables */
 @import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 .hero {
   position: relative;
@@ -58,7 +59,7 @@
 }
 
 .hero-subtitle {
-  font-family: "Söhne", system-ui, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.625;
@@ -183,7 +184,7 @@
 }
 
 .scroll-indicator span {
-  font-family: "Söhne", system-ui, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
