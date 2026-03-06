@@ -41,6 +41,7 @@ const WriteReviewPage = () => {
 
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const [reviewerName, setReviewerName] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -94,6 +95,7 @@ const WriteReviewPage = () => {
                     subjectKey: decodedKey,
                     rating: Number(rating),
                     comment: comment.slice(0, 1000),
+                    reviewerName: reviewerName.trim() || 'Anonymous',
                 }),
             });
 
@@ -101,6 +103,7 @@ const WriteReviewPage = () => {
                 setSuccessMsg(`Review for ${profile?.name} posted!`);
                 setComment('');
                 setRating(0);
+                setReviewerName('');
             } else {
                 setSubmitError(data.message || 'Failed to post review.');
             }
@@ -131,10 +134,10 @@ const WriteReviewPage = () => {
                     <Link to="/freelancers" className="wrp-nav-item">
                         <Search className="nav-icon" size={18} /> Freelancers
                     </Link>
-                    {user?.publicKey && (
+                    {isLoggedIn && user?.publicKey && (
                         <>
                             <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="wrp-nav-item">
-                                <User className="nav-icon" size={18} /> Profile
+                                <User className="nav-icon" size={18} /> My Profile
                             </Link>
                             <Link to="/dashboard" className="wrp-nav-item">
                                 <BarChart2 className="nav-icon" size={18} /> Dashboard
@@ -189,62 +192,68 @@ const WriteReviewPage = () => {
                             </div>
                         </div>
 
-                        {/* Review Form */}
-                        {!isLoggedIn ? (
-                            <div className="wrp-auth-prompt glass-panel">
-                                <p>You need to be logged in to leave a review.</p>
-                                <Link to="/login" className="btn-primary">Log in</Link>
+                        {/* Review Form — open to everyone, no login required */}
+                        <form className="wrp-form glass-panel" onSubmit={handleSubmit}>
+                            <h2 className="wrp-form-title">Write a Review</h2>
+                            <p className="wrp-form-subtitle">
+                                Share your experience working with <strong>{profile?.name}</strong>.
+                                Reviews are stored immutably on the blockchain.
+                            </p>
+
+                            {successMsg && (
+                                <div className="wrp-success-banner">
+                                    <span>✓ {successMsg}</span>
+                                </div>
+                            )}
+
+                            <div className="wrp-field">
+                                <label htmlFor="reviewer-name" className="wrp-label">Your Name <span className="wrp-optional">(optional)</span></label>
+                                <input
+                                    id="reviewer-name"
+                                    type="text"
+                                    className="wrp-input"
+                                    value={reviewerName}
+                                    onChange={(e) => setReviewerName(e.target.value)}
+                                    placeholder="e.g. Jane D. — leave blank to post as Anonymous"
+                                    maxLength={100}
+                                />
                             </div>
-                        ) : (
-                            <form className="wrp-form glass-panel" onSubmit={handleSubmit}>
-                                <h2 className="wrp-form-title">Write a Review</h2>
-                                <p className="wrp-form-subtitle">
-                                    Share your experience working with <strong>{profile?.name}</strong>.
-                                    Reviews are stored immutably on the blockchain.
-                                </p>
 
-                                {successMsg && (
-                                    <div className="wrp-success-banner">
-                                        <span>✓ {successMsg}</span>
-                                    </div>
+                            <div className="wrp-field">
+                                <label className="wrp-label">Your Rating</label>
+                                <StarRating rating={rating} onRate={setRating} />
+                                {rating > 0 && (
+                                    <span className="wrp-rating-desc">{ratingLabels[rating]}</span>
                                 )}
+                            </div>
 
-                                <div className="wrp-field">
-                                    <label className="wrp-label">Your Rating</label>
-                                    <StarRating rating={rating} onRate={setRating} />
-                                    {rating > 0 && (
-                                        <span className="wrp-rating-desc">{ratingLabels[rating]}</span>
-                                    )}
-                                </div>
+                            <div className="wrp-field">
+                                <label htmlFor="review-comment" className="wrp-label">Your Review</label>
+                                <textarea
+                                    id="review-comment"
+                                    className="wrp-textarea"
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    placeholder={`Describe your experience working with ${profile?.name}...`}
+                                    maxLength={1000}
+                                    required
+                                    rows={6}
+                                />
+                                <span className="wrp-char-count">{comment.length} / 1000</span>
+                            </div>
 
-                                <div className="wrp-field">
-                                    <label htmlFor="review-comment" className="wrp-label">Your Review</label>
-                                    <textarea
-                                        id="review-comment"
-                                        className="wrp-textarea"
-                                        value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
-                                        placeholder={`Describe your experience with ${profile?.name}...`}
-                                        maxLength={1000}
-                                        required
-                                        rows={6}
-                                    />
-                                    <span className="wrp-char-count">{comment.length} / 1000</span>
-                                </div>
+                            {submitError && (
+                                <div className="wrp-error-msg">{submitError}</div>
+                            )}
 
-                                {submitError && (
-                                    <div className="wrp-error-msg">{submitError}</div>
-                                )}
-
-                                <button
-                                    type="submit"
-                                    className="btn-primary wrp-submit-btn"
-                                    disabled={submitting || !rating}
-                                >
-                                    {submitting ? 'Posting to blockchain...' : 'Post Review'}
-                                </button>
-                            </form>
-                        )}
+                            <button
+                                type="submit"
+                                className="btn-primary wrp-submit-btn"
+                                disabled={submitting || !rating}
+                            >
+                                {submitting ? 'Posting to blockchain...' : 'Post Review'}
+                            </button>
+                        </form>
                     </div>
                 )}
             </main>

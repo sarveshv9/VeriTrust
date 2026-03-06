@@ -91,8 +91,9 @@ const Login = () => {
                 </div>
                 <div className="auth-side-form">
                     <div className="auth-form-content">
-                        <h2>Welcome back</h2>
-                        <p className="subtitle">New to VeriTrust? <a href="/register">Create an account</a></p>
+                        <h2>Provider Login</h2>
+                        <p className="subtitle">New service provider? <a href="/register">List your services</a></p>
+                        <p className="subtitle" style={{ marginTop: '-8px', opacity: 0.7, fontSize: '0.8rem' }}>👥 Just browsing or leaving a review? No sign-in needed — <a href="/freelancers">explore freelancers</a></p>
 
                         <form onSubmit={handleLogin}>
                             <div className="input-group">

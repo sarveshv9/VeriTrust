@@ -76,8 +76,9 @@ const Register = () => {
                 </div>
                 <div className="auth-side-form">
                     <div className="auth-form-content">
-                        <h2>Create an account</h2>
-                        <p className="subtitle">Already have an account? <a href="/login">Log in</a></p>
+                        <h2>List Your Services</h2>
+                        <p className="subtitle">Already a provider? <a href="/login">Sign in with your key</a></p>
+                        <p className="subtitle" style={{ marginTop: '-8px', opacity: 0.7, fontSize: '0.8rem' }}>👥 Just want to browse or review? No sign-up needed — <a href="/freelancers">explore freelancers</a></p>
 
                         {!keyPair ? (
                             <form onSubmit={handleRegister}>

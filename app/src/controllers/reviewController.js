@@ -1,29 +1,21 @@
 const blockchain = require("../blockchain");
 
 const reviewController = {
-  // POST /review  (auth required)
+  // POST /review  (no auth required — anyone can review a freelancer)
   onPost: async (req, res) => {
     try {
-      const reviewerKey = req.user.publicKey;
-      const { subjectKey, rating, comment } = req.body;
+      const { subjectKey, rating, comment, reviewerName } = req.body;
 
       if (!subjectKey || !rating || !comment) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "subjectKey, rating, and comment are required",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "subjectKey, rating, and comment are required",
+        });
       }
       if (rating < 1 || rating > 5) {
         return res
           .status(400)
           .json({ success: false, message: "Rating must be 1 to 5" });
-      }
-      if (reviewerKey === subjectKey) {
-        return res
-          .status(400)
-          .json({ success: false, message: "You cannot review yourself" });
       }
 
       // Subject must have a profile
@@ -34,12 +26,10 @@ const reviewController = {
           .json({ success: false, message: "Subject profile not found" });
       }
 
-
-
       const block = blockchain.addTransaction({
         type: "POST_REVIEW",
         subjectKey,
-        reviewerKey,
+        reviewerName: (reviewerName || "Anonymous").slice(0, 100),
         rating: Number(rating),
         comment: comment.slice(0, 1000), // max 1000 chars
       });

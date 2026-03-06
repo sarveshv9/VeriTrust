@@ -514,8 +514,8 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className="auth-btn login-btn">Login</Link>
-                <Link to="/register" className="auth-btn register-btn">Register</Link>
+                <Link to="/login" className="auth-btn login-btn">Provider Login</Link>
+                <Link to="/register" className="auth-btn register-btn">List Your Services</Link>
               </>
             )}
             <button
