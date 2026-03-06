@@ -4,6 +4,7 @@ const { requireAuth } = require("../middleware");
 const authController = require("../controllers/auth-controllers");
 const profileController = require("../controllers/profileController");
 const reviewController = require("../controllers/reviewController");
+const serviceController = require("../controllers/serviceController");
 const blockchain = require("../blockchain");
 
 // Health + chain info
@@ -25,6 +26,11 @@ router.put("/profile", requireAuth, profileController.onUpdate);
 router.get("/profile/:publicKey", profileController.onGet);
 router.get("/profiles/count", profileController.onCount);
 router.get("/profiles", profileController.onGetAll);
+
+// Services
+router.post("/service", requireAuth, serviceController.onCreate);
+router.get("/services", serviceController.onGetAll);
+router.get("/services/:publicKey", serviceController.onGetForFreelancer);
 
 // Reviews
 router.post("/review", requireAuth, reviewController.onPost);
