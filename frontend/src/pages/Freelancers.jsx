@@ -1,30 +1,53 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, MapPin, Star, ShieldCheck, Home, User, BarChart2, LogOut } from 'lucide-react';
+import { Search, Star, ShieldCheck, Home, User, BarChart2, LogOut, Code, Database, Monitor, Cpu, Smartphone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
 import '../styles/Freelancers.css';
 
+// Mock gig thumbnails (Since real ones don't exist in backend yet)
+const gigThumbnails = [
+    'linear-gradient(135deg, #10b981, #3b82f6)',
+    'linear-gradient(135deg, #f59e0b, #ec4899)',
+    'linear-gradient(135deg, #8b5cf6, #2dd4bf)',
+    'linear-gradient(135deg, #ef4444, #f97316)',
+    'linear-gradient(135deg, #14b8a6, #6366f1)',
+    'linear-gradient(135deg, #06b6d4, #8b5cf6)',
+];
+
+const categories = [
+    { name: "Web Development", icon: <Monitor size={18} /> },
+    { name: "Smart Contracts", icon: <Code size={18} /> },
+    { name: "Mobile Apps", icon: <Smartphone size={18} /> },
+    { name: "Databases", icon: <Database size={18} /> },
+    { name: "AI & ML", icon: <Cpu size={18} /> },
+];
+
+const getThumbnail = (index) => gigThumbnails[index % gigThumbnails.length];
+
 const Freelancers = () => {
     const { user, logout, isLoggedIn } = useAuth();
     const navigate = useNavigate();
-    const [profiles, setProfiles] = useState([]);
+    const [services, setServices] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [activeCategory, setActiveCategory] = useState('');
 
-    // Fetch matching profiles
-    const fetchProfiles = useCallback(async (query = '') => {
+    const fetchServices = useCallback(async (query = '', category = '') => {
         setLoading(true);
         setError('');
         try {
-            const url = query ? `/profiles?search=${encodeURIComponent(query)}` : '/profiles';
+            const params = new URLSearchParams();
+            if (query) params.set('search', query);
+            if (category) params.set('category', category);
+            const url = `/services${params.toString() ? '?' + params.toString() : ''}`;
             const res = await apiFetch(url);
             if (res.ok) {
-                setProfiles(res.data.data || []);
+                setServices(res.data.data || []);
             } else {
-                setError(res.data.message || 'Failed to fetch profiles.');
+                setError(res.data.message || 'Failed to fetch services.');
             }
         } catch (err) {
             setError('Connection error. Is the backend running?');
@@ -33,15 +56,21 @@ const Freelancers = () => {
         }
     }, []);
 
-    // Initial load
-    useEffect(() => {
-        fetchProfiles();
-    }, [fetchProfiles]);
+    useEffect(() => { fetchServices(); }, [fetchServices]);
 
-    // Handle search input
     const handleSearch = (e) => {
         e.preventDefault();
-        fetchProfiles(searchQuery);
+        fetchServices(searchQuery, activeCategory);
+    };
+
+    const handleCategoryClick = (categoryName) => {
+        if (activeCategory === categoryName) {
+            setActiveCategory('');
+            fetchServices(searchQuery, '');
+        } else {
+            setActiveCategory(categoryName);
+            fetchServices(searchQuery, categoryName);
+        }
     };
 
     const handleLogout = () => {
@@ -90,29 +119,44 @@ const Freelancers = () => {
 
             {/* ── Main content ── */}
             <main className="free-main">
-                <div className="free-topbar">
-                    <h1 className="free-page-title">Find Trusted Freelancers</h1>
-                </div>
-
-                <div className="free-search-card glass-panel">
-                    <p className="free-subtitle">
-                        Discover professionals with verified identities and immutable on-chain reputation.
-                    </p>
-                    <form className="free-search-form" onSubmit={handleSearch}>
-                        <div className="free-search-input-wrapper">
-                            <Search className="free-search-icon" size={20} />
+                {/* ── Header Area ── */}
+                <div className="free-hero-section glass-panel">
+                    <h1 className="free-hero-title">Programming & Tech</h1>
+                    <p className="free-hero-subtitle">You bring the vision, we'll build the code.</p>
+                    <form className="fiverr-search-form" onSubmit={handleSearch}>
+                        <div className="fiverr-search-wrapper">
                             <input
                                 type="text"
-                                className="free-search-input"
-                                placeholder="Search by name or occupation..."
+                                className="fiverr-search-input"
+                                placeholder="What service are you looking for today?"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
+                            <button type="submit" className="fiverr-search-btn btn-primary">
+                                <Search size={20} /> Search
+                            </button>
                         </div>
-                        <button type="submit" className="btn-primary free-search-btn">
-                            Search
-                        </button>
                     </form>
+                </div>
+
+                {/* ── Categories ── */}
+                <div className="free-categories-scroll">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.name}
+                            className={`free-category-chip ${activeCategory === cat.name ? 'active' : ''}`}
+                            onClick={() => handleCategoryClick(cat.name)}
+                        >
+                            {cat.icon}
+                            <span>{cat.name}</span>
+                        </button>
+                    ))}
+                </div>
+
+                {/* ── Content Area ── */}
+                <div className="free-results-header">
+                    <h2>Explore Services</h2>
+                    <span className="free-results-count">{services.length} services available</span>
                 </div>
 
                 {loading ? (
@@ -120,53 +164,69 @@ const Freelancers = () => {
                 ) : error ? (
                     <div className="free-error glass-panel">
                         <p>{error}</p>
-                        <button className="btn-secondary" onClick={() => fetchProfiles()}>Try Again</button>
+                        <button className="btn-secondary" onClick={() => fetchServices()}>Try Again</button>
                     </div>
-                ) : profiles.length === 0 ? (
+                ) : services.length === 0 ? (
                     <div className="free-empty glass-panel">
-                        <h3>No matching freelancers found</h3>
-                        <p>Try adjusting your search terms or checking back later.</p>
+                        <h3>No services found</h3>
+                        <p>Freelancers haven't posted services yet, or try adjusting your search.</p>
                     </div>
                 ) : (
-                    <div className="free-grid">
-                        {profiles.map((profile) => (
-                            <Link to={`/review/${encodeURIComponent(profile.publicKey)}`} key={profile.publicKey} className="free-card glass-panel">
-                                <div className="fc-header">
-                                    <div className="fc-avatar">
-                                        {profile.name.charAt(0).toUpperCase()}
+                    <div className="gig-grid">
+                        {services.map((service, index) => (
+                            <Link
+                                to={`/review/${encodeURIComponent(service.publicKey)}`}
+                                key={service.serviceId || index}
+                                className="gig-card glass-panel"
+                            >
+                                {/* Thumbnail */}
+                                <div
+                                    className="gig-thumbnail"
+                                    style={{ background: getThumbnail(index) }}
+                                >
+                                    <div className="gig-thumbnail-overlay">
+                                        <Code size={48} />
                                     </div>
-                                    <div className="fc-identity">
-                                        <h3 className="fc-name">
-                                            {profile.name}
-                                            <ShieldCheck className="verified-icon" size={16} title="On-chain verified" />
-                                        </h3>
-                                        <p className="fc-occupation">{profile.occupation}</p>
-                                    </div>
+                                    <span className="gig-category-badge">{service.category}</span>
                                 </div>
-                                <div className="fc-details">
-                                    {profile.location && (
-                                        <div className="fc-detail-item">
-                                            <MapPin size={14} />
-                                            <span>{profile.location}</span>
+
+                                <div className="gig-content">
+                                    {/* Seller Info */}
+                                    <div className="gig-seller">
+                                        <div className="gig-avatar">
+                                            {service.sellerName?.charAt(0).toUpperCase() || '?'}
                                         </div>
-                                    )}
-                                </div>
-                                <div className="fc-stats">
-                                    <div className="fc-stat">
-                                        <span className="fc-stat-label">Rating</span>
-                                        <span className={`fc-stat-value ${profile.averageRating ? 'has-rating' : ''}`}>
-                                            <Star size={14} className={profile.averageRating ? 'star-filled' : 'star-empty'} />
-                                            {profile.averageRating ? profile.averageRating : 'New'}
+                                        <div className="gig-seller-info">
+                                            <span className="gig-seller-name">
+                                                {service.sellerName}
+                                                <ShieldCheck className="verified-icon" size={14} title="On-chain verified" />
+                                            </span>
+                                            <span className="gig-seller-level">{service.sellerOccupation}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Real service title from blockchain */}
+                                    <h3 className="gig-title">{service.title}</h3>
+
+                                    {/* Rating */}
+                                    <div className="gig-rating-container">
+                                        <Star size={14} className="star-filled" />
+                                        <span className="gig-rating-score">
+                                            {service.averageRating ? service.averageRating : '5.0'}
                                         </span>
-                                    </div>
-                                    <div className="fc-stat">
-                                        <span className="fc-stat-label">Reviews</span>
-                                        <span className="fc-stat-value">{profile.reviewCount}</span>
+                                        <span className="gig-rating-count">({service.reviewCount || 0})</span>
                                     </div>
                                 </div>
-                                <div className="fc-footer">
-                                    <span className="fc-block-info">Block #{profile.blockIndex}</span>
-                                    <span className="fc-view-btn">Write a Review →</span>
+
+                                {/* Footer */}
+                                <div className="gig-footer">
+                                    <div className="gig-heart">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    </div>
+                                    <div className="gig-price">
+                                        <span className="gig-price-label">STARTING AT</span>
+                                        <span className="gig-price-value">${service.price}</span>
+                                    </div>
                                 </div>
                             </Link>
                         ))}

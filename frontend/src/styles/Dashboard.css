@@ -290,7 +290,6 @@
     background: var(--neo-surface) !important;
     backdrop-filter: none !important;
     border: 2px solid var(--neo-border-color) !important;
-    border-radius: 6px !important;
     box-shadow: 5px 5px 0px #000 !important;
 }
 

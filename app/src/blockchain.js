@@ -210,6 +210,85 @@ function hasReviewed(reviewerKey, subjectKey) {
   return false;
 }
 
+// Get all services for a given publicKey (freelancer)
+function getServices(publicKey) {
+  const chain = loadChain();
+  const services = [];
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "ADD_SERVICE" && tx.publicKey === publicKey) {
+        services.push({
+          serviceId: tx.serviceId,
+          publicKey: tx.publicKey,
+          title: tx.title,
+          description: tx.description,
+          category: tx.category,
+          price: tx.price,
+          blockIndex: block.index,
+          blockHash: block.hash,
+          timestamp: block.timestamp,
+        });
+      }
+    }
+  }
+  return services;
+}
+
+// Get all services across the platform, joined with freelancer profile info
+function getAllServices() {
+  const chain = loadChain();
+
+  // Build profiles map
+  const profilesMap = new Map();
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "REGISTER_PROFILE" || tx.type === "UPDATE_PROFILE") {
+        profilesMap.set(tx.publicKey, { name: tx.name, occupation: tx.occupation, location: tx.location });
+      }
+    }
+  }
+
+  // Build reviews map for ratings
+  const reviewsMap = new Map();
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "POST_REVIEW") {
+        if (!reviewsMap.has(tx.subjectKey)) reviewsMap.set(tx.subjectKey, []);
+        reviewsMap.get(tx.subjectKey).push(tx.rating);
+      }
+    }
+  }
+
+  const services = [];
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "ADD_SERVICE") {
+        const profile = profilesMap.get(tx.publicKey) || {};
+        const ratings = reviewsMap.get(tx.publicKey) || [];
+        const avg = ratings.length
+          ? (ratings.reduce((s, r) => s + r, 0) / ratings.length).toFixed(2)
+          : null;
+        services.push({
+          serviceId: tx.serviceId,
+          publicKey: tx.publicKey,
+          title: tx.title,
+          description: tx.description,
+          category: tx.category,
+          price: tx.price,
+          sellerName: profile.name || "Unknown",
+          sellerOccupation: profile.occupation || "",
+          sellerLocation: profile.location || "",
+          averageRating: avg ? parseFloat(avg) : null,
+          reviewCount: ratings.length,
+          blockIndex: block.index,
+          timestamp: block.timestamp,
+        });
+      }
+    }
+  }
+  return services;
+}
+
 // Total number of registered profiles
 function totalProfiles() {
   const registered = new Set();
@@ -246,4 +325,6 @@ module.exports = {
   getChainInfo,
   getAllTransactions,
   getFullChain,
+  getServices,
+  getAllServices,
 };
