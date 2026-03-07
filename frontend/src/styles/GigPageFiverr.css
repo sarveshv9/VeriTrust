@@ -1,0 +1,433 @@
+/* ============================================
+   GIG PAGE — Extended Styles for Reviews & Panel (Neobrutalism)
+   ============================================ */
+
+/* We remove all the .gp-page overrides to let Neobrutalism shine through */
+
+/* Review Topbar */
+.gp-reviews-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.gp-reviews-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 40px;
+}
+
+.gp-reviews-search-input {
+    border: none;
+    outline: none;
+    padding: 0 16px;
+    height: 100%;
+    width: 200px;
+    color: var(--neo-text);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.gp-reviews-search-btn {
+    background: rgba(255, 255, 255, 0.08);
+    width: 48px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.gp-reviews-search-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.gp-reviews-sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--neo-text-muted);
+}
+
+.gp-sort-select {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--neo-text);
+    background: var(--neo-surface);
+    outline: none;
+    cursor: pointer;
+}
+
+/* Review Cards (Already Neobrutalism mostly, just tweak the badges) */
+.gp-review-badge {
+    font-size: 12px;
+    color: var(--neo-accent-cyan);
+    margin-left: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(34, 211, 238, 0.05);
+}
+
+.gp-review-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.gp-review-stars-fiverr {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.gp-review-rating-num {
+    font-weight: 700;
+    font-size: 14px;
+    margin-left: 4px;
+    color: var(--neo-accent-yellow);
+}
+
+.gp-review-date-divider {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.gp-review-date {
+    font-size: 14px;
+    color: var(--neo-text-muted);
+}
+
+.gp-review-order-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gp-rom-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gp-rom-label {
+    color: var(--neo-text-muted);
+    font-size: 12px;
+}
+
+.gp-rom-val {
+    font-weight: 600;
+    color: var(--neo-text);
+}
+
+.gp-rom-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.gp-review-response-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--neo-accent-cyan);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.gp-reviewer-avatar-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--neo-surface-light);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--neo-accent-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.gp-review-helpful {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.gp-helpful-label {
+    color: var(--neo-text-muted);
+    font-weight: 600;
+}
+
+.gp-helpful-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--neo-text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 10px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.gp-helpful-btn:hover {
+    color: var(--neo-text);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Order Tabs & Panel */
+.gp-right {
+    margin-top: 0px;
+}
+
+.gp-order-tabs {
+    display: flex;
+    background: var(--neo-surface);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+}
+
+.gp-tab {
+    flex: 1;
+    text-align: center;
+    padding: 16px;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-right: 1.5px solid rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+    color: var(--neo-text-muted);
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.gp-tab:last-child {
+    border-right: none;
+}
+
+.gp-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--neo-text);
+}
+
+.gp-tab.active {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--neo-accent-cyan);
+    border-bottom: 2px solid var(--neo-accent-cyan);
+}
+
+.gp-order-panel {
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    padding: 32px 24px;
+    background: var(--neo-surface);
+    color: var(--neo-text);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 4px 4px 0px rgba(34, 211, 238, 0.12);
+}
+
+.gp-order-price-row {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--neo-text);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.gp-order-save {
+    font-size: 14px;
+    color: var(--neo-text-muted);
+    margin-bottom: 24px;
+}
+
+.gp-order-save span {
+    color: var(--neo-accent-cyan);
+}
+
+.gp-order-title-fiverr {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--neo-text);
+    margin-bottom: 16px;
+}
+
+.gp-order-meta-fiverr {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neo-text);
+    margin-bottom: 16px;
+}
+
+.gp-order-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--neo-text-muted);
+}
+
+.gp-order-meta-item svg {
+    color: var(--neo-accent-cyan);
+}
+
+.gp-order-whats-included {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--neo-text);
+    margin-bottom: 24px;
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+}
+
+.gp-order-request-btn {
+    width: 100%;
+    background: var(--neo-accent-cyan) !important;
+    color: #000 !important;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: transform 0.12s, box-shadow 0.12s;
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.45) !important;
+}
+
+.gp-order-request-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px transparent !important;
+}
+
+.gp-order-contact-btn {
+    width: 100%;
+    background: transparent !important;
+    color: var(--neo-text) !important;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.gp-order-contact-btn:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.gp-order-consultation {
+    text-align: center;
+    font-size: 14px;
+    color: var(--neo-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+/* Seller Response Area */
+.gp-review-response-block {
+    margin-top: 16px;
+    padding-left: 24px;
+    margin-left: 12px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
+}
+.gp-review-response-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.gp-response-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.gp-response-title {
+    font-weight: 600;
+    color: var(--neo-accent-cyan);
+    font-size: 14px;
+}
+.gp-review-response-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--neo-text);
+}
+.gp-review-response-form-area {
+    margin-top: 16px;
+    margin-bottom: 24px;
+    padding-left: 24px;
+    margin-left: 12px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+.gp-reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.gp-reply-textarea {
+    min-height: 80px;
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+.gp-reply-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+.gp-cancel-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--neo-text-muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.gp-cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--neo-text);
+}
+.gp-reply-submit {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+}

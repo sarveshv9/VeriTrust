@@ -34,6 +34,7 @@ router.get("/services/:publicKey", serviceController.onGetForFreelancer);
 
 // Reviews — posting is public (no auth required); anyone can leave a review
 router.post("/review", reviewController.onPost);
+router.post("/review/response", requireAuth, reviewController.onPostResponse);
 router.get("/reviews/:publicKey", reviewController.onGet);
 
 module.exports = router;

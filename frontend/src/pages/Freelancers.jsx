@@ -175,7 +175,7 @@ const Freelancers = () => {
                     <div className="gig-grid">
                         {services.map((service, index) => (
                             <Link
-                                to={`/review/${encodeURIComponent(service.publicKey)}`}
+                                to={`/gig/${encodeURIComponent(service.publicKey)}/${service.serviceId}`}
                                 key={service.serviceId || index}
                                 className="gig-card glass-panel"
                             >

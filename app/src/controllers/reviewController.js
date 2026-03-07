@@ -73,6 +73,53 @@ const reviewController = {
       res.status(500).json({ success: false, message: err.message });
     }
   },
+
+  // POST /review/response (auth required)
+  onPostResponse: async (req, res) => {
+    try {
+      const { reviewHash, response } = req.body;
+      const publicKey = req.user.publicKey;
+
+      if (!reviewHash || !response) {
+        return res.status(400).json({
+          success: false,
+          message: "reviewHash and response are required",
+        });
+      }
+
+      const reviews = blockchain.getReviews(publicKey);
+      const targetReview = reviews.find((r) => r.blockHash === reviewHash);
+      if (!targetReview) {
+        return res.status(404).json({
+          success: false,
+          message: "Review not found for this profile",
+        });
+      }
+
+      if (targetReview.response) {
+        return res.status(400).json({
+          success: false,
+          message: "Review already has a response",
+        });
+      }
+
+      const block = blockchain.addTransaction({
+        type: "REVIEW_RESPONSE",
+        subjectKey: publicKey,
+        reviewHash,
+        response: response.slice(0, 1000), // Max 1000 chars
+      });
+
+      res.status(201).json({
+        success: true,
+        message: "Response added to blockchain",
+        blockIndex: block.index,
+        blockHash: block.hash,
+      });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  },
 };
 
 module.exports = reviewController;

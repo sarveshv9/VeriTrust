@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Freelancers from './pages/Freelancers';
 import WriteReviewPage from './pages/WriteReviewPage';
+import GigPage from './pages/GigPage';
 import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 import './styles/neobrutalism.css';
@@ -40,6 +41,8 @@ const App = () => {
           <Route path="/profile/:publicKey" element={<Profile />} />
           <Route path="/freelancers" element={<Freelancers />} />
           <Route path="/review/:publicKey" element={<WriteReviewPage />} />
+          <Route path="/gig/:publicKey/:serviceId" element={<GigPage />} />
+          <Route path="/gig/:publicKey" element={<GigPage />} />
         </Routes>
       </Router>
     </AuthProvider>

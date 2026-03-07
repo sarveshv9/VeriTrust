@@ -68,7 +68,7 @@ const FeaturedFreelancers = () => {
                         const borderClass = accents[i % accents.length];
 
                         return (
-                            <Link to={`/review/${encodeURIComponent(profile.publicKey)}`} key={profile.publicKey} className={`ff-card glass-panel ${borderClass}`}>
+                            <Link to={`/gig/${encodeURIComponent(profile.publicKey)}`} key={profile.publicKey} className={`ff-card glass-panel ${borderClass}`}>
                                 <div className="ff-card-top">
                                     <div className="ff-avatar">
                                         {profile.name.charAt(0).toUpperCase()}

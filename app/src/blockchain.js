@@ -175,23 +175,41 @@ function getAllProfiles() {
 // Get all reviews for a given publicKey
 function getReviews(publicKey) {
   const chain = loadChain();
-  const reviews = [];
+  const reviewsMap = new Map();
 
   for (const block of chain) {
     for (const tx of block.transactions) {
       if (tx.type === "POST_REVIEW" && tx.subjectKey === publicKey) {
-        reviews.push({
+        reviewsMap.set(block.hash, {
           reviewerKey: tx.reviewerKey,
+          reviewerName: tx.reviewerName,
           rating: tx.rating,
           comment: tx.comment,
           blockIndex: block.index,
           blockHash: block.hash,
           timestamp: block.timestamp,
+          response: null,
+          responseTime: null,
         });
       }
     }
   }
-  return reviews;
+
+  // Attach responses
+  for (const block of chain) {
+    for (const tx of block.transactions) {
+      if (tx.type === "REVIEW_RESPONSE" && tx.subjectKey === publicKey) {
+        if (reviewsMap.has(tx.reviewHash)) {
+          const review = reviewsMap.get(tx.reviewHash);
+          review.response = tx.response;
+          review.responseTime = block.timestamp;
+        }
+      }
+    }
+  }
+
+  // Sort by timestamp descending
+  return Array.from(reviewsMap.values()).sort((a, b) => b.timestamp - a.timestamp);
 }
 
 // Check if publicKey has already reviewed subjectKey
