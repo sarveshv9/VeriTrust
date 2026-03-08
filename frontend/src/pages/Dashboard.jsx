@@ -115,7 +115,7 @@ const Dashboard = () => {
                 <div className="dash-nav-section">
                     <div className="dash-nav-label">Navigation</div>
                     <Link to="/freelancers" className="dash-nav-item">
-                        <Search className="nav-icon" size={18} /> Freelancers
+                        <Search className="nav-icon" size={18} /> Services
                     </Link>
                     {profile && (
                         <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="dash-nav-item">

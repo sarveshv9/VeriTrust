@@ -9,6 +9,7 @@ import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
 import '../styles/GigPage.css';
 import '../styles/GigPageFiverr.css';
+import '../styles/Freelancers.css';
 
 /* ── Star rating display ─────────────────────── */
 const StarDisplay = ({ rating, size = 16 }) => (
@@ -232,37 +233,37 @@ const GigPage = () => {
             {/* ══════════════════════════════════
                 SIDEBAR
             ══════════════════════════════════ */}
-            <aside className="gp-sidebar">
-                <Link to="/" className="gp-brand">
+            <aside className="free-sidebar glass-panel" style={{ borderRadius: 0, borderTop: 'none', borderBottom: 'none', borderLeft: 'none' }}>
+                <Link to="/" className="free-sidebar-brand">
                     <img src={vtLogo} alt="VeriTrust" />
                     <span>VeriTrust</span>
                 </Link>
 
-                <Link to="/" className="gp-home-btn">
-                    <Home size={15} /> Back to Home
+                <Link to="/" className="free-back-home-btn">
+                    <Home size={16} /> Back to Home
                 </Link>
 
-                <nav className="gp-nav">
-                    <span className="gp-nav-label">Navigation</span>
-                    <Link to="/freelancers" className="gp-nav-item">
-                        <Search size={16} /> Browse Services
-                    </Link>
+                <div className="free-nav-section">
+                    <div className="free-nav-label">Navigation</div>
+                    <span className="free-nav-item active">
+                        <Search className="nav-icon" size={18} /> Services
+                    </span>
                     {isLoggedIn && user?.publicKey && (
                         <>
-                            <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="gp-nav-item">
-                                <User size={16} /> My Profile
+                            <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="free-nav-item">
+                                <User className="nav-icon" size={18} /> Profile
                             </Link>
-                            <Link to="/dashboard" className="gp-nav-item">
-                                <BarChart2 size={16} /> Dashboard
+                            <Link to="/dashboard" className="free-nav-item">
+                                <BarChart2 className="nav-icon" size={18} /> Dashboard
                             </Link>
                         </>
                     )}
-                </nav>
+                </div>
 
                 {isLoggedIn && (
-                    <div className="gp-sidebar-footer">
-                        <button onClick={handleLogout} className="gp-logout-btn">
-                            <LogOut size={16} /> Logout
+                    <div className="free-sidebar-footer">
+                        <button onClick={handleLogout} className="free-logout-btn">
+                            <LogOut className="nav-icon" size={18} /> Logout
                         </button>
                     </div>
                 )}
