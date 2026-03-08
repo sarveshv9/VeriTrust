@@ -94,7 +94,7 @@ const Freelancers = () => {
                 <div className="free-nav-section">
                     <div className="free-nav-label">Navigation</div>
                     <span className="free-nav-item active">
-                        <Search className="nav-icon" size={18} /> Freelancers
+                        <Search className="nav-icon" size={18} /> Services
                     </span>
                     {user?.publicKey && (
                         <>

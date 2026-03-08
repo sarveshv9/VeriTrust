@@ -437,17 +437,7 @@ const GigPage = () => {
 
                                             <p className="gp-review-comment">{review.comment}</p>
 
-                                            <div className="gp-review-order-meta">
-                                                <div className="gp-rom-col">
-                                                    <span className="gp-rom-label">Price</span>
-                                                    <span className="gp-rom-val">₹55,200–₹73,600</span>
-                                                </div>
-                                                <div className="gp-rom-divider"></div>
-                                                <div className="gp-rom-col">
-                                                    <span className="gp-rom-label">Duration</span>
-                                                    <span className="gp-rom-val">4 weeks</span>
-                                                </div>
-                                            </div>
+
 
                                             {review.response ? (
                                                 <div className="gp-review-response-block">
@@ -612,7 +602,7 @@ const GigPage = () => {
                             {service ? (
                                 <>
                                     <div className="gp-order-price-row">
-                                        <span className="gp-order-total">₹{Math.floor(Math.random() * 50000) + 10000}.00 ⓘ</span>
+                                        <span className="gp-order-total">${service.price} ⓘ</span>
                                     </div>
                                     <div className="gp-order-save">
                                         Save up to 20% with <span className="text-green-500 font-bold">Subscribe to Save</span> ⓘ
@@ -641,7 +631,7 @@ const GigPage = () => {
                                     <h3 className="gp-order-title">{profile.name}</h3>
                                     <p className="gp-order-desc">{profile.occupation}</p>
                                     <div className="gp-order-price-row">
-                                        <span className="gp-order-total">₹10,500.00 ⓘ</span>
+                                        <span className="gp-order-total">Contact for pricing ⓘ</span>
                                     </div>
                                 </>
                             )}
