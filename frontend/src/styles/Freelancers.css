@@ -279,6 +279,10 @@
     transition: all 0.2s ease;
 }
 
+.free-category-chip span {
+    color: #000 !important;
+}
+
 .free-category-chip:hover {
     background: var(--neo-surface-light);
     border-color: var(--neo-accent-cyan);

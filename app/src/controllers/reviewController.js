@@ -1,10 +1,13 @@
+const crypto = require("crypto");
 const blockchain = require("../blockchain");
 
 const reviewController = {
   // POST /review  (no auth required — anyone can review a freelancer)
+  // If reviewerKey + signature are provided, the review is cryptographically verified.
+  // Anonymous reviews (no signature) are allowed but flagged as unverified.
   onPost: async (req, res) => {
     try {
-      const { subjectKey, rating, comment, reviewerName } = req.body;
+      const { subjectKey, rating, comment, reviewerName, reviewerKey, signature, timestamp } = req.body;
 
       if (!subjectKey || !rating || !comment) {
         return res.status(400).json({
@@ -26,19 +29,59 @@ const reviewController = {
           .json({ success: false, message: "Subject profile not found" });
       }
 
-      const block = blockchain.addTransaction({
+      // ─── Signature Verification ─────────────────────────────────────────
+      let verified = false;
+      if (reviewerKey && signature) {
+        try {
+          // Canonical payload must match exactly what the frontend signed
+          const canonicalPayload = JSON.stringify({
+            subjectKey,
+            rating: Number(rating),
+            comment: comment.slice(0, 1000),
+            reviewerName: (reviewerName || "Anonymous").slice(0, 100),
+            reviewerKey,
+            timestamp,
+          });
+          const verifier = crypto.createVerify("SHA256");
+          verifier.update(canonicalPayload);
+          verified = verifier.verify(reviewerKey, signature, "base64");
+          if (!verified) {
+            return res.status(401).json({
+              success: false,
+              message: "Invalid transaction signature. Review rejected.",
+            });
+          }
+        } catch {
+          return res.status(401).json({
+            success: false,
+            message: "Signature verification failed.",
+          });
+        }
+      }
+
+      const txPayload = {
         type: "POST_REVIEW",
         subjectKey,
         reviewerName: (reviewerName || "Anonymous").slice(0, 100),
         rating: Number(rating),
-        comment: comment.slice(0, 1000), // max 1000 chars
-      });
+        comment: comment.slice(0, 1000),
+        verified,
+        ...(reviewerKey && { reviewerKey }),
+        ...(signature && { signature }),
+        ...(timestamp && { signedAt: timestamp }),
+      };
+
+      const block = blockchain.addTransaction(txPayload);
 
       res.status(201).json({
         success: true,
-        message: "Review added to blockchain",
+        message: verified
+          ? "Signed review added to blockchain 🔐"
+          : "Anonymous review added to blockchain",
         blockIndex: block.index,
         blockHash: block.hash,
+        nonce: block.nonce,
+        verified,
       });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });

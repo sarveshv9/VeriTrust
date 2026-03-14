@@ -10,7 +10,7 @@ const Login = () => {
     const [privateKey, setPrivateKey] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, setSessionKey } = useAuth();
     const navigate = useNavigate();
 
     const handleFileChange = (e) => {
@@ -52,6 +52,7 @@ const Login = () => {
                 const token = data.token || data.jwt;
                 if (token) {
                     login(token, data.user || {});
+                    setSessionKey(privateKey); // store key in memory for signing
                     navigate('/dashboard');
                 } else {
                     setError('Login successful, but no token received.');

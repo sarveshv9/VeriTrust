@@ -3,11 +3,11 @@ const blockchain = require("../blockchain");
 
 const serviceController = {
     // POST /service  (auth required)
-    // Body: { title, description, category, price }
+    // Body: { title, description, category, price, signature, timestamp }
     onCreate: async (req, res) => {
         try {
             const { publicKey } = req.user;
-            const { title, description, category, price } = req.body;
+            const { title, description, category, price, signature, timestamp } = req.body;
 
             if (!title || !category || price === undefined) {
                 return res.status(400).json({
@@ -30,6 +30,27 @@ const serviceController = {
                 });
             }
 
+            // ─── Signature Verification ─────────────────────────────────────────
+            if (signature && timestamp) {
+                try {
+                    const canonicalPayload = JSON.stringify({
+                        title,
+                        category,
+                        price: priceNum,
+                        publicKey,
+                        timestamp,
+                    });
+                    const verifier = crypto.createVerify("SHA256");
+                    verifier.update(canonicalPayload);
+                    const valid = verifier.verify(publicKey, signature, "base64");
+                    if (!valid) {
+                        return res.status(401).json({ success: false, message: "Invalid transaction signature." });
+                    }
+                } catch {
+                    return res.status(401).json({ success: false, message: "Signature verification failed." });
+                }
+            }
+
             const serviceId = crypto.randomUUID();
 
             const block = blockchain.addTransaction({
@@ -40,6 +61,7 @@ const serviceController = {
                 description: description || "",
                 category,
                 price: priceNum,
+                signed: !!(signature && timestamp),
             });
 
             res.status(201).json({
@@ -48,6 +70,7 @@ const serviceController = {
                 serviceId,
                 blockIndex: block.index,
                 blockHash: block.hash,
+                nonce: block.nonce,
             });
         } catch (err) {
             res.status(500).json({ success: false, message: err.message });

@@ -410,17 +410,30 @@ const NavigationComponent = React.memo(({ onScrollTo, isOpen, closeMenu }) => {
         <div className={`nav-links ${isOpen ? 'open' : ''}`} ref={navLinksRef}>
           {/* --- Optimization: Data-Driven Links --- */}
           {navLinksData.map((link) => (
-            <NavLink
-              key={link.label}
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                onScrollTo(link.section);
-                closeMenu();
-              }}
-            >
-              {link.label}
-            </NavLink>
+            link.isRoute ? (
+              <a
+                key={link.label}
+                href={link.href}
+                className="nav-link"
+                onClick={(e) => {
+                  window.location.href = link.href;
+                }}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <NavLink
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onScrollTo(link.section);
+                  closeMenu();
+                }}
+              >
+                {link.label}
+              </NavLink>
+            )
           ))}
         </div>
 

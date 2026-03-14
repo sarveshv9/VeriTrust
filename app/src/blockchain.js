@@ -4,17 +4,42 @@ const path = require("path");
 
 const CHAIN_FILE = path.join(__dirname, "db/chain.json");
 
-// ─── Block ────────────────────────────────────────────────────────────────────
+// ─── Proof of Work Config ─────────────────────────────────────────────────────
+const DIFFICULTY = 2;
+const POW_TARGET = '0'.repeat(DIFFICULTY);
 
-function createBlock(index, previousHash, transactions) {
-  const timestamp = Date.now();
-  const hash = computeHash(index, previousHash, timestamp, transactions);
-  return { index, timestamp, previousHash, hash, transactions };
-}
+// ─── Hash Functions ───────────────────────────────────────────────────────────
 
+// Legacy hash (no nonce) — kept for backward compat with existing blocks
 function computeHash(index, previousHash, timestamp, transactions) {
   const data = JSON.stringify({ index, previousHash, timestamp, transactions });
   return crypto.createHash("sha256").update(data).digest("hex");
+}
+
+// PoW hash (includes nonce) — used for all newly mined blocks
+function computeHashPoW(index, previousHash, timestamp, transactions, nonce) {
+  const data = JSON.stringify({ index, previousHash, timestamp, transactions, nonce });
+  return crypto.createHash("sha256").update(data).digest("hex");
+}
+
+// ─── Mining ───────────────────────────────────────────────────────────────────
+
+function mineBlock(index, previousHash, transactions) {
+  let nonce = 0;
+  let hash;
+  const timestamp = Date.now();
+  do {
+    hash = computeHashPoW(index, previousHash, timestamp, transactions, nonce++);
+  } while (!hash.startsWith(POW_TARGET));
+  return {
+    index,
+    timestamp,
+    previousHash,
+    hash,
+    transactions,
+    nonce: nonce - 1,
+    difficulty: DIFFICULTY,
+  };
 }
 
 // ─── Persistence ──────────────────────────────────────────────────────────────
@@ -45,12 +70,22 @@ function isChainValid(chain) {
   for (let i = 1; i < chain.length; i++) {
     const current = chain[i];
     const previous = chain[i - 1];
-    const expected = computeHash(
-      current.index,
-      current.previousHash,
-      current.timestamp,
-      current.transactions,
-    );
+    // Backward compat: use PoW hash if block has a nonce, legacy hash otherwise
+    const expected =
+      current.nonce !== undefined
+        ? computeHashPoW(
+            current.index,
+            current.previousHash,
+            current.timestamp,
+            current.transactions,
+            current.nonce,
+          )
+        : computeHash(
+            current.index,
+            current.previousHash,
+            current.timestamp,
+            current.transactions,
+          );
     if (current.hash !== expected) return false;
     if (current.previousHash !== previous.hash) return false;
   }
@@ -63,9 +98,8 @@ function isChainValid(chain) {
 function addTransaction(transaction) {
   const chain = loadChain();
   const lastBlock = chain[chain.length - 1];
-  const newBlock = createBlock(lastBlock.index + 1, lastBlock.hash, [
-    transaction,
-  ]);
+  // Mine the new block — finds a nonce so hash starts with POW_TARGET
+  const newBlock = mineBlock(lastBlock.index + 1, lastBlock.hash, [transaction]);
   chain.push(newBlock);
   saveChain(chain);
   return newBlock;
@@ -345,4 +379,6 @@ module.exports = {
   getFullChain,
   getServices,
   getAllServices,
+  totalProfiles,
+  DIFFICULTY,
 };

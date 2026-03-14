@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Home, User, BarChart2, Search, LogOut, Plus, Code, X } from 'lucide-react';
+import { Home, User, BarChart2, Search, LogOut, Plus, Code, X, GitBranch } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import WriteReview from '../components/WriteReview';
@@ -152,11 +152,12 @@ const Profile = () => {
                     <span className="prof-nav-item active">
                         <User className="nav-icon" size={18} /> Profile
                     </span>
-                    {isOwnProfile && (
-                        <Link to="/dashboard" className="prof-nav-item">
-                            <BarChart2 className="nav-icon" size={18} /> Dashboard
-                        </Link>
-                    )}
+                    <Link to="/dashboard" className="prof-nav-item">
+                        <BarChart2 className="nav-icon" size={18} /> Dashboard
+                    </Link>
+                    <Link to="/explorer" className="prof-nav-item">
+                        <GitBranch className="nav-icon" size={18} /> Explorer
+                    </Link>
                 </div>
 
                 {isLoggedIn && (

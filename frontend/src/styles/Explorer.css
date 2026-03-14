@@ -1,0 +1,653 @@
+/* ============================================
+   EXPLORER — DARK NEOBRUTALISM
+   ============================================ */
+
+.exp-page {
+    display: flex;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--neo-bg);
+    font-family: var(--neo-font-body);
+    color: var(--neo-text);
+}
+
+/* ── Sidebar ───────────────────────────────────── */
+.exp-sidebar {
+    width: 240px;
+    height: 100%;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: var(--neo-surface);
+    border-right: 2px solid var(--neo-border-color);
+}
+
+.exp-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--neo-accent-yellow);
+    font-family: var(--neo-font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    padding: 0 4px;
+}
+
+.exp-sidebar-brand img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.exp-nav-section {
+    margin-bottom: 24px;
+}
+
+.exp-nav-label {
+    font-family: var(--neo-font-heading);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--neo-text-muted);
+    padding: 0 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.exp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+}
+
+.exp-nav-item:hover {
+    color: var(--neo-text);
+    background: var(--neo-surface-light);
+    border-color: var(--neo-border-color);
+}
+
+.exp-nav-item.active {
+    color: #000;
+    background: var(--neo-accent-rose);
+    border-color: #000;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.exp-nav-item .nav-icon {
+    font-size: 1rem;
+    width: 18px;
+    text-align: center;
+}
+
+/* ── Layout Overrides ─────────────────────────── */
+.free-back-home-btn,
+.wrp-back-home-btn,
+.dash-back-home-btn,
+.prof-back-home-btn,
+.exp-back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px 20px;
+    /* sits between logo and nav section */
+    padding: 8px 14px;
+    font-family: 'Syne', 'GeneralSans-Semibold', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #000000;
+    background: var(--accent-cyan, #22d3ee);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px rgba(34, 211, 238, 0.45);
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    white-space: nowrap;
+    width: calc(100% - 32px);
+    /* full sidebar width minus margins */
+    justify-content: center;
+}
+
+.free-back-home-btn:hover,
+.wrp-back-home-btn:hover,
+.dash-back-home-btn:hover,
+.prof-back-home-btn:hover,
+.exp-back-home-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px transparent;
+    color: #000000;
+}
+
+/* ── Main Area ─────────────────────────────────── */
+.exp-main {
+    flex: 1;
+    padding: 36px 44px;
+    overflow-y: auto;
+    height: 100%;
+    background: var(--neo-bg);
+}
+
+/* ── Topbar ────────────────────────────────────── */
+.exp-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--neo-border-color);
+}
+
+.exp-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ── Top bar ──────────────────────────────────── */
+.exp-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--neo-border-color);
+}
+
+.exp-page-title {
+    font-family: var(--neo-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--neo-text);
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.exp-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.exp-status-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: var(--neo-font-body);
+    font-size: 0.78rem;
+    color: var(--neo-text-muted);
+    box-shadow: 3px 3px 0px var(--neo-accent-green);
+    cursor: default;
+}
+
+.exp-status-pill.invalid {
+    box-shadow: 3px 3px 0px var(--neo-accent-red);
+}
+
+.exp-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neo-accent-green);
+}
+
+.exp-status-pill.invalid .exp-status-dot {
+    background: var(--neo-accent-red);
+}
+
+/* Override glass-panel specifically */
+.neobrutalism-body .glass-panel {
+    background: var(--neo-surface) !important;
+    backdrop-filter: none !important;
+    border: 2px solid var(--neo-border-color) !important;
+    box-shadow: 5px 5px 0px #000 !important;
+}
+
+/* ── Stats Row ─────────────────────────────────── */
+.exp-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.exp-stat {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 6px;
+    padding: 22px 20px;
+    box-shadow: 4px 4px 0px #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.exp-stat-val {
+    font-family: var(--neo-font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--neo-accent-rose);
+    line-height: 1;
+}
+
+.exp-stat-lbl {
+    font-family: var(--neo-font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--neo-text-muted);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dash-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--neo-text-muted);
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none;
+}
+
+.dash-logout-btn:hover {
+    color: var(--neo-accent-red) !important;
+    background: transparent !important;
+    border-color: var(--neo-accent-red);
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── Search ────────────────────────────────────── */
+.exp-search-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 8px;
+    padding: 0 16px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.exp-search-icon {
+    color: var(--neo-text-muted);
+    flex-shrink: 0;
+}
+
+.exp-search-input {
+    flex: 1;
+    background: transparent;
+    border: none !important;
+    color: var(--neo-text);
+    font-family: var(--neo-font-body);
+    font-size: 0.95rem;
+    padding: 14px 12px;
+    outline: none;
+    box-shadow: none !important;
+}
+
+.exp-search-result-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--neo-accent-cyan);
+    text-transform: uppercase;
+    background: var(--neo-surface-light);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--neo-border-color);
+}
+
+/* ── Chain & Blocks ────────────────────────────── */
+.exp-chain {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.exp-chain-line {
+    width: 2px;
+    height: 24px;
+    background-color: var(--neo-border-color);
+    margin-left: 40px;
+}
+
+.exp-block-card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2px;
+}
+
+.exp-block-header {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-border-color);
+    border-radius: 8px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.exp-block-header:hover {
+    border-color: var(--neo-accent-cyan);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+.exp-block-header.active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.exp-genesis .exp-block-header {
+    border-color: var(--neo-accent-lavender);
+    box-shadow: 4px 4px 0px var(--neo-accent-lavender);
+}
+
+.exp-block-index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.exp-block-num {
+    font-family: var(--neo-font-heading);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--neo-text);
+}
+
+.exp-genesis-badge {
+    font-family: var(--neo-font-heading);
+    font-size: 0.6rem;
+    background-color: var(--neo-accent-lavender);
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+.exp-block-hashes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.exp-hash-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--neo-font-body);
+    font-size: 0.82rem;
+}
+
+.exp-hash-label {
+    color: var(--neo-text-muted);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    width: 32px;
+}
+
+.exp-hash-val {
+    color: var(--neo-text-muted);
+}
+
+.exp-hash-current {
+    color: var(--neo-accent-cyan);
+    font-weight: 600;
+}
+
+.exp-block-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 160px;
+}
+
+.exp-pow-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    padding: 4px 8px;
+    background-color: var(--neo-surface-light);
+    border: 1px solid var(--neo-border-color);
+    border-radius: 6px;
+    color: var(--neo-text-muted);
+}
+
+.exp-pow-badge strong {
+    color: var(--neo-accent-yellow);
+}
+
+.exp-legacy {
+    color: var(--neo-text-muted);
+    font-style: italic;
+    font-size: 0.72rem;
+}
+
+.exp-block-time {
+    font-size: 0.72rem;
+    color: var(--neo-text-muted);
+}
+
+.exp-tx-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #000;
+    background-color: var(--neo-accent-rose);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+    border: 1px solid #000;
+}
+
+.exp-expand-btn {
+    background: transparent;
+    border: none;
+    color: var(--neo-text-muted);
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* ── Transactions ──────────────────────────────── */
+.exp-block-body {
+    background-color: var(--neo-surface-light);
+    border: 2px solid var(--neo-border-color);
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 0 8px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.exp-tx-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed var(--neo-border-color);
+}
+
+.exp-tx-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.exp-tx-type {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 2px solid;
+    border-radius: 6px;
+    font-family: var(--neo-font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: #000;
+    align-self: flex-start;
+}
+
+.exp-tx-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.exp-tx-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.exp-detail-label {
+    font-family: var(--neo-font-heading);
+    font-size: 0.65rem;
+    color: var(--neo-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+.exp-tx-detail span:not(.exp-detail-label) {
+    font-family: var(--neo-font-body);
+    font-size: 0.88rem;
+    color: var(--neo-text);
+}
+
+.exp-tx-comment {
+    font-style: italic;
+    color: var(--neo-text-muted) !important;
+    line-height: 1.5;
+}
+
+.exp-tx-hash {
+    font-family: var(--neo-font-body) !important;
+    color: var(--neo-accent-cyan) !important;
+    font-size: 0.78rem !important;
+}
+
+.exp-sig-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem !important;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.exp-sig-ok {
+    color: #000 !important;
+    background-color: var(--neo-accent-green);
+    border: 1px solid #000;
+}
+
+.exp-sig-anon {
+    color: #000 !important;
+    background-color: var(--neo-accent-orange);
+    border: 1px solid #000;
+}
+
+.exp-empty {
+    padding: 48px;
+    text-align: center;
+    color: var(--neo-text-muted);
+    background-color: var(--neo-surface-light);
+    border-radius: 8px;
+    border: 2px dashed var(--neo-border-color);
+    font-family: var(--neo-font-body);
+}
+
+/* ── Loading ──────────────────────────────────── */
+.exp-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    font-family: var(--neo-font-heading);
+    color: var(--neo-text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.exp-error {
+    background: var(--neo-surface);
+    border: 2px solid var(--neo-accent-orange);
+    color: var(--neo-accent-orange);
+    padding: 16px;
+    border-radius: 8px;
+    font-family: var(--neo-font-body);
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .exp-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .exp-sidebar {
+        display: none;
+    }
+
+    .exp-main {
+        padding: 24px 16px;
+    }
+
+    .exp-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .exp-stats-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

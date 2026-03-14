@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Star, ShieldCheck, Home, User, BarChart2, LogOut, Code, Database, Monitor, Cpu, Smartphone } from 'lucide-react';
+import { Search, Star, ShieldCheck, Home, User, BarChart2, LogOut, Code, Database, Monitor, Cpu, Smartphone, GitBranch } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
@@ -103,6 +103,9 @@ const Freelancers = () => {
                             </Link>
                             <Link to="/dashboard" className="free-nav-item">
                                 <BarChart2 className="nav-icon" size={18} /> Dashboard
+                            </Link>
+                            <Link to="/explorer" className="free-nav-item">
+                                <GitBranch className="nav-icon" size={18} /> Explorer
                             </Link>
                         </>
                     )}

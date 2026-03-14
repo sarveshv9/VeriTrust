@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Home, User, BarChart2, LogOut, Search } from 'lucide-react';
+import { User, Copy, FileText, CheckCircle, BarChart2, Zap, Settings, ShieldCheck, Mail, MapPin, Briefcase, PlusCircle, Search, Home, LogOut, Download, GitBranch } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
@@ -8,7 +8,7 @@ import BlockchainVisualizer from '../components/BlockchainVisualizer';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-    const { isLoggedIn, user, logout } = useAuth();
+    const { isLoggedIn, user, logout, signPayload, hasSessionKey } = useAuth();
     const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
@@ -62,12 +62,26 @@ const Dashboard = () => {
         setSuccess('');
         const isUpdate = !!profile;
         try {
+            // Sign the payload with the user's private key (if key is in session)
+            const sigData = await signPayload({
+                name, occupation,
+                location: location || '',
+                publicKey: user.publicKey,
+            });
+
+            const body = {
+                name, occupation, location, contact,
+                ...(sigData || {}),
+            };
+
             const { ok, data } = await apiFetch('/profile', {
                 method: isUpdate ? 'PUT' : 'POST',
-                body: JSON.stringify({ name, occupation, location, contact }),
+                body: JSON.stringify(body),
             });
             if (ok) {
-                setSuccess(isUpdate ? 'Profile updated!' : 'Profile created!');
+                setSuccess(isUpdate
+                    ? `Profile updated! ${sigData ? '🔐 Signed on-chain.' : ''}`
+                    : `Profile created! ${sigData ? '🔐 Signed on-chain.' : ''}`);
                 const profileRes = await apiFetch(`/profile/${encodeURIComponent(user.publicKey)}`);
                 if (profileRes.ok) setProfile(profileRes.data.data);
                 setRefreshTrigger(prev => prev + 1);
@@ -124,6 +138,9 @@ const Dashboard = () => {
                     )}
                     <Link to="/dashboard" className="dash-nav-item active">
                         <BarChart2 className="nav-icon" size={18} /> Dashboard
+                    </Link>
+                    <Link to="/explorer" className="dash-nav-item">
+                        <GitBranch className="nav-icon" size={18} /> Explorer
                     </Link>
 
                 </div>
@@ -203,6 +220,12 @@ const Dashboard = () => {
                             <div className="dash-field">
                                 <label htmlFor="contact">Contact</label>
                                 <input id="contact" type="text" className="form-input" value={contact} onChange={e => setContact(e.target.value)} placeholder="Email or website" />
+                            </div>
+                            {/* Signing status indicator */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', marginBottom: '4px', opacity: 0.85 }}>
+                                <span style={{ color: hasSessionKey ? '#22c55e' : '#f59e0b' }}>
+                                    {hasSessionKey ? '🔐 Transactions will be cryptographically signed' : '⚠️ Re-login to enable signed transactions'}
+                                </span>
                             </div>
                             <button type="submit" disabled={submitting} className="btn-primary" style={{ width: '100%', marginTop: '4px' }}>
                                 {submitting ? 'Saving...' : (profile ? 'Update Profile' : 'Create Profile')}

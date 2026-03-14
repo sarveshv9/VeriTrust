@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
     Star, ArrowLeft, ShieldCheck, Home, User, BarChart2,
-    Search, LogOut, Clock, Tag, MapPin, Send, CheckCircle
+    Search, LogOut, Clock, Tag, MapPin, Send, CheckCircle, GitBranch
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
@@ -81,7 +81,7 @@ const gradients = [
 const GigPage = () => {
     const { publicKey, serviceId } = useParams();
     const decodedKey = decodeURIComponent(publicKey);
-    const { user, isLoggedIn, logout } = useAuth();
+    const { user, isLoggedIn, logout, signPayload, hasSessionKey } = useAuth();
     const navigate = useNavigate();
 
     /* ── State ─────────────────────────────── */
@@ -147,20 +147,34 @@ const GigPage = () => {
         return () => clearTimeout(t);
     }, [submitSuccess]);
 
-    /* ── Submit review ──────────────────────── */
+    /* ── Submit review ────────────────────────────────── */
     const handleSubmitReview = async (e) => {
         e.preventDefault();
         if (!rating) { setSubmitError('Please select a star rating.'); return; }
         setSubmitting(true); setSubmitError('');
         try {
+            const reviewPayload = {
+                subjectKey: decodedKey,
+                rating: Number(rating),
+                comment: comment.trim().slice(0, 1000),
+                reviewerName: (reviewerName.trim() || 'Anonymous').slice(0, 100),
+                ...(isLoggedIn && user?.publicKey ? { reviewerKey: user.publicKey } : {}),
+            };
+
+            // Sign if user is logged in and has key in session
+            let sigData = null;
+            if (isLoggedIn && user?.publicKey) {
+                sigData = await signPayload(reviewPayload);
+                if (sigData) {
+                    reviewPayload.reviewerKey = user.publicKey;
+                    reviewPayload.signature = sigData.signature;
+                    reviewPayload.timestamp = sigData.timestamp;
+                }
+            }
+
             const { ok, data } = await apiFetch('/review', {
                 method: 'POST',
-                body: JSON.stringify({
-                    subjectKey: decodedKey,
-                    rating: Number(rating),
-                    comment: comment.trim().slice(0, 1000),
-                    reviewerName: reviewerName.trim() || 'Anonymous',
-                }),
+                body: JSON.stringify(reviewPayload),
             });
             if (ok) {
                 setSubmitSuccess(true);
@@ -252,6 +266,9 @@ const GigPage = () => {
                         <>
                             <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="free-nav-item">
                                 <User className="nav-icon" size={18} /> Profile
+                            </Link>
+                            <Link to="/explorer" className="free-nav-item">
+                                <GitBranch className="nav-icon" size={18} /> Explorer
                             </Link>
                             <Link to="/dashboard" className="free-nav-item">
                                 <BarChart2 className="nav-icon" size={18} /> Dashboard
@@ -525,7 +542,9 @@ const GigPage = () => {
                         <section className="gp-section gp-write-review-section" id="write-review">
                             <h2 className="gp-section-title">Leave a Review</h2>
                             <p className="gp-write-review-sub">
-                                No sign-up required. Share your honest experience.
+                                {isLoggedIn && hasSessionKey
+                                    ? <><span>🔐</span> <strong>Verified review</strong> — your signature will be stored on-chain.</>
+                                    : 'No sign-up required. Share your honest experience.'}
                             </p>
 
                             {submitSuccess && (
@@ -581,7 +600,7 @@ const GigPage = () => {
                                     {submitting ? (
                                         'Posting to blockchain...'
                                     ) : (
-                                        <><Send size={15} /> Post Review</>
+                                        <>{isLoggedIn && hasSessionKey ? '🔐' : ''}<Send size={15} /> Post Review</>
                                     )}
                                 </button>
                             </form>

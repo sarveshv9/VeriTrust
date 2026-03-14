@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Star, ArrowLeft, ShieldCheck, User, Home, BarChart2, Search, LogOut } from 'lucide-react';
+import { Star, ArrowLeft, ShieldCheck, User, Home, BarChart2, Search, LogOut, GitBranch } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 import vtLogo from '../assets/VT_logo.png';
@@ -138,6 +138,9 @@ const WriteReviewPage = () => {
                         <>
                             <Link to={`/profile/${encodeURIComponent(user.publicKey)}`} className="wrp-nav-item">
                                 <User className="nav-icon" size={18} /> My Profile
+                            </Link>
+                            <Link to="/explorer" className="wrp-nav-item">
+                                <GitBranch className="nav-icon" size={18} /> Explorer
                             </Link>
                             <Link to="/dashboard" className="wrp-nav-item">
                                 <BarChart2 className="nav-icon" size={18} /> Dashboard

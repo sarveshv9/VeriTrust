@@ -6,7 +6,7 @@ const profileController = {
   onCreate: async (req, res) => {
     try {
       const { publicKey } = req.user;
-      const { name, occupation, location, contact } = req.body;
+      const { name, occupation, location, contact, signature, timestamp } = req.body;
 
       if (!name || !occupation) {
         return res
@@ -25,6 +25,27 @@ const profileController = {
           .json({ success: false, message: "Profile already exists" });
       }
 
+      // ─── Signature Verification ─────────────────────────────────────────
+      if (signature && timestamp) {
+        try {
+          const canonicalPayload = JSON.stringify({
+            name,
+            occupation,
+            location: location || "",
+            publicKey,
+            timestamp,
+          });
+          const verifier = crypto.createVerify("SHA256");
+          verifier.update(canonicalPayload);
+          const valid = verifier.verify(publicKey, signature, "base64");
+          if (!valid) {
+            return res.status(401).json({ success: false, message: "Invalid transaction signature." });
+          }
+        } catch {
+          return res.status(401).json({ success: false, message: "Signature verification failed." });
+        }
+      }
+
       // Hash contact info — raw data stays off-chain
       const contactHash = contact
         ? crypto.createHash("sha256").update(contact).digest("hex")
@@ -37,6 +58,7 @@ const profileController = {
         occupation,
         location: location || "",
         contactHash,
+        signed: !!(signature && timestamp),
       });
 
       res.status(201).json({
@@ -44,6 +66,7 @@ const profileController = {
         message: "Profile added to blockchain",
         blockIndex: block.index,
         blockHash: block.hash,
+        nonce: block.nonce,
       });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
@@ -54,7 +77,7 @@ const profileController = {
   onUpdate: async (req, res) => {
     try {
       const { publicKey } = req.user;
-      const { name, occupation, location, contact } = req.body;
+      const { name, occupation, location, contact, signature, timestamp } = req.body;
 
       if (!name || !occupation) {
         return res
@@ -75,6 +98,27 @@ const profileController = {
           });
       }
 
+      // ─── Signature Verification ─────────────────────────────────────────
+      if (signature && timestamp) {
+        try {
+          const canonicalPayload = JSON.stringify({
+            name,
+            occupation,
+            location: location || "",
+            publicKey,
+            timestamp,
+          });
+          const verifier = crypto.createVerify("SHA256");
+          verifier.update(canonicalPayload);
+          const valid = verifier.verify(publicKey, signature, "base64");
+          if (!valid) {
+            return res.status(401).json({ success: false, message: "Invalid transaction signature." });
+          }
+        } catch {
+          return res.status(401).json({ success: false, message: "Signature verification failed." });
+        }
+      }
+
       const contactHash = contact
         ? crypto.createHash("sha256").update(contact).digest("hex")
         : null;
@@ -86,6 +130,7 @@ const profileController = {
         occupation,
         location: location || "",
         contactHash,
+        signed: !!(signature && timestamp),
       });
 
       res.status(200).json({
@@ -93,6 +138,7 @@ const profileController = {
         message: "Profile updated on blockchain",
         blockIndex: block.index,
         blockHash: block.hash,
+        nonce: block.nonce,
       });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
